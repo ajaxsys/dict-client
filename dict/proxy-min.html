@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ajax dictionary proxy">
+    <title>Proxy Page of Dict</title>
+    <link rel="stylesheet" href="/static/dict/pkg/dict_proxy.min.css">
+    <script src="/static/dict/pkg/dict_proxy.min.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/assets/html5shiv.js"></script>
+    <script src="/static/js/assets/respond.min.js"></script>
+    <![endif]-->
+
+
+
+
+
+
+
+
+
+
+</head>
+<body id='__TOP__'>
+    <!-- Static navbar -->
+    <div class="navbar navbar-static-top">
+        <div class="container">
+            <!--<a class="navbar-brand" href="#">Project name</a>-->
+            <form id='__search_form__'>
+                <input type="text" id='__search__' placeholder="Search" class="form-control">
+            </form>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a target='_blank' href="http://dict-admin.appspot.com">Dict HELP</a></li>
+                    <li class="dropdown active">
+                    <a id='__dict_selected__' href="#" class="dropdown-toggle" data-toggle="dropdown">Dict SELECT - <span>Weblio辞書</span><b class="caret"></b></a>
+                    <ul id='__dict_types__' class="dropdown-menu">
+                        <li class="nav-header">☂ 英和和英辞書</li>
+                        <li class="divider"></li>
+                        <li class='active'><a href="#" value='weblios'>Weblio辞書</a></li>
+                        <li><a href="#" value='weblio'>Weblio辞書 SP</a></li>
+                        <li><a href="#" value='yahoo'>Yahoo!辞書</a></li>
+                        <li><a href="#" value='goo'>Goo辞書</a></li>
+                        <li class="divider"></li>
+                        <li class="nav-header">☄ 日中中日辞書</li>
+                        <li class="divider"></li>
+                        <li><a href="#" value='xiaoD'>XiaoD</a></li>
+                        <li><a href="#" value='eXcite'>eXcite辞書</a></li>
+                    </ul>
+                    </li><!--/.dropdown-->
+                </ul>
+            </div><!--/.nav-collapse -->
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+    </div>
+
+    <div id='__explain_wrapper__' class='container'></div>
+
+    <!-- debug info -->
+    <div>
+        <hr style="margin-top:100px"/>
+        <a href='#' id='__debugSelf__' target='_blank'>Debug proxy page</a>
+        <br />
+        <a href='#' id='__debugAjax__' target='_blank'>Debug direct link</a>
+    </div>
+
+    <div style='position:fixed;right:0;bottom:0;'> <a href="#__TOP__">TOP</a> </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-45384668-1', 'python-ok.appspot.com');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>
