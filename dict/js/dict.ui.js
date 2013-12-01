@@ -55,7 +55,7 @@ function registSelectWord($) {
                         createOrUpdateWindow($(this), text);
                 }
             }
-            return false;
+            return;
         }
         // WARN: Do not `return false` here. If so, other mouseup be affected.
     });
@@ -174,7 +174,7 @@ function resetPositionWhenOverflow($win){
 
 // Without any symbol
 // 。、，（）「」￥！ // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
+var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
     WORD_MAX_LENGTH = 50;  
 function isWord(text){
     // Selected words in one line, 
@@ -200,13 +200,18 @@ function getWindowSizeFromCookie(){
 }
 
 function getSelectionText() {
-    var text = "";
+    // For webkit
     if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
+        try {
+            return window.getSelection().toString();
+        } catch (e) {
+            console.log('Cant get selection for some reason.')
+        }
+    } 
+    // For IE
+    if (document.selection && document.selection.type != "Control") {
+        return document.selection.createRange().text;
     }
-    return text;
 }
 
 function host(lbKey){
