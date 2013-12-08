@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset=utf-8>
+    <title>My dict test</title>
+    <script src='/lib/jquery-1.10.2.js'></script>
+    <script src='./test.js'></script>
+</head>
+<body>
+    
+<h2>My dict test page - <a href='./no_js.html'>No Script page</a></h2>
+
+<div style='float:left;width:150px'>
+
+    <select id='select_dict'>
+        <option value='en2jp'>英和</option>
+        <option value='en2cn'>英中</option>
+    </select>
+
+    <p>Hello</p>
+    <p>World</p>
+    <p>java</p>
+    <p>linux</p>
+    <p>ネットワーク</p>
+    <p>ｾｷｭﾘﾃｨ</p>
+    <p><hr /></p>
+    <p>Alt/Title:<img src='/lib/jwe/default/icons/maximize.gif' alt='max alt' title='max title'></p>
+    <p>Only Title:<img src='/lib/jwe/default/icons/minimize.gif' title='min title'></p>
+    <p><a href="#">Img in link <img src='/lib/jwe/default/icons/close.gif' title='close title' /></a></p>
+    <p><a href="#">Img in a link, yes <img src='/lib/jwe/default/icons/close.gif' title='close title' /> in a link, a large area </a></p>
+</div>
+
+
+<div style='float:left;width:600px'>
+    Drag this dictionary :
+    <ul>
+        <li><a id='bookmarklet' href="#">Develop - With local resource + local proxy (Default wait 3 seconds)</a></li>
+        <li><a id='bookmarkletST' href="#">Staging - With local min resource + remote lb proxy</a></li>
+        <li><a id='bookmarkletRls' href="#">Product - With remote min resource + remote lb proxy</a></li>
+    </ul>
+    links to bookmark bar.
+    <p>Debug `Develop` link by edit textarea bellow:</p>
+    <textarea id='jsEditor' style='width:100%;height:500px;'></textarea>
+</div>
+
+<input type="text" value="some text java" />
+<input type="password" value="some text java" />
+<input type="file" value="select file" />
+
+<iframe src='no_js.html' width=100px height=100px></iframe>
+
+</body>
+</html>

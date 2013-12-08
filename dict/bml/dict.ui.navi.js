@@ -8,11 +8,10 @@
 initNavi(); 
 
 // for test
-$.extend(window.__DICT__ ,  {
+var D = $.dict_extend({
     'initNavi' : initNavi,
     'DICT_SERVICE': true, // ON/OFF switch
 });
-var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
@@ -30,13 +29,12 @@ function initNavi(){
     setTimeout(function(){
         $navi.click(function(){
             $imgOn.add($imgOff).toggle();
-            DICT.DICT_SERVICE=$imgOn.is(':visible'); 
-            if (!DICT.DICT_SERVICE){
-                $.closeWindow(DICT.DICT_ID);
+            D.DICT_SERVICE=$imgOn.is(':visible'); 
+            if (!D.DICT_SERVICE){
+                $.closeWindow(D.DICT_ID);
             }
         });
     },500);
-
 }
 
 

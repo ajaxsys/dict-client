@@ -1,10 +1,13 @@
+/*jshint -W061, scripturl:true */
+/*W061: eval can be harmful*/
+
 // =================== Before DOM ready ===================
 (function(){
 
 // Develop Version
-loadResourceToGlobalVar('/target/distribution/dict_bookmarklet.js','__G_BML__');
+loadResourceToGlobalVar('/build/dict_bookmarklet.js','__G_BML__');
 // Product Version
-loadResourceToGlobalVar('/target/distribution/dict_bookmarklet.min.js','__G_BML_MIN__');
+loadResourceToGlobalVar('/dict/dict_bookmarklet.js','__G_BML_MIN__');
 
 function loadResourceToGlobalVar(url,varName){
     $.ajax({
@@ -27,18 +30,17 @@ $(function(){
 
     // Minimized version and released version
     function afterProductVersionLoaded(){
-
-        var st = BML_PREFIX + __G_BML_MIN__
-            .replace('/dict_ui_dev.js','/dict_ui_rls.js');
-        var st_min = BML_PREFIX + __G_BML_MIN__
-            .replace('/dict_ui_dev.js','/dict_ui.min.js');
-
-        var prod = st_min.replace('http://localhost:8443','//python-ok.appspot.com');
+        // default: /build/dict_ui_dev.js
+        var dev = BML_PREFIX + __G_BML_MIN__;
+        var st   = dev.replace('DEV_MODE','ST_MODE')
+                      .replace('/build/','/dict/');
+        var prod = dev.replace('DEV_MODE','RLS_MODE')
+                      .replace('/build/','/dict/') // Minified
+                      .replace('http://localhost:8443','//python-ok.appspot.com');
 
         // Refer to min version.
         $('#bookmarkletST').attr('href',st); 
-        $('#bookmarkletSTMin').attr('href',st_min); 
-        $('#bookmarkletReleased').attr('href',prod);
+        $('#bookmarkletRls').attr('href',prod);
     }
 
     function afterDevelopVersionLoaded(){

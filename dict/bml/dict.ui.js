@@ -1,37 +1,23 @@
 (function($){
-/*jshint -W020 */
 
-window.__DICT__ = window.__DICT__ || {};
-
-// for test
-$.extend(window.__DICT__ ,  {
-    DICT_ID : '__dict_window_id__',
-
+// for test & hook
+var DICT_ID = '__dict_window_id__';
+var D = $.dict_extend({
+    'DICT_ID' : DICT_ID,
 });
-var DICT = window.__DICT__;
 
-
-// TODO
-var options = {};
-var settings = {};
-
-var DICT_RELEASED = DICT.IS_RELEASED,
-    LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-
-var DICT_ID = DICT.DICT_ID,
-    DICT_JID = '#__dict_window_id__',
-    DICT_URL = DICT_RELEASED?'/dict/proxy-min.html##key#':'/dict/proxy.html##key#',
+var DICT_JID = '#'+DICT_ID,
+    DICT_URL = D.DEV_MODE ? '/build/proxy.html##key#?DEV_MODE' : '/dict/proxy.html##key#',
     DICT_ISFIXED = "position_is_fixed";
 
 var _thisIP,
     _lastSearchWord;
 
-console = window.console || {'log':function(){}};
 console.log('Loading ui resource...');
-DICT.loadResource($, host()+'/target/distribution/dict_ui.min.css', 'css');
+D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 
-registSelectWord($);
-registLinkToText($);
+registSelectWord();
+registLinkToText();
 
 createOrUpdateWindow('body','');
 
@@ -39,29 +25,37 @@ $( window ).resize(function() {
     resetPositionWhenOverflow($(DICT_JID));
 });
 
-function registSelectWord($) {
-    //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
-    $(document).on('mouseup.dict','body *:not('+DICT_JID+', '+DICT_JID+' *)',function(){
-        console.log('start it');
-        if ($(DICT_JID).find(this).length === 0) {
-            // Not element of dict window
-        
-            if (!DICT.DICT_SERVICE){
-                return;
-            } else {
-                var text = $.trim(getSelectionText());
-                if (text != _lastSearchWord && isWord(text) ){
-                        _lastSearchWord = text;
-                        createOrUpdateWindow($(this), text);
-                }
+function getSelection(doc,win, _this){
+    doc = doc || document;
+    win = win || window;
+    _this = _this || this;
+    console.log('start it');
+    if ($(DICT_JID).find(_this).length === 0) {
+        // Not element of dict window
+        if (D.DICT_SERVICE){
+            var text = $.trim(getSelectionText(doc,win,_this));
+            if (text != _lastSearchWord && isWord(text) ){
+                    _lastSearchWord = text;
+                    createOrUpdateWindow($(_this), text);
             }
-            return;
         }
-        // WARN: Do not `return false` here. If so, other mouseup be affected.
+    }
+    // WARN: Do not `return false` here. If so, other mouseup be affected.
+}
+function registSelectWord() {
+    console.log('Regist text selector');
+    //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    $(document).on('mouseup.dict','body, body *:input',getSelection);
+    $('iframe').each(function(){
+        var child_doc = this.contentDocument,
+            child_win = this.contentWindow;
+        $(child_doc).on('mouseup.dict','body',function(){
+            getSelection(child_doc, child_win, this);
+        });
     });
 }
 
-function registLinkToText($) {
+function registLinkToText() {
     $.plaintext('body a, body img, body select, body :button');
 }
 
@@ -91,7 +85,7 @@ function createOrUpdateWindow($obj, text) {
         // Update
         $.updateWindowTitle(DICT_ID, text);
     }
-    var frameURL = host(text) + DICT_URL;
+    var frameURL = static_host() + DICT_URL;
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
                 '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;"></iframe>');
@@ -188,90 +182,54 @@ function isWord(text){
 
 function setWindowSizeToCookie(){
     var $win = $(DICT_JID);
-    var opt = DICT.getOptionFromCookie();
+    var opt = D.getOptionFromCookie();
     opt.ui.width = $win.width();
     opt.ui.height = $win.height();
-    DICT.setOptionToCookie(opt);
+    D.setOptionToCookie(opt);
 }
 
 function getWindowSizeFromCookie(){
-    var opt= DICT.getOptionFromCookie();
+    var opt= D.getOptionFromCookie();
     return opt.ui;
 }
 
-function getSelectionText() {
-    // For webkit
-    if (window.getSelection) {
-        try {
-            return window.getSelection().toString();
-        } catch (e) {
-            console.log('Cant get selection for some reason.')
-        }
-    } 
-    // For IE
-    if (document.selection && document.selection.type != "Control") {
-        return document.selection.createRange().text;
-    }
+function getSelectionText(doc,win,_this) {
+    return $(_this).selection() || $.selection('html');
 }
 
-function host(lbKey){
-    var local_ips = ['http://localhost:8000', 'http://127.0.0.1:8000', 'http://172.106.72.78:8000'],
-        dev_ip = 'http://127.0.0.1:8000',
+// Get static resource like `iframe/css` URL
+function static_host(){
+    var dev_ip = 'http://127.0.0.1:8443',
         //rls_single = '//dict-admin.appspot.com',
-        //rls_lb = '//dict-x.appspot.com';
-        rls_single = '//python-ok.appspot.com',
-        rls_lb = '//python-ok.appspot.com' ;
-
-    // Dynamic IP
-    if (DICT_RELEASED && lbKey) {
-        // Load Balance
-            var code = lbKey.charCodeAt(0),
-                key = LB_SERVERS[ code % LB_SERVERS.length ];
-            var release_ip = rls_lb.replace('x',key);
-            console.log('Using release load balance:', release_ip);
-            return release_ip;
-    }
+        rls_ip = '//python-ok.appspot.com';
 
     // Static IP
     // First time only
     if (_thisIP)
         return _thisIP;
 
-    // 0 release
-    if (DICT_RELEASED){
-        console.log('Using release single ip:', rls_single);
-        _thisIP = rls_single;
-        return rls_single;
-    }
-
-    var url = window.location.href,
-        matcher,
-        ip;
-    // 1 local test (http only)
-    for (var i in local_ips){
-        ip = local_ips[i];
-        matcher = url.indexOf(ip);
-        if (matcher===0){
-            console.log('Using local ip:', ip);
+    // 1 DEV_MODE/ST_MODE setting in loader.js
+    if (D.DEV_MODE || D.ST_MODE){
+        // 2 Intranet test(http only): No `.` before first `/` in hostname
+        var intrRegxp = /^http(|s):(\/\/[^\/\.]+?)\/.*$/;
+        var matcher = intrRegxp.exec(window.location.href);
+        if ( matcher ){
+            var ip = matcher[2];
+            console.log('Use intranet ip:', ip);
             _thisIP = ip;
             return ip;
         }
+
+        // 3 test as a bookmarklet in other sites(http only)
+        console.log("Using develop IP. ",dev_ip);
+        _thisIP = dev_ip;
+        return dev_ip;
     }
 
-    // 2 Intranet test(http only)
-    var intrRegxp = /^http(|s):(\/\/[^\/\.]+?)\/.*$/;
-    matcher = intrRegxp.exec(url);
-    if ( matcher ){
-        ip = matcher[1];
-        console.log('Use intranet ip:', ip);
-        _thisIP = ip;
-        return ip;
-    }
-
-    // 3 test as a bookmarklet in other sites(http only)
-    console.log("Using develop IP. ",dev_ip);
-    _thisIP = dev_ip;
-    return dev_ip;
+    // Product mode
+    console.log('Using release host:', rls_ip);
+    _thisIP = rls_ip;
+    return rls_ip;
 }
 
 })(jQuery);

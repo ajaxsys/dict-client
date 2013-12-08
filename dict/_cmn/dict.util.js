@@ -1,3 +1,8 @@
+/**
+ * Utils of dict. Regist to global `__DICT__` variable
+ *
+ * depend: dict.util.sharebml.js
+ */
 (function($){
 
 // for test & hook

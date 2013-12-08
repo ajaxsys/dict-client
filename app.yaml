@@ -1,7 +1,7 @@
 application: python-ok
 version: 10
 runtime: python27
-api_version: 1
+api_version: 2
 threadsafe: yes
 
 builtins:

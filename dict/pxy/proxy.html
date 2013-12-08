@@ -5,23 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ajax dictionary proxy">
     <title>Proxy Page of Dict</title>
-    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/dict/css/dict.common.css">
-
-    <script src="/lib/jquery.min.js"></script>
-    <script src="/lib/jquery.cookie.js"></script>
-    <script src="/lib/bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="./dict_proxy.css">
+    <script src="./dict_proxy.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="/lib/assets/html5shiv.js"></script>
     <script src="/lib/assets/respond.min.js"></script>
     <![endif]-->
-
-    <script src="/dict/js/dict.util.js"></script>
-    <script src="/dict/js/dict.formatter.js"></script>
-    <script src="/dict/js/dict.formatter.weblio.js"></script>
-    <script src="/dict/js/dict.formatter.weblios.js"></script>
-    <script src="/dict/js/dict.proxy.js"></script>
 </head>
 <body id='__TOP__'>
     <!-- Static navbar -->
@@ -62,8 +52,8 @@
 
         </div>
     </div>
-
     <div id='__explain_wrapper__' class='container'></div>
+    <div id='__loading__' class='container hide'></div>
 
     <!-- debug info -->
     <div>

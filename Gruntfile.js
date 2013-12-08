@@ -3,23 +3,28 @@
 module.exports = function(grunt) {
   "use strict";
 
+  var TARGETS = {
+    dest: ['target/dict/','target/build/'],
+    dest_css: ['target/dict/default/','target/build/default/']
+  };
+
   // Project configuration.
   grunt.initConfig({
 
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
-    banner: '/**\n' +
-            '* <%= pkg.name %>.js v<%= pkg.version %> by @fat and @mdo\n' +
-            '* Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+    banner: '/*! DICT, a second screen bookmarklet for your browser.\n' +
+            '* v<%= pkg.version %>\n' +
+            '* Copyright <%= grunt.template.today("yyyy")%> <%= pkg.author %> \n' +
             '* <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
             '*/\n',
-    // jqueryCheck: 'if (!jQuery) { throw new Error(\"Bootstrap requires jQuery\") }\n\n',
 
     // Task configuration.
     clean: {
-      dist: ['target/build/','target/distribution/']
+      dist: ['target/dict/','target/build/']
     },
 
+    // Check javascript error
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -28,108 +33,169 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       src: {
-        src: ['dict/js/*.js']
-      },
-      test: {
-        src: ['dict/js/test/*.js']
+        src: ['dict/**/*.js','lib/jquery.*.js']
       }
     },
 
+    // Check CSS error
     csslint: {
       strict: {
         options: {
+          // a value of 2 will set it to become an error. 
           import: 2
         },
-        src: ['dict/css/dict.common.css']
+        src: ['dict/_resource/css/dict.common.css']
       },
       lax: {
         options: {
+          // a value of false ignores the rule, 
+          // Otherwise all rules are considered warnings.
           import: false
         },
-        src: ['dict/css/dict.common.css']
+        src: ['dict/_resource/css/dict.common.css']
       }
     },
 
-    cssmin: {
-      compress: {
-        files: {
-          'target/distribution/dict_ui.min.css':[
-              'lib/jwe/jquery.windows-engine.css',
-              'lib/tooltip/tipsy.css',
-              'dict/css/dict.common.css',
-          ],
-          'target/distribution/dict_proxy.min.css':[
-              'lib/bootstrap/css/bootstrap.css',
-              'dict/css/dict.common.css',
-          ],
-        },
-      }
-    },
-
+    // Build DICT
     concat: {
       options: {
-        // banner: '<%= banner %><%= jqueryCheck %>',
-        // stripBanners: false
+        stripBanners: false
       },
+      // Bookmark for browser (Only a loader for ui.js)
       dict_bookmarklet: {
-        src: ['dict/js/dict.util.sharebml.js',
-              'dict/js/dict.bookmarklet.js'],
-        dest: 'target/distribution/<%= pkg.name %>_bookmarklet.js'
+        src: ['dict/_cmn/dict.util.share.js',
+              'dict/bml/loader.js'],
+        dest: 'target/build/<%= pkg.name %>_bookmarklet.js'
       },
-      dict_ui_dev: {
+      // Dict UI (Also is a loader for proxy.js)
+      dict_ui: {
         src: [
-          'lib/jquery.min.js',
+          'lib/jquery-1.10.2.js',
           'lib/jquery.cookie.js',
+          'lib/jquery.selection.js',
           'lib/jquery.plaintext.js',
           'lib/tooltip/jquery.tipsy.js',
           'lib/jwe/jquery.windows-engine.js',
-          'dict/js/conf.js',
-          'dict/js/dict.util.js',
-          'dict/js/dict.util.sharebml.js',
-          'dict/js/dict.ui.js',
-          'dict/js/dict.ui.navi.js',
-          'dict/js/end.js',
+          'dict/_cmn/conf.js',
+          'dict/_cmn/dict.util.js',
+          'dict/_cmn/dict.util.share.js',
+          'dict/bml/dict.ui.js',
+          'dict/bml/dict.ui.navi.js',
+          'dict/bml/dict.end.js',
         ],
-        dest: 'target/distribution/<%= pkg.name %>_ui_dev.js'
+        dest: 'target/build/<%= pkg.name %>_ui.js'
       },
-      dict_ui_rls: {
-        src: [
-          'dict/js/conf.release.js',
-          '<%= concat.dict_ui_dev.src %>'
-        ],
-        dest: 'target/distribution/<%= pkg.name %>_ui_rls.js'
-      },
+      // Dict iframe (Formatters for each sites)
       dict_proxy: {
         src: [
-          'lib/jquery.min.js',
+          'lib/jquery-1.10.2.js',
           'lib/jquery.cookie.js',
+          'lib/jquery.jsonp.js',
           'lib/bootstrap/js/bootstrap.min.js',
-          'dict/js/dict.util.js',
-          'dict/js/dict.proxy.js',
-          'dict/js/dict.formatter.js',
-          'dict/js/dict.formatter.weblio.js',
-          'dict/js/dict.formatter.weblios.js',
+          'dict/_cmn/conf.js',
+          'dict/_cmn/dict.util.js',
+          'dict/pxy/dict.proxy.js',
+          'dict/pxy/dict.formatter.js',
+          'dict/pxy/dict.formatter.utils.js',
+          'dict/pxy/dict.lb.js',
+          'dict/pxy/dict.google.js',
+          'dict/pxy/formaters/dict.formatter.weblio.js',
+          'dict/pxy/formaters/dict.formatter.weblios.js',
         ],
-        dest: 'target/distribution/<%= pkg.name %>_proxy.js'
+        dest: 'target/build/<%= pkg.name %>_proxy.js'
+      },
+      // CSS
+      dict_ui_css: {
+        src: [
+          'lib/jwe/jquery.windows-engine.css',
+          'lib/tooltip/tipsy.css',
+          'dict/_resource/css/dict.common.css',
+        ],
+        dest: 'target/build/<%= pkg.name %>_ui.css'
+      },
+      dict_proxy_css: {
+        src: [
+          'lib/bootstrap/css/bootstrap.css',
+          'dict/_resource/css/dict.common.css',
+        ],
+        dest: 'target/build/<%= pkg.name %>_proxy.css'
+      }
+    },
+
+    // Css minify for release
+    cssmin: {
+      compress: {
+        files: {
+          'target/dict/<%= pkg.name %>_ui.css':['<%= concat.dict_ui_css.dest %>'],
+          'target/dict/<%= pkg.name %>_proxy.css':['<%= concat.dict_proxy_css.dest %>'],
+        },
+      }
+    },
+
+    // Javascript minify for release
+    uglify: {
+      options: {
+        preserveComments: 'some',
+      },
+      // Bookmarklet: No sourceMap, No stripBanner!
+      dict_bookmarklet: {
+        src: ['<%= concat.dict_bookmarklet.dest %>'],
+        dest: 'target/dict/<%= pkg.name %>_bookmarklet.js'
+      },
+      dict_ui: {
+        options: {
+          banner: '<%= banner %>',
+          sourceMap: 'target/dict/<%= pkg.name %>_ui.map',
+          sourceMapRoot: '/',
+          sourceMapPrefix: 1,
+          sourceMappingURL: '/dict/<%= pkg.name %>_ui.map',
+        },
+        src: ['<%= concat.dict_ui.dest %>'],
+        dest: 'target/dict/<%= pkg.name %>_ui.js'
+      },
+      dict_proxy: {
+        options: {
+          banner: '<%= banner %>',
+          sourceMap: 'target/dict/<%= pkg.name %>_proxy.map',
+          sourceMapRoot: '/',
+          sourceMapPrefix: 1,
+          sourceMappingURL: '/dict/<%= pkg.name %>_proxy.map',
+        },
+        src: ['<%= concat.dict_proxy.dest %>'],
+        dest: 'target/dict/<%= pkg.name %>_proxy.js'
       },
     },
 
-    uglify: {
-      options: {
-        //banner: '<%= banner %>'
+    // Start a default static web server(Need build)
+    connect: {
+      // grunt connect:server:keepalive
+      server: {
+        options: {
+          protocol : 'https',
+          port : 8443,
+          keepalive: true,
+          base: './target'
+        }
       },
-      dict_bookmarklet: {
-        src: ['<%= concat.dict_bookmarklet.dest %>'],
-        dest: 'target/distribution/<%= pkg.name %>_bookmarklet.min.js'
-      },
-      dict_ui: {
-        src: ['<%= concat.dict_ui_rls.dest %>'],
-        dest: 'target/distribution/<%= pkg.name %>_ui.min.js'
-      },
-      dict_proxy: {
-        src: ['<%= concat.dict_proxy.dest %>'],
-        dest: 'target/distribution/<%= pkg.name %>_proxy.min.js'
-      },
+    },
+
+    // Copy static resources
+    copy: {
+      main: {
+        files: [
+          //{src: ['lib/jwe/default/*'], dest: 'lib/pkg/default/', filter: 'isFile'}, // includes files in path
+          //{src: ['path/**'], dest: 'dest/'}, // includes files in path and its subdirs
+          //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'}, // makes all src relative to cwd
+          //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'} // flattens results to a single level
+
+          // Copy images
+          // For test
+          {expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'}, 
+          {expand:true,                          src: ['lib/**'], dest: 'target/'}, 
+        ].concat(copyToDirs('lib/jwe/default/',  '*_mid.gif',  TARGETS.dest_css))
+         .concat(copyToDirs('dict/_resource/sprite/', '*.png',      TARGETS.dest_css))
+         .concat(copyToDirs('dict/pxy/',         'proxy.html', TARGETS.dest    ))
+      }
     },
 
 /*
@@ -139,56 +205,29 @@ module.exports = function(grunt) {
       },
       files: ['js/tests/*.html']
     },
+
+   validation: {
+     options: {
+       reset: true,
+     },
+     files: {
+       src: ['_gh_pages/*.html']
+     }
+   },
 */
-    connect: {
-      // grunt connect:server:keepalive
-      server: {
-        options: {
-          protocol : 'https',
-          port : 8443,
-          keepalive: true,
-          base: '.'
-        }
-      },
-    },
-
-    copy: {
-      main: {
-        files: [
-          //{src: ['lib/jwe/default/*'], dest: 'lib/pkg/default/', filter: 'isFile'}, // includes files in path
-          //{src: ['path/**'], dest: 'dest/'}, // includes files in path and its subdirs
-          //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'}, // makes all src relative to cwd
-          {expand:true, cwd: 'lib/jwe/default/',src: ['*_mid.gif'], dest: 'target/distribution/default/', filter: 'isFile'}, 
-          {expand:true, cwd: 'dict/sprite/',src: ['*.png','*.gif'], dest: 'target/distribution/default/', filter: 'isFile'}, 
-          //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'} // flattens results to a single level
-        ]
-      }
-    },
- //   validation: {
- //     options: {
- //       reset: true,
- //     },
- //     files: {
- //       src: ["_gh_pages/**/*.html"]
- //     }
- //   },
-
     spritepacker: {
       default_options: {
         options: {
           // Path to the template for generating metafile:
-          template: 'dict/sprite/dict-sprite.styl.tpl',
+          template: 'dict/_resource/sprite/dict-sprite.styl.tpl',
           // Destination metafile:
-          destCss:  'dict/sprite/dict-sprite.styl',
+          destCss:  'dict/_resource/sprite/dict-sprite.styl',
           // Base URL for sprite image, used in template
           baseUrl: 'default/',
           padding: 2,
         },
         files: {
-          'dict/sprite/sprites.png': [
-            'lib/jwe/default/icons/*.*',
-            'dict/img/icons/*.*',
-          ]
+          'dict/_resource/sprite/sprites.png': ['<%= watch.img_sprite.files %>']
         }
       }
     },
@@ -196,11 +235,11 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         options: {
-          paths: ['dict/sprite/'],
+          paths: ['dict/_resource/sprite/'],
           import : ['dict-sprite'],
         },
         files: {
-          'dict/css/dict.common.css': ['dict/css/dict.common.styl' ], // compile and concat into single file
+          'dict/_resource/css/dict.common.css': ['dict/_resource/css/dict.common.styl' ],    // compile and concat into single file
           'lib/jwe/jquery.windows-engine.css': ['lib/jwe/jquery.windows-engine.styl'], 
         }
       }
@@ -208,17 +247,25 @@ module.exports = function(grunt) {
 
     watch: {
       script: {
-        files: ['dict/js/*.js',
+        files: ['dict/**/*.js',
                 'lib/**/*',
+                'Gruntfile.js'
         ],
         tasks: ['jshint','dist']
       },
-      css: {
+      css_sprite: {
         files : [
-          'dict/css/*.styl',
+          'dict/_resource/css/*.styl',
           'lib/jwe/jquery.windows-engine.styl',
         ],
         tasks: ['stylus','dist-css']
+      },
+      img_sprite: {
+        files : [
+          'lib/jwe/default/icons/*.*',
+          'dict/_resource/img/icons/*.*'
+        ],
+        tasks: ['stylus','dist-css','copy']
       },
       // test: {
       //   files: '<%= jshint.test.src %>',
@@ -229,6 +276,16 @@ module.exports = function(grunt) {
 
   }); // End grunt.initConfig
 
+  // A shortcut for copy file to multi dirs at once (google keyword: grunt copy multi dest) : 
+  // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/dict/default/' },
+  // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/build/default/'},
+  function copyToDirs(p_cwd, p_src, p_dests) {
+    var arr = [];
+    for (var i in p_dests) {
+      arr.push({expand:true, cwd:p_cwd, src: p_src, dest: p_dests[i]});
+    }
+    return arr;
+  }
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -258,17 +315,17 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', testSubtasks);
 
-  // JS distribution task.
-  grunt.registerTask('dist-js', ['concat', 'uglify']);
+  // JS build task.
+  grunt.registerTask('dist-js', ['uglify']);
 
-  // CSS distribution task.
+  // CSS build task.
   grunt.registerTask('dist-css', ['cssmin']);
 
   // Sprite 
   grunt.registerTask('sprite', ['spritepacker','stylus']);
 
-  // Full distribution task.
-  grunt.registerTask('dist', ['clean', 'copy', 'dist-css', 'dist-js']);
+  // Full build task.
+  grunt.registerTask('dist', ['clean', 'copy','concat', 'dist-css', 'dist-js']);
 
   // Default task.
   grunt.registerTask('default', ['dist']);
