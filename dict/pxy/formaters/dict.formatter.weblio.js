@@ -1,20 +1,20 @@
+/////////// Weblio for SmartPhone.(Access from SP, hit from google result) /////////////
 ;(function($){
 
 /////////// Main Entry. /////////////
 var option = DICT_PLUGINS.weblio = {
 	'prefix': 'http://ejje.weblio.jp/content/',
-	'format': formatWeblioSmallPage,
+	'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['iframe','noscript','script','img']
 };
 
-// Call util
-function formatWeblioSmallPage(src) {
+function formatWeblioForSmartPhoneLayout(src) {
     // Preformat by common util, then callback the customize function.
-    return $.dict_extend().preFormat(option, src, customizeWeblioSmallPage);
+    return $.dict_extend().preFormat(option, src, customizePage);
 }
 
 // Customize for this page
-function customizeWeblioSmallPage($target){
+function customizePage($target){
     // Customize page
     // .wejtyInfoSmp: info of robot
     // .division3: info of auth

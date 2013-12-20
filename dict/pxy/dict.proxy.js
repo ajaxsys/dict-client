@@ -1,14 +1,13 @@
 /**
- * proxy main
+ * proxy main entry. get value from iframe url. then search it.
  */
 ;(function($){
 
 // All common util is regist at __DICT__
-var DICT = $.dict_extend();
+var D = $.dict_extend();
 
 // AMD
-var $types,$searchBox,
-    $result,$loading;
+var $types,$searchBox;
 
 // onload
 console.log("iframe URL",window.location.href);
@@ -16,10 +15,8 @@ $(function(){
     // init outter var here for loaded context
     $types = $('#__dict_types__');
     $searchBox = $('#__search__');
-    $result = $('#__explain_wrapper__');
-    $loading = $('#__loading__');
 
-    updateOptionMenu(DICT.getOptionFromCookie().dict.dict_type);
+    updateOptionMenu(D.getOptionFromCookie().dict.dict_type);
     reloadWhenDictOptionChanged();
 
     $(window).on('hashchange', function(e){
@@ -29,10 +26,44 @@ $(function(){
         doQuery();
     });
     doQuery();
-    registSearchKey();
+    registSearchKeyEvent();
+    registRetry();
 });
 
-function registSearchKey(){
+function doQuery(query, type){
+    // Get from caller
+    query = query || getUrlHashValue();
+    if (!query) {
+        console.log('[WARN] No Search Key.');
+        return;
+    }
+    type = type || getSelectedDict();
+
+    var word = decodeURIComponent(query);
+    console.log("Do search :", query, ' -> ', word, '|', type);
+
+    if (query && type && isNotKey(word)) {
+        $searchBox.val(word);
+        mainQuery(word, type)
+        // others
+        $('#__debugSelf__').attr('href', window.location.href);
+    } else {
+        console.log("Invalid search:", query, type, word);
+    }
+}
+
+function mainQuery(word, type){
+
+  // ajuster mode: `type` must be auto
+  if (type && (type.indexOf('auto')>=0 ||  type.indexOf('google')>=0) ) {
+    D.queryGoogle(word, type);// Only can use callback in JSONP 
+  } else {
+    D.queryDict(word, type);
+  }
+}
+
+
+function registSearchKeyEvent(){
     var $searchForm = $('#__search_form__');
     $searchForm.submit(function(){
         doQuery($searchBox.val());
@@ -43,137 +74,15 @@ function registSearchKey(){
     });
 }
 
-function getSelectedDict(){
-    return $('li.active>a',$types).attr('value');
+function registRetry(){
+    $("button.retry").click(function(){
+        $("#__search_form__").submit();
+        return false;
+    });
 }
 
-var requestCount = 0, ajax, oldword, DICT_jsonp;
-function doQuery(query, type){
-    // Get from caller
-    query = query || getUrlHashValue();
-    if (!query) {
-        console.log('[WARN] No Search Key.');
-        return;
-    }
-
-    type = type || getSelectedDict();
-    var word = decodeURIComponent(query);
-    console.log("Do search :", query, ' -> ', word, '|', type);
-
-    if (query && type && isNotKey(word)) {
-        // http://otherhost/dict/t/hello/?callback=DICT_format
-        var url = DICT.lb_host(word)+'dict/'+type+'/'+query+'/',
-            startTime = new Date().getTime();
-
-        console.log('Ajax load: ', url);
-/* //// DO NOT USE jQuery version. because:
-   //// 1. Bugs: jsonp not work after timeout occurred
-   //// 2. CAN NOT use abort with jsonp
-   //// 2. CAN NOT use local function with callback.
-        ajax=$.ajax({
-            url: url,
-            dataType: 'jsonp',
-            jsonpCallback: 'DICT_format', 
-            crossDomain: true,
-            beforeSend: function(){
-                $searchBox.val(word + ' is loading...');$result.hide();
-                $('html,body').animate({scrollTop: 0},'fast');
-            },
-            complete: function(){
-                if (requestCount !== this.requestCount) {
-                    console.log('Not latest jsonp,cancel it');
-                    return;
-                }
-                console.log('this is the latest request');
-                // wait css init
-                setTimeout(function(){
-                    $result.show();
-                    $('html,body').animate({scrollTop: $result.offset().top},'fast');
-                },300);
-                $searchBox.val(word);
-            },
-            requestCount: ++requestCount,// closure
-            success: function(data,code) {
-                if (requestCount !== this.requestCount) {
-                    console.log('Not latest jsonp,cancel it');
-                    return;
-                }
-                console.log('this is the latest request');
-                // Automatic call DICT_format defined in dict.formatter.js
-            },
-            timeout: 10000,
-            error: function(jqXHR, textStatus, errorThrown) { 
-                console.log(errorThrown,textStatus);
-                var retry=$("<button>").text("retry").click(function(){
-                    $("#__search_form__").submit();
-                    return false;
-                })
-                $result.html(' Loading timeout. Please ').append(retry);
-            }
-        });
-*/
-        if (ajax) {
-            console.log('Cancel ajax:' + oldword);
-            ajax.abort();
-        }
-        ajax=$.jsonp({
-            url: url,
-            dataType: 'jsonp',
-            //jsonpCallback: 'DICT_format', // NO need in jsonp plugin
-            callbackParameter: 'callback',// append: callback=?
-            // NOTICE: jsonp plugin will override window.DICT_format function.
-            // SEE: https://github.com/jaubourg/jquery-jsonp/blob/master/doc/API.md#callback---string-_jqjsp
-            callback: 'DICT_jsonp', // callback=DICT_jsonp // Not exist in global win// will auto created in global
-            //crossDomain: true, // NO need in jsonp plugin
-            beforeSend: function(){
-                $searchBox.val(word + ' is loading...');$result.hide();
-                $('html,body').animate({scrollTop: 0},'fast');
-            },
-            complete: function(){
-                console.log('Complete, expend time:' + (new Date().getTime()-startTime) );
-                /*// NO need with jsonp.abort()
-                if (requestCount !== this.requestCount) {
-                    console.log('Ajax complete. Not latest jsonp,cancel it');
-                    return;
-                }
-                console.log('Ajax complete. this is the latest request');
-                */
-                // wait css init
-                setTimeout(function(){
-                    $searchBox.val(word);
-                    $result.show();
-                    $('html,body').animate({scrollTop: $result.offset().top},'fast');
-                },300);
-            },
-            // requestCount: ++requestCount,// defined in closure. 
-            success: function(json, textStatus, xOptions) {
-                console.log('Success! Call formatter.');
-                window.DICT_format(json);
-            },
-            timeout: 10000,
-            error: function(jqXHR, textStatus, errorThrown) { 
-                console.log(errorThrown,textStatus);
-                var retry=$("<button>").text("Retry").click(function(){
-                    $("#__search_form__").submit();
-                    return false;
-                })
-
-                if (textStatus==='error'){
-                    $result.html(' Some ERROR occurred while loading. Please ').append(retry);
-                } 
-                if (textStatus==='timeout'){
-                    $result.html(' Loading TIMEOUT. Please ').append(retry);
-                } 
-            }
-        });
-
-        // others
-        $('#__debugSelf__').attr('href', window.location.href);
-        $('#__debugAjax__').attr('href', url);
-    } else {
-        console.log("Invalid search:", query, type, word);
-    }
-    oldword = word;// backup
+function getSelectedDict(){
+    return $('li.active>a',$types).attr('value');
 }
 
 function reloadWhenDictOptionChanged(){
@@ -208,9 +117,9 @@ function updateOptionMenu(val) {
 }
 
 function saveDictValToCookies(val){
-    var opt = DICT.getOptionFromCookie();
+    var opt = D.getOptionFromCookie();
     opt.dict.dict_type = val;
-    DICT.setOptionToCookie(opt);
+    D.setOptionToCookie(opt);
 }
 
 

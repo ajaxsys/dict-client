@@ -1,3 +1,6 @@
+/*
+ * Share with bookmarklet. No jQuery
+ */
 void((function(win,doc){
 
 function get1stTag() {

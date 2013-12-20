@@ -26,6 +26,7 @@ http.createServer(function(req, res) {
   var stats;
 
   try {
+    console.log(filename);
     stats = fs.lstatSync(filename); // throws if path doesn't exist
   } catch (e) {
     res.writeHead(404, {'Content-Type': 'text/plain'});

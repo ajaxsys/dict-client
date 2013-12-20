@@ -16,8 +16,8 @@ var _thisIP,
 console.log('Loading ui resource...');
 D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 
-registSelectWord();
-registLinkToText();
+registTextSelectionEvent();
+registWebElementToTextEvent();
 
 createOrUpdateWindow('body','');
 
@@ -25,16 +25,20 @@ $( window ).resize(function() {
     resetPositionWhenOverflow($(DICT_JID));
 });
 
-function getSelection(doc,win, _this){
-    doc = doc || document;
+
+///////////////////// private func //////////////////////
+
+function getSelection(win, _this){
     win = win || window;
     _this = _this || this;
+
     console.log('start it');
     if ($(DICT_JID).find(_this).length === 0) {
         // Not element of dict window
         if (D.DICT_SERVICE){
-            var text = $.trim(getSelectionText(doc,win,_this));
-            if (text != _lastSearchWord && isWord(text) ){
+            var text = $(_this).selection('get',{},win) || $.selection('html',win);
+            text = $.trim(text);
+            if (text && text != _lastSearchWord && isWord(text) ){
                     _lastSearchWord = text;
                     createOrUpdateWindow($(_this), text);
             }
@@ -42,20 +46,20 @@ function getSelection(doc,win, _this){
     }
     // WARN: Do not `return false` here. If so, other mouseup be affected.
 }
-function registSelectWord() {
+function registTextSelectionEvent() {
     console.log('Regist text selector');
     //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
-    $(document).on('mouseup.dict','body, body *:input',getSelection);
+    $(document).on('mouseup.dict','body, body :input',getSelection);
+    // Regist iframe the same events.(Not support iframe in iframe)
     $('iframe').each(function(){
-        var child_doc = this.contentDocument,
-            child_win = this.contentWindow;
-        $(child_doc).on('mouseup.dict','body',function(){
-            getSelection(child_doc, child_win, this);
+        var child_win = this.contentWindow;
+        $(child_win.document).on('mouseup.dict','body, body :input',function(){
+            getSelection(child_win, this);
         });
     });
 }
 
-function registLinkToText() {
+function registWebElementToTextEvent() {
     $.plaintext('body a, body img, body select, body :button');
 }
 
@@ -70,10 +74,11 @@ function createOrUpdateWindow($obj, text) {
     var $dict = $(DICT_JID);
     
     if ($dict.length === 0) {
-        createNewWindow(text);
-        // Fixed this win as default
-        $dict = $(DICT_JID);
-        $dict.css('position','fixed');
+        $dict = createNewWindow(text);
+        // Fixed & Hide this win when first created
+        if ($dict){
+            $dict.css('position','fixed');
+        }
         /* If window move to selected word
          $(DICT_JID).data(DICT_ISFIXED, true);*/
     } else {
@@ -85,15 +90,17 @@ function createOrUpdateWindow($obj, text) {
         // Update
         $.updateWindowTitle(DICT_ID, text);
     }
+    // Toggle it
+    if (text) {
+        $dict.fadeIn();// Show it when window reopen or first search
+    }else{
+        $dict.hide(); // Hide it when init(pre-load)
+    }
+
     var frameURL = static_host() + DICT_URL;
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
                 '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;"></iframe>');
-    if (!text) {
-        $dict.hide(); // For preload
-    } else {
-        $dict.show();
-    }
 }
 
 // quirks mode support. DO NOT use $(window).height()/width()
@@ -117,13 +124,14 @@ function getBrowserSize(){
 
 function createNewWindow(title){
     var winSize = getWindowSizeFromCookie(),
-        left = getBrowserSize().width-winSize.width,
-        top = getBrowserSize().height-winSize.height-41;
+        brsSize = getBrowserSize(),
+        left = brsSize.width-winSize.width,
+        top = brsSize.height-winSize.height-41;
 
     console.log("Win width: ", winSize.width, " height: ", winSize.height, " Top: ", top, " left: ", left);
 
     // Create
-    $.newWindow({
+    return $.newWindow({
         'id': DICT_ID,
         'posx': left>0 ? left:0,
         'posy': top >0 ? top :0,
@@ -131,14 +139,23 @@ function createNewWindow(title){
         'type':'iframe',
         'width': winSize.width,
         'height': winSize.height,
+        'onDragBegin': function(){
+            console.log('Dragging begin');
+            $(DICT_JID).animate({opacity: "0.5"},500);
+        },
         'onDragEnd': function(){
+            console.log('Dragging End');
+            var $dictWin=$(DICT_JID);
+            $dictWin.stop().css({opacity: "1.0"});// Must stop animate
             // Fix bugs of window flyaway.
-            resetPositionWhenOverflow($(DICT_JID));
+            resetPositionWhenOverflow($dictWin);
         },
         'onResizeEnd': setWindowSizeToCookie,
         'onWindowClose': function(){
             _lastSearchWord='';
-        }
+        },
+        'closeWithHide': true, // Better performace
+        //minimizeButton: false,// TO Fix
     });
 }
 
@@ -150,14 +167,15 @@ function resetPositionWhenOverflow($win){
     var MARGIN=300;
     var W=$win.position().left+MARGIN,
         H=$win.position().top+MARGIN,
-        MAX_W=$(window).width(),
-        MAX_H=$(window).height(),
+        brsSize = getBrowserSize(),
+        MAX_W=brsSize.width,
+        MAX_H=brsSize.height,
         isWOver = (W > MAX_W) ,
         isHOver = (H > MAX_H) ;
     console.log("W:", W," H:",H,'MAX_W:',MAX_W,' MAX_H:',MAX_H,'isWOver:',isWOver,' isHOVer:',isHOver);
     if (isWOver||isHOver) {
-        var width = isWOver?(MAX_W-MARGIN):W ,
-            height= isHOver?(MAX_H-MARGIN):H ;
+        var width = isWOver?(MAX_W-MARGIN):W-MARGIN ,
+            height= isHOver?(MAX_H-MARGIN):H-MARGIN ;
         if (width<0) width=0;
         if (height<0) height=0;
             $.moveWindow(DICT_ID,width,height);
@@ -171,14 +189,13 @@ function resetPositionWhenOverflow($win){
 var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
     WORD_MAX_LENGTH = 50;  
 function isWord(text){
-    // Selected words in one line, 
-    return text !== '' && text.indexOf('\n')===-1 
+    // Selected words in one line
+    if (!text) return false;
+    return text.indexOf('\n')===-1 
        //&& (/^[a-zA-Z0-9%_\-\+\s]+$/.test(text) || /^[^a-zA-Z]+$/.test(text))
        && text.length < WORD_MAX_LENGTH
        && WORD_REGEX.test(text);
 }
-
-/////////////////////////////////////////////////////
 
 function setWindowSizeToCookie(){
     var $win = $(DICT_JID);
@@ -191,10 +208,6 @@ function setWindowSizeToCookie(){
 function getWindowSizeFromCookie(){
     var opt= D.getOptionFromCookie();
     return opt.ui;
-}
-
-function getSelectionText(doc,win,_this) {
-    return $(_this).selection() || $.selection('html');
 }
 
 // Get static resource like `iframe/css` URL

@@ -4,10 +4,25 @@
 ;(function($){
 // Common methods
 $.dict_extend({
-    preFormat: preformatCommonPage
+    preFormat: preformatCommonPage,
+    getPluginTypeByPrefix: getPluginTypeByPrefix,
 });
 
-/////////// Weblio. /////////////
+
+/////////// Common format of a page sources. /////////////
+function getPluginTypeByPrefix(url){
+    for (var pluginType in window.DICT_PLUGINS) {
+        var prefixes = [].concat(window.DICT_PLUGINS[pluginType].prefix);// string --> []
+        if (prefixes.length>0 && url) {
+            for (var i in prefixes) {
+                if (url.indexOf(prefixes[i])===0)
+                    return pluginType;
+            }
+        }
+    }
+    return null;
+}
+
 function preformatCommonPage(pluginInfo, src, callback) {
     console.log('Common preformat start.');
     var $target = jQueryWithoutTags(src, pluginInfo.removeTags);
@@ -28,7 +43,7 @@ function jQueryWithoutTags(src, tags) {
     src=src.replace(new RegExp(tags_left, 'ig'), '<xxx class="__disabled_tag__" original="$1" style="display:none;" ');
     src=src.replace(new RegExp(tags_right,'ig'), 'xxx>');
 
-        var $src = $('<div>').append(src);
+    var $src = $('<div>').append(src);
 
         // Remove tags
     $('xxx', $src).remove();
@@ -36,16 +51,18 @@ function jQueryWithoutTags(src, tags) {
     return $src;
 }
 
-function cleanLinks($$, thisPrefix) {
+function cleanLinks($$, prefixes) {
     var selfLink = '#'; //window.location.pathname + '?q='
-    console.log('Prefix is: ' + thisPrefix);
+    console.log('Prefix is: ' + prefixes);
     $('a', $$).each(function(){
         var href = $(this).attr('href');
-        if (href && href.indexOf(thisPrefix) === 0 ) {
-            $(this).attr('href', selfLink + href.replace(thisPrefix,''))
-                   .attr('target', '_self');
-        } else {
-            $(this).attr('target','_blank')
+        for (var i in prefixes) {
+            if (href && href.indexOf(prefixes[i]) === 0 ) {
+                $(this).attr('href', selfLink + href.replace(prefixes[i],''))
+                       .attr('target', '_self');
+            } else {
+                $(this).attr('target','_blank')
+            }
         }
     });
 }

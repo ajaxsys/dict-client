@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   "use strict";
 
-  var TARGETS = {
+  var CONST = {
     dest: ['target/dict/','target/build/'],
     dest_css: ['target/dict/default/','target/build/default/']
   };
@@ -94,13 +94,19 @@ module.exports = function(grunt) {
           'lib/bootstrap/js/bootstrap.min.js',
           'dict/_cmn/conf.js',
           'dict/_cmn/dict.util.js',
-          'dict/pxy/dict.proxy.js',
           'dict/pxy/dict.formatter.js',
-          'dict/pxy/dict.formatter.utils.js',
-          'dict/pxy/dict.lb.js',
-          'dict/pxy/dict.google.js',
+          'dict/pxy/loaders/common.js',
+          'dict/pxy/loaders/dict.query.gae.js',
+          'dict/pxy/loaders/dict.query.gae.lb.js',
+          'dict/pxy/loaders/dict.query.google.js',
+          'dict/pxy/loaders/dict.query.yql.js',
+          'dict/pxy/formaters/utils.js',
+          'dict/pxy/formaters/dict.formatter.auto.js',
+          'dict/pxy/formaters/dict.formatter.google.js',
+          'dict/pxy/formaters/dict.formatter.wiki_jp.js',
           'dict/pxy/formaters/dict.formatter.weblio.js',
           'dict/pxy/formaters/dict.formatter.weblios.js',
+          'dict/pxy/dict.proxy.js', // Must defined last
         ],
         dest: 'target/build/<%= pkg.name %>_proxy.js'
       },
@@ -192,10 +198,17 @@ module.exports = function(grunt) {
           // For test
           {expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'}, 
           {expand:true,                          src: ['lib/**'], dest: 'target/'}, 
-        ].concat(copyToDirs('lib/jwe/default/',  '*_mid.gif',  TARGETS.dest_css))
-         .concat(copyToDirs('dict/_resource/sprite/', '*.png',      TARGETS.dest_css))
-         .concat(copyToDirs('dict/pxy/',         'proxy.html', TARGETS.dest    ))
+        ]
+      },
+      html: {
+        files: [].concat(copyToMulti('dict/pxy/',        'proxy.html', CONST.dest    ))
+      },
+      img: {
+        files: [].concat(copyToMulti('lib/jwe/default/',  '*_mid.gif', CONST.dest_css))
+                 .concat(copyToMulti('dict/_resource/sprite/','*.png', CONST.dest_css))
+          .concat(copyToMulti('dict/_resource/img/',['*.png','*.ico'], CONST.dest_css))
       }
+
     },
 
 /*
@@ -267,6 +280,11 @@ module.exports = function(grunt) {
         ],
         tasks: ['stylus','dist-css','copy']
       },
+      html: {
+        files: ['dict/**/*.html'],
+        tasks: ['copy:html']
+      },
+
       // test: {
       //   files: '<%= jshint.test.src %>',
       //   tasks: ['jshint:test']
@@ -279,7 +297,7 @@ module.exports = function(grunt) {
   // A shortcut for copy file to multi dirs at once (google keyword: grunt copy multi dest) : 
   // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/dict/default/' },
   // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/build/default/'},
-  function copyToDirs(p_cwd, p_src, p_dests) {
+  function copyToMulti(p_cwd, p_src, p_dests) {
     var arr = [];
     for (var i in p_dests) {
       arr.push({expand:true, cwd:p_cwd, src: p_src, dest: p_dests[i]});

@@ -1,69 +1,85 @@
 <!DOCTYPE html>
 <html lang="jp">
 <head>
-    <meta charset=utf-8>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ajax dictionary proxy">
-    <title>Proxy Page of Dict</title>
-    <link rel="stylesheet" href="./dict_proxy.css">
-    <script src="./dict_proxy.js"></script>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="/lib/assets/html5shiv.js"></script>
-    <script src="/lib/assets/respond.min.js"></script>
-    <![endif]-->
+	<meta charset=utf-8>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Ajax dictionary proxy">
+	<link rel="shortcut icon" href="//www.google-analytics.com/favicon.ico" />
+	<title>Proxy Page of Dict</title>
+	<link rel="stylesheet" href="./dict_proxy.css">
+	<script src="./dict_proxy.js"></script>
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="/lib/assets/html5shiv.js"></script>
+	<script src="/lib/assets/respond.min.js"></script>
+	<![endif]-->
 </head>
 <body id='__TOP__'>
-    <!-- Static navbar -->
-    <div class="navbar navbar-static-top">
-        <div class="container">
-            <!--<a class="navbar-brand" href="#">Project name</a>-->
-            <form id='__search_form__'>
-                <input type="text" id='__search__' placeholder="Search" class="form-control">
-            </form>
+	<!-- Static navbar -->
+	<div class="navbar navbar-static-top">
+		<div class="container">
+			<!--<a class="navbar-brand" href="#">Project name</a>-->
+			<form id='__search_form__'>
+				<input type="text" id='__search__' placeholder="Search" class="form-control">
+			</form>
 
-            <div class="nav-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a target='_blank' href="http://dict-admin.appspot.com">Dict HELP</a></li>
-                    <li class="dropdown active">
-                    <a id='__dict_selected__' href="#" class="dropdown-toggle" data-toggle="dropdown">Dict SELECT - <span>Weblio辞書</span><b class="caret"></b></a>
-                    <ul id='__dict_types__' class="dropdown-menu">
-                        <li class="nav-header">☂ 英和和英辞書</li>
-                        <li class="divider"></li>
-                        <li class='active'><a href="#" value='weblios'>Weblio辞書</a></li>
-                        <li><a href="#" value='weblio'>Weblio辞書 SP</a></li>
-                        <li><a href="#" value='yahoo'>Yahoo!辞書</a></li>
-                        <li><a href="#" value='goo'>Goo辞書</a></li>
-                        <li class="divider"></li>
-                        <li class="nav-header">☄ 日中中日辞書</li>
-                        <li class="divider"></li>
-                        <li><a href="#" value='xiaoD'>XiaoD</a></li>
-                        <li><a href="#" value='eXcite'>eXcite辞書</a></li>
-                    </ul>
-                    </li><!--/.dropdown-->
-                </ul>
-            </div><!--/.nav-collapse -->
+			<div class="nav-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a target='_blank' href="http://dict-admin.appspot.com">Help Online</a></li>
+					<li class="dropdown active">
+					<a id='__dict_selected__' href="#" class="dropdown-toggle" data-toggle="dropdown">Select Engine - <span></span><b class="caret"></b></a>
+					<ul id='__dict_types__' class="dropdown-menu">
+						<li class='active'><a href="#" value='auto'>Auto Mode(Recommended)</a></li>
+						<li class="divider"></li>
+						<li class="nav-header">☄ Search Engine</li>
+						<li><a href="#" value='google'>Google</a></li>
+						<li><a href="#" value='bing'>Bing(TODO)</a></li>
+						<li class="divider"></li>
+						<li class="nav-header">☄ Professional Site</li>
+						<li><a href="#" value='wiki_jp'>Wikipedia</a></li>
+						<li><a href="#" value='ewords'>e-words(TODO)</a></li>
+						<li class="divider"></li>
+						<li class="nav-header">☄ Dictionary(英←→和)</li>
+						<li><a href="#" value='weblios'>Weblio辞書</a></li>
+						<li><a href="#" value='yahoo'>Yahoo!辞書(TODO)</a></li>
+						<li class="divider"></li>
+						<li class="nav-header">☄ Dictionary(日←→中)</li>
+						<li><a href="#" value='xiaoD'>XiaoD辞書(TODO)</a></li>
+						<li><a href="#" value='eXcite'>eXcite辞書(TODO)</a></li>
+						<li class="divider"></li>
+					</ul>
+					</li><!--/.dropdown☂-->
+				</ul>
+			</div><!--/.nav-collapse -->
 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
 
-        </div>
-    </div>
-    <div id='__explain_wrapper__' class='container'></div>
-    <div id='__loading__' class='container hide'></div>
+		</div>
+	</div>
+	<div id='__explain_wrapper__' class='container'></div>
+	<div id='__loading__' class='container hide'></div>
 
-    <!-- debug info -->
-    <div>
-        <hr style="margin-top:100px"/>
-        <a href='#' id='__debugSelf__' target='_blank'>Debug proxy page</a>
-        <br />
-        <a href='#' id='__debugAjax__' target='_blank'>Debug direct link</a>
-    </div>
+	<!-- debug info -->
+	<div>
+		<hr style="margin-top:100px"/>
+		<a href='#' id='__debugSelf__' target='_blank'>Debug proxy page</a>
+		<br />
+		<a href='#' id='__debugAjax__' target='_blank'>Debug direct link</a>
+	</div>
 
-    <div style='position:fixed;right:0;bottom:0;'> <a href="#__TOP__">TOP</a> </div>
+	<div style='position:fixed;right:0;bottom:0;'> <a href="#__TOP__">TOP</a> </div>
+	<div class='hide' id='__error_msg__'>Error!<br>
+		<p>Seems your network not ready. Please <button class='retry'>Retry</button>.</p>
+		<p>Or select another search engine from menu.</p>
+		<p>See more <a target='_blank' href="http://dict-admin.appspot.com">Help Online</a>.</p>
+	</div>
+	<div class='hide' id='__timeout_msg__'>
+		<p>Connect timeout. Please <button class='retry'>Retry</button>.</p>
+	</div>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

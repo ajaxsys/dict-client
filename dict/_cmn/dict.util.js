@@ -7,10 +7,12 @@
 
 // for test & hook
 window.__DICT__ = window.__DICT__ || {};
-$.extend(__DICT__ , {
+$.dict_extend({
     'getOptionFromCookie' : getOptionFromCookie,
     'setOptionToCookie' : setOptionToCookie,
     'loadResource' : loadResource,
+    'Queue': Queue,
+    'Stack': Stack,
 });
 
 ////////////////////////// COMMONS ////////////////////
@@ -68,6 +70,69 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
     __DICT__.appendTag(tag);
 }
 
+
+//////////// Data Type /////////////
+
+//
+// Stack (LIFO)
+//
+
+function Stack() {
+	this.__a = [];
+}
+
+Stack.prototype.push = function(o) {
+	this.__a.push(o);
+}
+
+Stack.prototype.pop = function() {
+	if( this.__a.length > 0 ) {
+		return this.__a.pop();
+	}
+	return null;
+}
+
+Stack.prototype.size = function() {
+	return this.__a.length;
+}
+
+Stack.prototype.toString = function() {
+	return '[' + this.__a.join(',') + ']';
+}
+
+//
+// Queue (FIFO)
+//
+
+function Queue() {
+	this.__a = [];
+}
+
+Queue.prototype.enqueue = function(o) {
+	this.__a.push(o);
+}
+
+Queue.prototype.dequeue = function() {
+	if( this.__a.length > 0 ) {
+		return this.__a.shift();
+	}
+	return null;
+}
+
+Queue.prototype.size = function() {
+	return this.__a.length;
+}
+
+Queue.prototype.get = function(i) {
+	if( this.__a.length < i ) {
+		return null;
+	}
+	return this.__a[i];
+} 
+
+Queue.prototype.toString = function() {
+	return '[' + this.__a.join(',') + ']';
+}
 
 
 })(jQuery);

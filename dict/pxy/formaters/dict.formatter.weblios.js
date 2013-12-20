@@ -1,14 +1,14 @@
+/////////// Weblio for Small Version.(Access from PC OK) /////////////
 ;(function($){
 
 /////////// Main Entry. /////////////
 var option=DICT_PLUGINS.weblios = {
 	'prefix': 'http://ejje.weblio.jp/small/content/',
-	'format': formatWeblioForSmartPhoneLayout,
+	'format': formatWeblioSmallPage,
     'removeTags': ['iframe','noscript','script','img']
 };
 
-/////////// Weblio for Smart Phone.(Another sample) /////////////
-function formatWeblioForSmartPhoneLayout(src) {
+function formatWeblioSmallPage(src) {
     // Preformat by common util, but not use callback.
     var $target = $.dict_extend().preFormat(option, src);
     return customizePage($target);

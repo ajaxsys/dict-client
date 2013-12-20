@@ -1,2 +1,2 @@
-cd /D %~dp0
+cd ./..
 grunt connect:server:keepalive
