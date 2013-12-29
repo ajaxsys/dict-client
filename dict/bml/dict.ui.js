@@ -1,3 +1,11 @@
+/*************************************************
+ * dict.ui.js
+ *
+ * Dict UI main:
+ * - Initailize Dict UI on page
+ * - Bind selection event to page
+ * - Bind get text event to page
+ **************************************************/
 (function($){
 
 // for test & hook
@@ -13,7 +21,7 @@ var DICT_JID = '#'+DICT_ID,
 var _thisIP,
     _lastSearchWord;
 
-console.log('Loading ui resource...');
+console.log(D.LC, '[dict.ui.js] Loading ui resource...');
 D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 
 registTextSelectionEvent();
@@ -28,39 +36,47 @@ $( window ).resize(function() {
 
 ///////////////////// private func //////////////////////
 
-function getSelection(win, _this){
+function getSelection(e, win){
     win = win || window;
-    _this = _this || this;
+    $target = $(e.target);
 
-    console.log('start it');
-    if ($(DICT_JID).find(_this).length === 0) {
+    console.log(D.LC, '[dict.ui.js] start it');
+    if ($(DICT_JID).find($target).length === 0) {
         // Not element of dict window
         if (D.DICT_SERVICE){
-            var text = $(_this).selection('get',{},win) || $.selection('html',win);
-            text = $.trim(text);
+            var text = $target.is(':input')? $target.selection('get',{},win) : $.selection('html',win);
+            // Fix bugs: when dblclick tag like `<i>..</i>`, it returns html code.
+            text = $.trim($($.parseHTML(text)).text());
             if (text && text != _lastSearchWord && isWord(text) ){
                     _lastSearchWord = text;
-                    createOrUpdateWindow($(_this), text);
+                    D.LC++;// For logger
+                    createOrUpdateWindow($target, text);
             }
         }
     }
     // WARN: Do not `return false` here. If so, other mouseup be affected.
 }
 function registTextSelectionEvent() {
-    console.log('Regist text selector');
-    //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
-    $(document).on('mouseup.dict','body, body :input',getSelection);
+    console.log(D.LC, '[dict.ui.js] Regist text selector');
+    //console.log(D.LC, '[dict.ui.js] ', $('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    $(document).on('mouseup.dict','body', getSelection);
     // Regist iframe the same events.(Not support iframe in iframe)
     $('iframe').each(function(){
         var child_win = this.contentWindow;
-        $(child_win.document).on('mouseup.dict','body, body :input',function(){
-            getSelection(child_win, this);
+        $(child_win.document).on('mouseup.dict','body',function(e){
+            getSelection(e, child_win);
         });
     });
 }
 
 function registWebElementToTextEvent() {
-    $.plaintext('body a, body img, body select, body :button');
+    var option = {
+            checkService: function(){
+                return D.DICT_SERVICE;
+            },
+        };
+
+    $.plaintext('body a, body img, body select, body :button', option);
 }
 
 function createOrUpdateWindow($obj, text) {
@@ -83,7 +99,7 @@ function createOrUpdateWindow($obj, text) {
          $(DICT_JID).data(DICT_ISFIXED, true);*/
     } else {
         /* If window move to selected word
-        console.log($dict.data(DICT_ISFIXED));
+        console.log(D.LC, '[dict.ui.js] ', $dict.data(DICT_ISFIXED));
         if ($dict.data(DICT_ISFIXED) != true){
             $.moveWindow(DICT_ID, left, top);
         }*/
@@ -128,7 +144,7 @@ function createNewWindow(title){
         left = brsSize.width-winSize.width,
         top = brsSize.height-winSize.height-41;
 
-    console.log("Win width: ", winSize.width, " height: ", winSize.height, " Top: ", top, " left: ", left);
+    console.log(D.LC, '[dict.ui.js] Win width: ', winSize.width, ' height: ', winSize.height, ' Top: ', top, ' left: ', left);
 
     // Create
     return $.newWindow({
@@ -140,11 +156,11 @@ function createNewWindow(title){
         'width': winSize.width,
         'height': winSize.height,
         'onDragBegin': function(){
-            console.log('Dragging begin');
+            console.log(D.LC, '[dict.ui.js] Dragging begin');
             $(DICT_JID).animate({opacity: "0.5"},500);
         },
         'onDragEnd': function(){
-            console.log('Dragging End');
+            console.log(D.LC, '[dict.ui.js] Dragging End');
             var $dictWin=$(DICT_JID);
             $dictWin.stop().css({opacity: "1.0"});// Must stop animate
             // Fix bugs of window flyaway.
@@ -172,7 +188,7 @@ function resetPositionWhenOverflow($win){
         MAX_H=brsSize.height,
         isWOver = (W > MAX_W) ,
         isHOver = (H > MAX_H) ;
-    console.log("W:", W," H:",H,'MAX_W:',MAX_W,' MAX_H:',MAX_H,'isWOver:',isWOver,' isHOVer:',isHOver);
+    console.log(D.LC, '[dict.ui.js] W:', W,' H:',H,'MAX_W:',MAX_W,' MAX_H:',MAX_H,'isWOver:',isWOver,' isHOVer:',isHOver);
     if (isWOver||isHOver) {
         var width = isWOver?(MAX_W-MARGIN):W-MARGIN ,
             height= isHOver?(MAX_H-MARGIN):H-MARGIN ;
@@ -186,15 +202,43 @@ function resetPositionWhenOverflow($win){
 
 // Without any symbol
 // 。、，（）「」￥！ // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
-    WORD_MAX_LENGTH = 50;  
+var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/   ;
 function isWord(text){
     // Selected words in one line
     if (!text) return false;
     return text.indexOf('\n')===-1 
        //&& (/^[a-zA-Z0-9%_\-\+\s]+$/.test(text) || /^[^a-zA-Z]+$/.test(text))
-       && text.length < WORD_MAX_LENGTH
+       && text.length < D.WORD_MAX_LENGTH
+       && !isSimpleWord(text)
+       && !isLongSentence(text)
        && WORD_REGEX.test(text);
+}
+
+function isSimpleWord(t){
+    // only one char and ascii from 0~255
+    if (t.length===1 && t.charCodeAt(0)<256){
+        return true;
+    }
+    // More...
+    return false;
+}
+
+function isLongSentence(t){
+    var spliter=null, 
+        spliters=[' ','\u3000','\t']; // space, zenkaku space, tab
+    for (var i in spliters){
+        if (t.indexOf(spliters[i])>-1){
+            spliter = spliters[i];
+            break;
+        }
+    }
+
+    if (spliter===null){
+        return false;
+    }
+
+    // max support: `w1 w2 w3`
+    return t.split(spliter).length > D.WORD_MAX_COUNT;
 }
 
 function setWindowSizeToCookie(){
@@ -214,7 +258,7 @@ function getWindowSizeFromCookie(){
 function static_host(){
     var dev_ip = 'http://127.0.0.1:8443',
         //rls_single = '//dict-admin.appspot.com',
-        rls_ip = '//python-ok.appspot.com';
+        rls_ip = 'https://python-ok.appspot.com';
 
     // Static IP
     // First time only
@@ -228,19 +272,19 @@ function static_host(){
         var matcher = intrRegxp.exec(window.location.href);
         if ( matcher ){
             var ip = matcher[2];
-            console.log('Use intranet ip:', ip);
+            console.log(D.LC, '[dict.ui.js] Use intranet ip:', ip);
             _thisIP = ip;
             return ip;
         }
 
         // 3 test as a bookmarklet in other sites(http only)
-        console.log("Using develop IP. ",dev_ip);
+        console.log(D.LC, '[dict.ui.js] Using develop IP. ',dev_ip);
         _thisIP = dev_ip;
         return dev_ip;
     }
 
     // Product mode
-    console.log('Using release host:', rls_ip);
+    console.log(D.LC, '[dict.ui.js] Using release host:', rls_ip);
     _thisIP = rls_ip;
     return rls_ip;
 }

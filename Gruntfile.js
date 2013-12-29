@@ -70,43 +70,54 @@ module.exports = function(grunt) {
       // Dict UI (Also is a loader for proxy.js)
       dict_ui: {
         src: [
+          // lib
           'lib/jquery-1.10.2.js',
           'lib/jquery.cookie.js',
           'lib/jquery.selection.js',
           'lib/jquery.plaintext.js',
           'lib/tooltip/jquery.tipsy.js',
           'lib/jwe/jquery.windows-engine.js',
+          // share
           'dict/_cmn/conf.js',
           'dict/_cmn/dict.util.js',
           'dict/_cmn/dict.util.share.js',
+          // main
           'dict/bml/dict.ui.js',
           'dict/bml/dict.ui.navi.js',
-          'dict/bml/dict.end.js',
+          'dict/bml/dict.ui.end.js',
         ],
         dest: 'target/build/<%= pkg.name %>_ui.js'
       },
       // Dict iframe (Formatters for each sites)
       dict_proxy: {
         src: [
+          // lib
           'lib/jquery-1.10.2.js',
           'lib/jquery.cookie.js',
           'lib/jquery.jsonp.js',
-          'lib/bootstrap/js/bootstrap.min.js',
+          'lib/bootstrap/js/bootstrap.js',
+          // share
           'dict/_cmn/conf.js',
           'dict/_cmn/dict.util.js',
-          'dict/pxy/dict.formatter.js',
+          // loader
+          'dict/pxy/dict.proxy.loader.js',
           'dict/pxy/loaders/common.js',
-          'dict/pxy/loaders/dict.query.gae.js',
-          'dict/pxy/loaders/dict.query.gae.lb.js',
-          'dict/pxy/loaders/dict.query.google.js',
-          'dict/pxy/loaders/dict.query.yql.js',
-          'dict/pxy/formaters/utils.js',
+          'dict/pxy/loaders/common.cache.js',
+          'dict/pxy/loaders/dict.load.gae.js',
+          'dict/pxy/loaders/dict.load.google.js',
+          'dict/pxy/loaders/dict.load.yql.js',
+          'dict/pxy/loaders/util.gae_lb.js',
+          // formatter
+          'dict/pxy/dict.proxy.formatter.js',
+          'dict/pxy/formaters/common.js',
           'dict/pxy/formaters/dict.formatter.auto.js',
           'dict/pxy/formaters/dict.formatter.google.js',
           'dict/pxy/formaters/dict.formatter.wiki_jp.js',
+          'dict/pxy/formaters/dict.formatter.ewords.js',
           'dict/pxy/formaters/dict.formatter.weblio.js',
-          'dict/pxy/formaters/dict.formatter.weblios.js',
-          'dict/pxy/dict.proxy.js', // Must defined last
+          'dict/pxy/formaters/dict.formatter.weblio_small.js',
+          // main (MUST defined at last)
+          'dict/pxy/dict.proxy.js', 
         ],
         dest: 'target/build/<%= pkg.name %>_proxy.js'
       },
@@ -135,6 +146,24 @@ module.exports = function(grunt) {
           'target/dict/<%= pkg.name %>_ui.css':['<%= concat.dict_ui_css.dest %>'],
           'target/dict/<%= pkg.name %>_proxy.css':['<%= concat.dict_proxy_css.dest %>'],
         },
+      }
+    },
+
+    // Remove console log for release
+    removelogging: {
+      dict_ui: {
+        src: "<%= concat.dict_ui.dest %>",
+        dest: "target/build/<%= pkg.name %>_ui_clean.js",
+        options: {
+          // Use default
+        }
+      },
+      dict_proxy: {
+        src: "<%= concat.dict_proxy.dest %>",
+        dest: "target/build/<%= pkg.name %>_proxy_clean.js",
+        options: {
+          // Use default
+        }
       }
     },
 
@@ -169,6 +198,20 @@ module.exports = function(grunt) {
         },
         src: ['<%= concat.dict_proxy.dest %>'],
         dest: 'target/dict/<%= pkg.name %>_proxy.js'
+      },
+      dict_ui_clean: {
+        options: {
+          banner: '<%= banner %>',
+        },
+        src: ['<%= removelogging.dict_ui.dest %>'],
+        dest: 'target/dict/<%= pkg.name %>_ui_clean.js'
+      },
+      dict_proxy_clean: {
+        options: {
+          banner: '<%= banner %>',
+        },
+        src: ['<%= removelogging.dict_proxy.dest %>'],
+        dest: 'target/dict/<%= pkg.name %>_proxy_clean.js'
       },
     },
 
@@ -314,15 +357,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-sprite-packer');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-connect');
+
+  grunt.loadNpmTasks('grunt-sprite-packer');
+  grunt.loadNpmTasks("grunt-remove-logging");
 
   // TODO
   //grunt.loadNpmTasks('grunt-imagine');
   //grunt.loadNpmTasks('grunt-contrib-qunit');
   //grunt.loadNpmTasks('grunt-html-validation');
-
 
   // Docs HTML validation task
   //grunt.registerTask('validate-docs', ['jekyll', 'validation']);
@@ -334,7 +378,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', testSubtasks);
 
   // JS build task.
-  grunt.registerTask('dist-js', ['uglify']);
+  grunt.registerTask('dist-js', ['removelogging','uglify']);
 
   // CSS build task.
   grunt.registerTask('dist-css', ['cssmin']);

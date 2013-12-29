@@ -1,20 +1,24 @@
+/*************************************************
+ * dict.ui.navi.js
+ *
+ * Init ui navi icon on page
+ **************************************************/
 (function($){
 
 // NOTICE: As a bookmarklet, Dict always load when dom ready!!
 // $(function(){
 //     initNavi(); 
 // });
-
-initNavi(); 
-
 // for test
 var D = $.dict_extend({
     'initNavi' : initNavi,
     'DICT_SERVICE': true, // ON/OFF switch
 });
 
+initNavi(); 
+
 function initNavi(){
-    console.log("Initialize navi.");
+    console.log(D.LC, '[dict.ui.navi.js] Initialize navi.');
     //var on='\u2602',off='\u2604',
     //var on='☂',off='☄',
     var ttlOn='ON',ttlOff='OFF',

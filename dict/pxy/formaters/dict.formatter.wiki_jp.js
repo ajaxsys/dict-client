@@ -1,24 +1,33 @@
-/////////// Wiki JP /////////////
+/*************************************************
+ * dict.formatter.wiki_jp.js
+ **************************************************/
 ;(function($){
 
-/////////// Main Entry. /////////////
+// A plugin name starts with `auto_` will call `Auto Mode` first.
+// Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
+// Why do this: search result from wiki is SoSlow&NotGood -vs- from google.
+DICT_PLUGINS.auto_wiki_jp = {
+    'autoKey'   : 'wiki',    // a key will append to search key when `Auto Mode`
+    'nextLoader': 'wiki_jp', // same as defined bellow.
+}
 var option = DICT_PLUGINS.wiki_jp = {
-	'prefix': ['http://ja.wikipedia.org/wiki/','/wiki/'],
+	'prefix': [   /^http:\/\/ja\.wikipedia\.org\/wiki\/([^\/]+)/,   /^\/wiki\/([^\/]+)/   ],
 	'format': formatWikiJP,
     'removeTags': ['iframe','noscript','script'],
 };
 
 // JSON sample
-// {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
 function formatWikiJP(src) {
-    console.log('format wiki jp start...');
+    console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] format start...');
     return $.dict_extend().preFormat(option, src, customizePage);
 }
 
 
 // Customize for this page
-function customizePage($target){
-    $(".header, #page-actions",$target).remove();
+function customizePage($target){//,#left-navigation
+    $("#footer,#disambigbox,#page-actions,#mw-mf-page-left,#jump-to-nav,#search,[id$='navigation'],"+ // id
+      ".header,.edit-page,.printfooter,.mw-search-pager-bottom", // class
+      $target).remove();
 }
 
 

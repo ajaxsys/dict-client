@@ -2,7 +2,7 @@
 <html lang="jp">
 <head>
 	<meta charset=utf-8>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="description" content="Ajax dictionary proxy">
 	<link rel="shortcut icon" href="//www.google-analytics.com/favicon.ico" />
 	<title>Proxy Page of Dict</title>
@@ -29,23 +29,23 @@
 					<li class="dropdown active">
 					<a id='__dict_selected__' href="#" class="dropdown-toggle" data-toggle="dropdown">Select Engine - <span></span><b class="caret"></b></a>
 					<ul id='__dict_types__' class="dropdown-menu">
-						<li class='active'><a href="#" value='auto'>Auto Mode(Recommended)</a></li>
+						<li class='active'><a href="#" value='auto'>I'm Feeling Lucky</a></li>
 						<li class="divider"></li>
 						<li class="nav-header">☄ Search Engine</li>
 						<li><a href="#" value='google'>Google</a></li>
-						<li><a href="#" value='bing'>Bing(TODO)</a></li>
+						<li class="disabled"><a href="#" value='bing'>Bing(TODO)</a></li>
 						<li class="divider"></li>
 						<li class="nav-header">☄ Professional Site</li>
-						<li><a href="#" value='wiki_jp'>Wikipedia</a></li>
-						<li><a href="#" value='ewords'>e-words(TODO)</a></li>
+						<li><a href="#" value='auto_wiki_jp'>Wikipedia</a></li>
+						<li class="disabled"><a href="#" value='auto_ewords'>e-words(TODO)</a></li>
 						<li class="divider"></li>
 						<li class="nav-header">☄ Dictionary(英←→和)</li>
-						<li><a href="#" value='weblios'>Weblio辞書</a></li>
-						<li><a href="#" value='yahoo'>Yahoo!辞書(TODO)</a></li>
+						<li><a href="#" value='weblio_small'>Weblio辞書</a></li>
+						<li class="disabled"><a href="#" value='yahoo'>Yahoo!辞書(TODO)</a></li>
 						<li class="divider"></li>
 						<li class="nav-header">☄ Dictionary(日←→中)</li>
-						<li><a href="#" value='xiaoD'>XiaoD辞書(TODO)</a></li>
-						<li><a href="#" value='eXcite'>eXcite辞書(TODO)</a></li>
+						<li class="disabled"><a href="#" value='xiaoD'>XiaoD辞書(TODO)</a></li>
+						<li class="disabled"><a href="#" value='eXcite'>eXcite辞書(TODO)</a></li>
 						<li class="divider"></li>
 					</ul>
 					</li><!--/.dropdown☂-->
@@ -61,24 +61,31 @@
 		</div>
 	</div>
 	<div id='__explain_wrapper__' class='container'></div>
-	<div id='__loading__' class='container hide'></div>
+
+	<div id='__loading__' class='container hidden'></div>
+
+	<div style='position:fixed;right:0;bottom:0;z-index:99999;'>
+		<a id="__go_top__" href="#__TOP__" style="color: #0066CC;text-decoration: underline;">↑</a>
+	</div>
+
+	<div class='hidden alert alert-warning' id='__error_msg__'><br>
+		<h4>Connection Error</h4>
+		<p>Seems your network is not ready. Please: </p>
+		<ol>
+			<li><a class='retry' href="javascript:void(0);">Retry</a> again</li>
+ 			<li>Select another search engine from menu.</li>
+			<li>See more <a target='_blank' href="http://dict-admin.appspot.com">Help Online</a></li>.
+		</ol>
+	</div>
+	<div class='hidden alert alert-warning' id='__timeout_msg__'>
+		<h4>Connection Error</h4>
+		<p>Connect timeout. Please <button class='retry btn btn-warning btn-xs'>Retry</button>.</p>
+	</div>
 
 	<!-- debug info -->
-	<div>
+	<div class='hidden' id='__debug__'>
 		<hr style="margin-top:100px"/>
-		<a href='#' id='__debugSelf__' target='_blank'>Debug proxy page</a>
-		<br />
-		<a href='#' id='__debugAjax__' target='_blank'>Debug direct link</a>
-	</div>
-
-	<div style='position:fixed;right:0;bottom:0;'> <a href="#__TOP__">TOP</a> </div>
-	<div class='hide' id='__error_msg__'>Error!<br>
-		<p>Seems your network not ready. Please <button class='retry'>Retry</button>.</p>
-		<p>Or select another search engine from menu.</p>
-		<p>See more <a target='_blank' href="http://dict-admin.appspot.com">Help Online</a>.</p>
-	</div>
-	<div class='hide' id='__timeout_msg__'>
-		<p>Connect timeout. Please <button class='retry'>Retry</button>.</p>
+		<a href='#' id='__debugSelf__' target='_blank'>Debug proxy page</a> | <a href='#' id='__debugAjax__' target='_blank'>Debug direct link</a>
 	</div>
 
 <script>

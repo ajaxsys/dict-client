@@ -16,8 +16,10 @@ $.dict_extend = function(obj){
 
 // Config here
 $.dict_extend({
-  loaded: true, // Tell bookmarklet, loading start. if failed, it'll reset to false at `end.js`
-  MAX_HIST : 10, // Cache of search result
+    loaded: true, // Tell bookmarklet, loading start. if failed, it'll reset to false at `end.js`
+    LC: 0, // log counter
+    WORD_MAX_LENGTH: 50,// For word seletion, max length : "xxxxxxxx".length <= 50
+    WORD_MAX_COUNT: 3,  // For word seletion, max support: "w1 w2 w3".split(" ").length<=3
 });
 
 // TODO: User settings: From cookie or logined user.

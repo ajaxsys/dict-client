@@ -1,10 +1,19 @@
-/**
- * proxy query with dict jsonp. If success, call formatter.
- */
+/*************************************************
+ * loaders/common.js
+ *
+ * Common setup for jsonp loader
+ **************************************************/
+
 ;(function($){
 
 // Dom ready
 $(function(){
+
+var D=$.dict_extend({
+    complete: allCompleteAction,
+});
+
+
 var $result = $('#__explain_wrapper__'),
     $searchBox = $('#__search__');
 
@@ -13,26 +22,19 @@ var options = {
       'dict':{
           '_startTime': null,// Reset start time each request
           'word': null,
+          'type': null,
       },
       'timeout': 10000,
       'beforeSend': function(){
-          this.dict._startTime = new Date().getTime();
+          this.dict._startTime = $.now();
           $searchBox.val(this.dict.word + ' is loading...');
           $('html,body').animate({scrollTop: 0},'fast');
           $result.hide();
       },
-      'complete': function(){
-          console.log('Complete, expend time:' + (new Date().getTime()-this.dict._startTime) );
-          var word = this.dict.word;
-          // wait css init
-          setTimeout(function(){
-              $searchBox.val(word).select();
-              $result.show();
-              $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
-          },300);
-      },
+      'complete': completeDefine,
+      '_complete': completeDefine,
       'error': errorDefine,
-      'errorOrigin': errorDefine,
+      '_error': errorDefine,
       'dataType': 'jsonp',
       'callbackParameter': 'callback',// append: callback=?
       // NOTICE: jsonp plugin will override window.DICT_format function.
@@ -40,12 +42,27 @@ var options = {
       'callback': 'DICT_jsonp', // callback=DICT_jsonp // Not exist in global win// will auto created in global
 }
 
+function completeDefine(){
+    console.log(D.LC, '[loaders/common.js] Expend time:', ($.now()-this.dict._startTime) );
+    // wait css init
+    allCompleteAction(this.dict.word, this.dict.type)
+}
+
+function allCompleteAction(word, type) {
+    setTimeout(function(){
+        $searchBox.val(word).select();
+        $result.show();
+        $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
+    },300);
+    console.log(D.LC, '[loaders/common.js] ============Complete Query. [key=',word,'& type=', type, ']=============' );
+}
+
 function errorDefine(jqXHR, textStatus, errorThrown) {
-    console.log("Error result: ",errorThrown,textStatus);
+    console.log(D.LC, '[loaders/common.js] Error result: ',errorThrown,textStatus);
     if (textStatus==='error'){
-        $result.empty().append($("#__error_msg__").clone(true).removeClass('hide'));
+        $result.empty().append($("#__error_msg__").clone(true).removeClass('hidden'));
     }else{ // As timeout
-        $result.empty().append($("#__timeout_msg__").clone(true).removeClass('hide'));
+        $result.empty().append($("#__timeout_msg__").clone(true).removeClass('hidden'));
     }
 }
 

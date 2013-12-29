@@ -36,7 +36,7 @@ $(function(){
                       .replace('/build/','/dict/');
         var prod = dev.replace('DEV_MODE','RLS_MODE')
                       .replace('/build/','/dict/') // Minified
-                      .replace('http://localhost:8443','//python-ok.appspot.com');
+                      .replace('http://localhost:8443','https://python-ok.appspot.com');
 
         // Refer to min version.
         $('#bookmarkletST').attr('href',st); 

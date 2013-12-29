@@ -1,30 +1,22 @@
-/**
- * formater loader
- */
+/*************************************************
+ * formatter/common.js
+ *
+ * Common format of a page sources.
+ * Called from all formatters. 
+ *
+ * Diff common vs util
+ * util is only called from some formatters, not all.
+ **************************************************/
+
 ;(function($){
-// Common methods
-$.dict_extend({
+// Regist common methods
+var D=$.dict_extend({
     preFormat: preformatCommonPage,
-    getPluginTypeByPrefix: getPluginTypeByPrefix,
 });
 
 
-/////////// Common format of a page sources. /////////////
-function getPluginTypeByPrefix(url){
-    for (var pluginType in window.DICT_PLUGINS) {
-        var prefixes = [].concat(window.DICT_PLUGINS[pluginType].prefix);// string --> []
-        if (prefixes.length>0 && url) {
-            for (var i in prefixes) {
-                if (url.indexOf(prefixes[i])===0)
-                    return pluginType;
-            }
-        }
-    }
-    return null;
-}
-
 function preformatCommonPage(pluginInfo, src, callback) {
-    console.log('Common preformat start.');
+    console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryWithoutTags(src, pluginInfo.removeTags);
     cleanLinks($target, pluginInfo.prefix);
     if (typeof callback === 'function') {
@@ -52,16 +44,24 @@ function jQueryWithoutTags(src, tags) {
 }
 
 function cleanLinks($$, prefixes) {
-    var selfLink = '#'; //window.location.pathname + '?q='
-    console.log('Prefix is: ' + prefixes);
+    var selfLink = '#'; //window.location.pathname + '#key'
+
+    prefixes=[].concat(prefixes);
+    console.log(D.LC, '[formatter/common.js] Prefix is: ' + prefixes);
     $('a', $$).each(function(){
         var href = $(this).attr('href');
+        if (!href){
+            return;
+        }
+
         for (var i in prefixes) {
-            if (href && href.indexOf(prefixes[i]) === 0 ) {
-                $(this).attr('href', selfLink + href.replace(prefixes[i],''))
+            var prefixRegexp = prefixes[i];
+            var m = href.match(prefixRegexp);
+            if (m && m.index===0 && m[1] ) {// m[1] is searchKey
+                $(this).attr('href', selfLink + m[1])
                        .attr('target', '_self');
             } else {
-                $(this).attr('target','_blank')
+                $(this).attr('target','_blank');
             }
         }
     });

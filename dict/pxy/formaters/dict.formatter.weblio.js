@@ -1,14 +1,20 @@
-/////////// Weblio for SmartPhone.(Access from SP, hit from google result) /////////////
+/*************************************************
+ * dict.formatter.weblio.js
+ *
+ * Weblio for SmartPhone.(Access from SP, mainly hit from google result)
+ **************************************************/
 ;(function($){
 
 /////////// Main Entry. /////////////
 var option = DICT_PLUGINS.weblio = {
-	'prefix': 'http://ejje.weblio.jp/content/',
+	'prefix': /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/,
 	'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['iframe','noscript','script','img']
 };
 
 function formatWeblioForSmartPhoneLayout(src) {
+    console.log($.dict_extend().LC, '[dict.formatter.weblio.js] format start...');
+
     // Preformat by common util, then callback the customize function.
     return $.dict_extend().preFormat(option, src, customizePage);
 }
