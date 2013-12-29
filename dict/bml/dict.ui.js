@@ -63,9 +63,14 @@ function registTextSelectionEvent() {
     // Regist iframe the same events.(Not support iframe in iframe)
     $('iframe').each(function(){
         var child_win = this.contentWindow;
-        $(child_win.document).on('mouseup.dict','body',function(e){
-            getSelection(e, child_win);
-        });
+        try{
+            var doc = child_win.document;
+            $(doc).on('mouseup.dict','body',function(e){
+                getSelection(e, child_win);
+            });
+        }catch(e){
+            console.log(D.LC, '[dict.ui.js] iframe can not access:', this);
+        }
     });
 }
 
