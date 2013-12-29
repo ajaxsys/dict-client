@@ -32,6 +32,11 @@ function queryDict(word, type){
     var url = D.lb_host(word)+'dict/'+type+'/'+encodeURIComponent(word)+'/';
     console.log(D.LC, '[loaders/dict.load.gae.js] JSONP load: ', url);
   
+    var params = {};
+    if (D.DB_MODE===false){
+      params.DB_MODE = "X";
+    }
+
     // No cache, get & push to cache.
     if (ajax) {
         ajax.abort();
@@ -42,6 +47,7 @@ function queryDict(word, type){
           'type': type,
       },
       'url': url,
+      'data': params,
       'success': function(json, textStatus, xOptions) {
   
          // add to cache

@@ -18,7 +18,7 @@ var D=$.dict_extend({
 function preformatCommonPage(pluginInfo, src, callback) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryWithoutTags(src, pluginInfo.removeTags);
-    cleanLinks($target, pluginInfo.prefix);
+    cleanLinks($target, pluginInfo.prefix, pluginInfo.host);
     if (typeof callback === 'function') {
         callback($target);
     }
@@ -43,7 +43,7 @@ function jQueryWithoutTags(src, tags) {
     return $src;
 }
 
-function cleanLinks($$, prefixes) {
+function cleanLinks($$, prefixes, host) {
     var selfLink = '#'; //window.location.pathname + '#key'
 
     prefixes=[].concat(prefixes);
@@ -62,6 +62,9 @@ function cleanLinks($$, prefixes) {
                        .attr('target', '_self');
             } else {
                 $(this).attr('target','_blank');
+                if (host){
+                    $(this).attr('href', host+href);
+                }
             }
         }
     });

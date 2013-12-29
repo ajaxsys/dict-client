@@ -11,8 +11,9 @@ var D = $.dict_extend({
 });
 
 var DEV_MODE = ( window.location.href.indexOf('DEV_MODE') > -1 ),
-    LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
-    rls_lb = 'https://dict-x.appspot.com/',
+    //LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
+    LB_SERVERS = ['a','b'], // 20131229 rls
+    rls_lb = 'https://dict-b.appspot.com/',
     dev_host = "http://127.0.0.1:8000/";
 
 // Dict serverside host(Dynamic IP)
@@ -27,7 +28,7 @@ function getLoadBalanceHost(lbKey){
     // Load Balance
         var code = lbKey.charCodeAt(0),
             key = LB_SERVERS[ code % LB_SERVERS.length ];
-        var rls_host = rls_lb.replace('x',key);
+        var rls_host = rls_lb.replace('b',key);
         console.log(D.LC, '[loaders/util.gae_lb.js] Using release load balance:', rls_host);
         return rls_host;
     }

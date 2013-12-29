@@ -11,8 +11,9 @@ DICT_PLUGINS.auto_wiki_jp = {
     'nextLoader': 'wiki_jp', // same as defined bellow.
 }
 var option = DICT_PLUGINS.wiki_jp = {
-	'prefix': [   /^http:\/\/ja\.wikipedia\.org\/wiki\/([^\/]+)/,   /^\/wiki\/([^\/]+)/   ],
-	'format': formatWikiJP,
+    'host': 'http://ja.wikipedia.org',
+    'prefix': [   /^http:\/\/ja\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ],
+    'format': formatWikiJP,
     'removeTags': ['iframe','noscript','script'],
 };
 
@@ -26,8 +27,8 @@ function formatWikiJP(src) {
 // Customize for this page
 function customizePage($target){//,#left-navigation
     $("#footer,#disambigbox,#page-actions,#mw-mf-page-left,#jump-to-nav,#search,[id$='navigation'],"+ // id
-      ".header,.edit-page,.printfooter,.mw-search-pager-bottom", // class
-      $target).remove();
+        ".header,.edit-page,.printfooter,.mw-search-pager-bottom", // class
+        $target).remove();
 }
 
 

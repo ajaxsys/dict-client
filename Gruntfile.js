@@ -113,7 +113,7 @@ module.exports = function(grunt) {
           'dict/pxy/formaters/dict.formatter.auto.js',
           'dict/pxy/formaters/dict.formatter.google.js',
           'dict/pxy/formaters/dict.formatter.wiki_jp.js',
-          'dict/pxy/formaters/dict.formatter.ewords.js',
+          //'dict/pxy/formaters/dict.formatter.ewords.js',
           'dict/pxy/formaters/dict.formatter.weblio.js',
           'dict/pxy/formaters/dict.formatter.weblio_small.js',
           // main (MUST defined at last)
