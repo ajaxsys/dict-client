@@ -6,6 +6,10 @@
 ;(function($){
 
 /////////// Main Entry. /////////////
+DICT_PLUGINS.auto_weblio = {
+    'autoKey'   : 'site:ejje.weblio.jp', // a key will append to search result when `Auto Mode`
+    'nextLoader': 'weblio',  // same as defined bellow.
+}
 var option = DICT_PLUGINS.weblio = {
 	'prefix': /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/,
 	'format': formatWeblioForSmartPhoneLayout,

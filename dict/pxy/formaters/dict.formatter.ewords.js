@@ -7,7 +7,7 @@
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from google is much better.
 DICT_PLUGINS.auto_ewords = {
-    'autoKey'   : 'e-words', // a key will append to search result when `Auto Mode`
+    'autoKey'   : 'site:e-words.jp', // a key will append to search result when `Auto Mode`
     'nextLoader': 'ewords',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.ewords = {

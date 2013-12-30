@@ -24,7 +24,7 @@ var options = {
           'word': null,
           'type': null,
       },
-      'timeout': 10000,
+      'timeout': D.TIME_OUT,
       'beforeSend': function(){
           this.dict._startTime = $.now();
           $searchBox.val(this.dict.word + ' is loading...');

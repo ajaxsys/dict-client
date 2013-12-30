@@ -14,7 +14,7 @@ var D=$.dict_extend({
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
 var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=jp";
-var SEARCH_SIZE = 8, searchStartPosition = 0, MAX_POSITION=40;
+var SEARCH_SIZE = 10, searchStartPosition = 0, MAX_POSITION=40;
 
 /*
  * Loading more search result
@@ -65,19 +65,19 @@ function queryGoogle(word, type, opt){
     };
     var option = $.extend({},defaultOpt, opt);
 
-    // [1] Check cache
-    var cache = D.getCache('GOOGLE_CACHE', word);
-    if (cache){
-        console.log(D.LC, '[loaders/dict.load.google.js] Load from google jsonp cache',type,word);
-        // foramt start
-        window.DICT_format(cache, type);
-        D.complete(word, type); // Can NOT use common complete defined in ajax setup.
-        return cache;
-    }
-
     var searchKey = option.autoKey? word +' '+ option.autoKey: word;
     console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',searchStartPosition);
+
+    // [1] Check cache
+    var cache = D.getCache('GOOGLE_CACHE', searchKey);
+    if (cache){
+        console.log(D.LC, '[loaders/dict.load.google.js] Load from google jsonp cache', type, searchKey);
+        // foramt start
+        window.DICT_format(cache, type);
+        D.complete(word, type); // load complte. Can NOT use common complete defined in ajax setup.
+        return cache;
+    }
 
     // No cache, get & push to cache.
     if (ajax) {
@@ -92,7 +92,7 @@ function queryGoogle(word, type, opt){
       'url': GOOGLE_SEARCH_API,
       'success': function(r){
           var json=r.responseData;
-          json.word=word;
+          json.word=searchKey;
           json.type=type; // "auto/google". Regist type used in format plugin
   
           // add to cache
