@@ -9,6 +9,7 @@
 // All common util is regist at __DICT__
 var D = $.dict_extend();
 var $types,$searchBox;
+var WAIT_DEBUG=2000;
 
 // onload
 console.log(D.LC, '[dict.proxy.js] iframe URL: ',window.location.href);
@@ -36,11 +37,11 @@ $(function(){
 });
 
 function registDebug(){
-    var timer,WAIT=5000;
+    var timer;
     $('#__go_top__').mouseover(function(){
         timer = setTimeout(function(){
             $('#__debug__').removeClass('hidden');
-        },WAIT);
+        },WAIT_DEBUG);
     }).mouseleave(function(){
         clearTimeout(timer);
     });

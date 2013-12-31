@@ -14,7 +14,7 @@ var D=$.dict_extend({
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
 var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=jp";
-var SEARCH_SIZE = 10, searchStartPosition = 0, MAX_POSITION=40;
+var SEARCH_SIZE = 8, searchStartPosition = 0, MAX_POSITION=40, DEFALUT_NEXT_LOADER='weblio';
 
 /*
  * Loading more search result
@@ -92,6 +92,12 @@ function queryGoogle(word, type, opt){
       'url': GOOGLE_SEARCH_API,
       'success': function(r){
           var json=r.responseData;
+          if (!json){
+            // Error
+            console.log("Google result NG");
+            this.error();
+            return;
+          }
           json.word=searchKey;
           json.type=type; // "auto/google". Regist type used in format plugin
   
@@ -124,7 +130,6 @@ function queryGoogle(word, type, opt){
 
 
 function queryNextLoader(word, loader){
-    var DEFALUT_NEXT_LOADER = 'weblio_small';
     loader = loader || DEFALUT_NEXT_LOADER;
     console.log(D.LC, '[loaders/dict.load.google.js] Next loader:' ,loader);
     D.queryDict(word, loader); // Google failed, use another... D.DEFAULT_FORMATTER
