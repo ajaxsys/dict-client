@@ -17,7 +17,6 @@
       <inputs>
         <key id="url" type="xs:string" paramType="variable" required="true"/>
         <key id="xpath" type="xs:string" paramType="variable" required="true"/>
-        <key id="ua" type="xs:string" paramType="variable" required="false"/>
       </inputs>
       <execute><![CDATA[
 if (!ua){
