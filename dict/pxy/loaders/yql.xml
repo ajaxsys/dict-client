@@ -17,9 +17,13 @@
       <inputs>
         <key id="url" type="xs:string" paramType="variable" required="true"/>
         <key id="xpath" type="xs:string" paramType="variable" required="true"/>
+        <key id="ua" type="xs:string" paramType="variable" required="false"/>
       </inputs>
       <execute><![CDATA[
-var results = y.query("select * from html where url=@url and xpath=@xpath", {url:url, xpath:xpath}).results.*;
+if (!ua){
+  ua = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53";
+}
+var results = y.query("select * from html where url=@url and xpath=@xpath and ua=@ua", {url:url, xpath:xpath}).results.*;
 var html_strings = [];
 for each (var item in results) html_strings.push(item.toXMLString());
 response.object = {html: html_strings};
