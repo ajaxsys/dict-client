@@ -3,8 +3,85 @@
  *
  * Proxy query with jsonp via yql
  **************************************************/
+
 ;(function($){
 
-// TODO
+var D=$.dict_extend();
+$.dict_extend({
+    'queryDict': queryDict, // will override dict.load.gae.js
+});
 
+var ajax, oldword;
+
+function queryDict(word, type, url){
+    // URL already get from google
+    if (!url && url.indexOf('http://')===-1 && url.indexOf('https://')===-1){
+        // 
+        console.log(D.LC, '[loaders/dict.load.yql.js] ERROR, only support auto mode.');
+        return;
+    }
+
+    // Init
+    console.log(D.LC, '[loaders/dict.load.yql.js] Last search:' + oldword);
+    oldword = word;// backup
+
+    // Check cache
+    var cache=D.getCache('YQL_CACHE', word, type);
+    if (cache) {
+        console.log(D.LC, '[loaders/dict.load.yql.js] Load from dict jsonp cache', type, word);
+        // foramt start
+        window.DICT_format(cache, type);
+        D.complete(word, type);
+        return cache;
+    }
+
+    //use "http://goo.gl/tUzHPI" as html.src;select * from html.src where url="http://ja.wikipedia.org/wiki/Yahoo!"
+    //-->
+    //http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fgoo.gl%2FtUzHPI%22%20as%20html.src%3B%0A%20%20%20%20%20%20select%20*%20from%20html.src%20where%20%0A%20%20%20%20%20%20%20%20url%3D%22http%3A%2F%2Fja.wikipedia.org%2Fwiki%2FYahoo!%E2%80%8E%22%20&format=json&callback=
+
+    // http://otherhost/dict/t/hello/?callback=DICT_format
+    var yql = "http://query.yahooapis.com/v1/public/yql?q=use%20'http%3A%2F%2Fgoo.gl%2FtUzHPI'%20as%20html.src%3Bselect%20*%20from%20html.src%20where%20url%3D'"
+              +encodeURIComponent(url)+"'&format=json";
+
+    console.log(D.LC, '[loaders/dict.load.gae.js] JSONP load(via yql): ', url);
+    var params = {
+      //q: encodeURI('use "http://goo.gl/tUzHPI" as html.src; select * from html.src where  url="')+url+encodeURI('"'),
+      //format: 'json',
+    };
+
+    // No cache, get & push to cache.
+    if (ajax) {
+        ajax.abort();
+    }
+    ajax=$.jsonp({
+      'dict':{
+          'word': word,
+          'type': type,
+      },
+      'url': yql,
+      'data': params,
+      'success': function(json, textStatus, xOptions) {
+           data = {};
+           try {
+               data.src = json.query.results.resources.content;
+           } catch(e){
+               console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
+               return;
+           }
+           data.word = word;
+           data.type = type;
+         // add to cache
+         D.setCache('GAE_CACHE', data);
+  
+         console.log(D.LC, '[loaders/dict.load.yql.js] Dict JSONP load Success! Call formatter.');
+         window.DICT_format(data);
+  
+      },
+    });
+
+    // Others:Change debug URL when connect to GAE.
+    $('#__debugAjax__').attr('href', url+'?callback=DICT');
+}
+
+// END OF AMD
 })(jQuery);

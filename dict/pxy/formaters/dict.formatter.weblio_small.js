@@ -1,5 +1,6 @@
 /*************************************************
- * dict.formatter.weblio_small.js
+ * (Deprecated)
+ * dict.formatter.weblio_small.js 
  *
  * Weblio for Small Version.(Access from PC OK)
  **************************************************/

@@ -46,20 +46,17 @@ function callLoader(word, type){
   // ajuster mode: `type` must be auto
   if (type && (type.indexOf('auto')>=0 || type.indexOf('google')>=0) ) {
     // If auto key exist use Auto Mode with addtion key
-    var plugin = window.DICT_PLUGINS[type],
-        autoKey= null;
+    var plugin = window.DICT_PLUGINS[type];
     if (plugin && plugin.autoKey){
-        console.log(D.LC, '[dict.loader.js] Redirect search key : ',word, '--->', word + ' ' + plugin.autoKey);
-        autoKey = plugin.autoKey;
-
         console.log(D.LC, '[dict.loader.js] Redirect search type: ',type, '--->auto');
         type = 'auto';
         D.queryGoogle(word, type, plugin);// Using auto mode plugin
     } else {
-        D.queryGoogle(word, type);// Only can use callback in JSONP 
+        D.queryGoogle(word, type);
     }
 
   } else {
+    // Deprecated
     D.queryDict(word, type);
   }
 }

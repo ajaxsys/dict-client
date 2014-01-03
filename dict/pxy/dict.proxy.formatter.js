@@ -10,14 +10,11 @@
 window.DICT_PLUGINS = window.DICT_PLUGINS || {};
 
 // Global method for JSONP (NO need global in jsonp plugin)
-// Expect json format of data: {"type":"__", "word","__", "explain","__", refer,"__"}
+// Expect json format of data: {"type":"__", "word","__", "src","__"}
 window.DICT_format = function(data, type){
     type = type || data.type; // 
     console.log($.dict_extend().LC, '[dict.formatter.js] Format start by type: ',type);
-    // contain `.src` means it's an html page
-    // no `.src` means it's a json format
-    var src = data.src || data;
-    var $explain = formatDict(src, type);
+    var $explain = formatDict(data.src, type);
     if ($explain) {
         var $result = $('#__explain_wrapper__');
         $result.empty().append($explain);

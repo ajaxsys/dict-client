@@ -14,6 +14,9 @@ var option = DICT_PLUGINS.google = {
 // JSON sample
 // {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
 function formatGoogle(json) {
+    if (!json || !json.results || json.results.length===0){
+        return $('<h4 style="margin-left:5px;">').append('No search result!')
+    }
     // reset
     if (json.isNextMode){
         return nextMode(json);

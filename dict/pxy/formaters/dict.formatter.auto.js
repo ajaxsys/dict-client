@@ -24,12 +24,16 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
         r = json.results[i];
         var plugin = detectExistedPluginByPrefix( decodeURIComponent(r.unescapedUrl) );// Need unescapedUrl
         if (plugin) {
-            var word = plugin.word;
+            var word = plugin.word,
+                type = plugin.type,
+                url  = r.unescapedUrl;
 
-            console.log(D.LC, '[dict.formatter.auto.js] Decided using formatter: ',plugin.type );
-            console.log(D.LC, '[dict.formatter.auto.js] Redirect search key: ',json.word, '--->', word);
+            console.log(D.LC, '[dict.formatter.auto.js] Decided using formatter: ', type, ' And key: ', word);
 
-            D.queryDict(word, plugin.type);
+            // If possible, change to URL for SP
+            url = changeToMobileUrl(url, type);
+            // Recall loader/dict.load.xxx.js
+            D.queryDict(word, type, url);
             D.isSearchRedirect = true; // tell caller(dict.load.google.js) not stop
             return;
         }
@@ -38,6 +42,17 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
     return DICT_PLUGINS.google.format(json);
 }
 
+// Change to URL for SP if possible
+function changeToMobileUrl(url,type){
+    var opt = DICT_PLUGINS[type];
+    if (opt && opt.host && opt.mobile_host){
+        var newUrl = url.replace(opt.host, opt.mobile_host);
+        console.log(D.LC, '[dict.formatter.auto.js] URL ',url,' changed to mobile url:', newUrl);
+        return newUrl;
+    }else{
+        return url;
+    }
+}
 
 function detectExistedPluginByPrefix(url){
     for (var pluginType in window.DICT_PLUGINS) {

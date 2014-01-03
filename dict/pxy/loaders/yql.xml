@@ -4,10 +4,7 @@
     <sampleQuery><![CDATA[
       Open:http://developer.yahoo.com/yql/console/
       Copy:
-      use "https://raw.github.com/ajaxsys/dict-client/master/dict/pxy/loaders/yql.xml" as html.src;
-      select * from html.src where 
-        url="http://ja.wikipedia.org/wiki/Yahoo!‎" 
-        and xpath='//body'
+      use 'http://goo.gl/tUzHPI' as html.src;select * from html.src where url='http://ja.wikipedia.org/wiki/Yahoo' and xpath='//body'
     ]]></sampleQuery>
     <description>Fetch url HTML</description>
     <author>Andy.fang</author>

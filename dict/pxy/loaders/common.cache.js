@@ -12,8 +12,9 @@ $.dict_extend({
     'MAX_HIST': 10, // Cache of search result
     // Add cache here
     _cache: {
-        'GAE_CACHE': new D.Queue(), // Datatype defined in util.js
-        'GOOGLE_CACHE': new D.Queue(), // Datatype defined in util.js
+        'GAE_CACHE': new D.Queue(), // Datatype defined in _cmn/dict.util.js
+        'GOOGLE_CACHE': new D.Queue(),
+        'YQL_CACHE': new D.Queue(),
     }
 });
 

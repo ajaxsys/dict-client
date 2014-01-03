@@ -65,7 +65,12 @@ function queryGoogle(word, type, opt){
     };
     var option = $.extend({},defaultOpt, opt);
 
-    var searchKey = option.autoKey? word +' '+ option.autoKey: word;
+    var searchKey = word;
+    if (option.autoKey) {
+      searchKey += ' '+ option.autoKey;
+      console.log(D.LC, '[loaders/dict.load.google.js] Redirect search key : ',word, '--->', searchKey);
+    }
+
     console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',searchStartPosition);
 
@@ -91,21 +96,24 @@ function queryGoogle(word, type, opt){
       'data': {'q':searchKey,'rsz':SEARCH_SIZE,'start':searchStartPosition},
       'url': GOOGLE_SEARCH_API,
       'success': function(r){
-          var json=r.responseData;
-          if (!json){
+          var googleResultJsonArray=r.responseData;
+          if (!googleResultJsonArray){
             // Error
             console.log("Google result NG");
             this.error();
             return;
           }
-          json.word=searchKey;
-          json.type=type; // "auto/google". Regist type used in format plugin
-  
+
+          var data = {};
+          data.src = googleResultJsonArray;
+          data.word=searchKey;
+          data.type=type; // "auto/google". Regist type used in format plugin
+
           // add to cache
-          D.setCache('GOOGLE_CACHE',json);
+          D.setCache('GOOGLE_CACHE',data);
   
           console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load success! Call formatter.');
-          var result = window.DICT_format(json);
+          var result = window.DICT_format(data);
       },
       'complete': function(e,t,x){
           if (D.isSearchRedirect) {

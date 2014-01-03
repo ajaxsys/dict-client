@@ -11,7 +11,9 @@ DICT_PLUGINS.auto_weblio = {
     'nextLoader': 'weblio',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.weblio = {
-	'prefix': /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/,
+    'host' : '//ejje.weblio.jp',
+    'mobile_host' : '//ejje.weblio.jp/small',
+	'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
 	'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['iframe','noscript','script','img']
 };
@@ -32,9 +34,21 @@ function customizePage($target){
     $('.close', $target).removeClass('close').addClass('open');
     // Too big title
     $('.ttl1',$target).css('fontSize','22px');
+
+    return customizePageSmall($target);
 }
 
+function customizePageSmall($target){
+    // Customize page
+    // .wejtyInfoSmp: info of robot
+    // .division3: info of auth
+    $('.ad,.tab2,.division3,header,footer,aside,p.btn',$target).remove();
+    $('.close', $target).removeClass('close').addClass('open');
+    // Too big title
+    //$('.ttl1',$target).css('fontSize','22px');
 
+    return $target
+}
 
 
 })(jQuery);

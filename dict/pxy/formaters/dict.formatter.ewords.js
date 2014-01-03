@@ -11,9 +11,12 @@ DICT_PLUGINS.auto_ewords = {
     'nextLoader': 'ewords',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.ewords = {
-	'prefix': /^http:\/\/e\-words\.jp\/w\/([^\/]+)/,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
-	'format': formatEWords,
+    'host' : '//e-words.jp',
+    'mobile_host' : '//sp.e-words.jp',
+    'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'format': formatEWords,
     'removeTags': ['iframe','noscript','script'],
+    'isCleanLinks': false,
 };
 
 // JSON sample
@@ -25,7 +28,8 @@ function formatEWords(src) {
 
 // Customize for this page
 function customizePage($target){//,#left-navigation
-    $(".header,#footer,.printfooter,#page-actions,.mw-search-pager-bottom,#mw-mf-page-left,[id$='navigation'],#jump-to-nav,#search",$target).remove();
+    //$("div:lt(3)",$target).remove();
+    //$(".header,#footer,.printfooter,#page-actions,.mw-search-pager-bottom,#mw-mf-page-left,[id$='navigation'],#jump-to-nav,#search",$target).remove();
 }
 
 

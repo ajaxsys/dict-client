@@ -103,17 +103,17 @@ module.exports = function(grunt) {
           'dict/pxy/dict.proxy.loader.js',
           'dict/pxy/loaders/common.js',
           'dict/pxy/loaders/common.cache.js',
-          'dict/pxy/loaders/dict.load.gae.js',
+          //'dict/pxy/loaders/dict.load.gae.js', // Use yql 
+          //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
-          'dict/pxy/loaders/util.gae_lb.js',
           // formatter
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',
           'dict/pxy/formaters/dict.formatter.auto.js',
           'dict/pxy/formaters/dict.formatter.google.js',
           'dict/pxy/formaters/dict.formatter.wiki_jp.js',
-          //'dict/pxy/formaters/dict.formatter.ewords.js',
+          'dict/pxy/formaters/dict.formatter.ewords.js',
           'dict/pxy/formaters/dict.formatter.weblio.js',
           //'dict/pxy/formaters/dict.formatter.weblio_small.js',
           // main (MUST defined at last)
@@ -249,7 +249,7 @@ module.exports = function(grunt) {
       img: {
         files: [].concat(copyToMulti('lib/jwe/default/',  '*_mid.gif', CONST.dest_css))
                  .concat(copyToMulti('dict/_resource/sprite/','*.png', CONST.dest_css))
-          .concat(copyToMulti('dict/_resource/img/',['*.png','*.ico'], CONST.dest_css))
+          .concat(copyToMulti('dict/_resource/img/',          ['*.*'], CONST.dest_css))
       }
 
     },
