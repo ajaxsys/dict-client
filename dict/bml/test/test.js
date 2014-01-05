@@ -30,13 +30,14 @@ $(function(){
 
     // Minimized version and released version
     function afterProductVersionLoaded(){
-        // default: /build/dict_ui_dev.js
         var dev = BML_PREFIX + __G_BML_MIN__;
+        // Origin:  loader.js
+        // Old url: http://localhost:8443/build/dict_ui.js
         var st   = dev.replace('DEV_MODE','ST_MODE')
                       .replace('/build/','/dict/');
         var prod = dev.replace('DEV_MODE','RLS_MODE')
                       .replace('/build/','/dict/') // Minified
-                      .replace('http://localhost:8443','https://python-ok.appspot.com');
+                      .replace('http://localhost:8443','https://python-admin.appspot.com');
 
         // Refer to min version.
         $('#bookmarkletST').attr('href',st); 
