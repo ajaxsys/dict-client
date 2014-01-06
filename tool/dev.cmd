@@ -1,4 +1,5 @@
 pushd "%~dp0"
-start "webserver" run-server-js.cmd
 call grunt
+
+start "webserver" run-server-js.cmd
 start "watching" grunt watch

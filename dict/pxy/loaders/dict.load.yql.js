@@ -70,17 +70,17 @@ function queryDict(word, type, url){
            }
            data.word = word;
            data.type = type;
-         // add to cache
-         D.setCache('GAE_CACHE', data);
-  
-         console.log(D.LC, '[loaders/dict.load.yql.js] Dict JSONP load Success! Call formatter.');
-         window.DICT_format(data);
+           // add to cache
+           D.setCache('YQL_CACHE', data);
+          
+           console.log(D.LC, '[loaders/dict.load.yql.js] Dict JSONP load Success! Call formatter.');
+           window.DICT_format(data);
   
       },
     });
 
-    // Others:Change debug URL when connect to GAE.
-    $('#__debugAjax__').attr('href', url+'?callback=DICT');
+    // Others:Change debug URL when connect to YQL.
+    $('#__debugAjax__').attr('href', url);
 }
 
 // END OF AMD

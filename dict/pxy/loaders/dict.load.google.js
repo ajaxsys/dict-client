@@ -35,17 +35,20 @@ function queryGoogleMoreResults(){
         'url': GOOGLE_SEARCH_API,
         'success': function(r){
             var json=r.responseData;
-            json.word=word;
-            json.type=type; // always google
             json.isNextMode=true;// google next mode.
+            var data = {};
+            data.src = json;
+            data.word=word;
+            data.type=type; // always google
 
             console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load more success! Call formatter.');
-            var result = window.DICT_format(json);
+            var result = window.DICT_format(data);
         },
         'beforeSend': doNothing,
         'complete': doNothing,
         'error': doNothing,
     });
+
 }
 function doNothing(){}
 
