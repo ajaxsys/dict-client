@@ -28,7 +28,7 @@ function firstMode(json) {
     var $resultDiv=$('<div id="__google_result__" style="margin-left:5px;" >');
 
     if (!json || !json.results || json.results.length===0){
-        return $resultDiv.append(append('<h4>No search result!</h4>'));
+        return $resultDiv.append('<h4>No search result!</h4>');
     }
 
     var header = '<div style="text-align:center;margin-top:-10px;"><img src="/dict/default/google.png" alt="Power By Google "><br></div>';

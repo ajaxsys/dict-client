@@ -9,6 +9,7 @@ hr{border:0;height:1px;background-image:-webkit-linear-gradient(left,rgba(0,0,0,
 .__window_go_top__{background:transparent url('default/sprites.png') no-repeat -22px -53px; width: 16px; height:16px;;cursor:pointer}
 .__window_go_next__{background:transparent url('default/sprites.png') no-repeat -42px -53px; width: 16px; height:16px;;cursor:pointer}
 .__window_go_back__{background:transparent url('default/sprites.png') no-repeat -2px -53px; width: 16px; height:16px;;cursor:pointer}
+#__navi__ a{text-decoration:none;font-size:14px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}
 #__explain_wrapper__{margin-top:20px}
 #__search_form__{margin-right:50px}
 #__search__{position:relative;z-index:9999;top:6px}
