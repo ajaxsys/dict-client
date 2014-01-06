@@ -11,7 +11,10 @@ var url=window.location.href,
     D = $.dict_extend({
         // Check mode only once
         PXY_IFRAME_MODE: ( url.indexOf('IFRAME') > -1 ),
-        PXY_DEV_MODE : ( url.indexOf('DEV_MODE') > -1 ), // UI_DEV_MODE is set in loader.js
+        PXY_DEV_MODE : ( url.indexOf('DEV_MODE') > -1 ), // UI `DEV_MODE` is set in loader.js
+        PXY_SELF_MODE : function (){
+            return ( window.location.href.indexOf('SELF_MODE') > -1 );
+        },
     });
 
 var $types,$searchBox;
@@ -31,7 +34,13 @@ $(function(){
         var origEvent = e.originalEvent;
         console.log(D.LC+1, '[dict.proxy.js] Hash:', origEvent.newURL);
         console.log(D.LC+1, '[dict.proxy.js] From:', origEvent.oldURL);
-        D.loadQuery();
+        if (D.PXY_SELF_MODE()){
+            console.log(D.LC+1, '[dict.proxy.js] Use lastDictType:', D.lastDictType);
+            D.loadQuery(null, D.lastDictType);
+        } else {
+            D.loadQuery();
+        }
+        
     });
     D.loadQuery();
 

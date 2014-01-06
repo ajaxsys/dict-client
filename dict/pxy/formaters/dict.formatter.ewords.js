@@ -17,6 +17,7 @@ var option = DICT_PLUGINS.ewords = {
     'format': formatEWords,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr'],
     'isCleanLinks': false,
+    //'isCleanLinkByText': true,
 };
 
 // JSON sample
@@ -42,7 +43,7 @@ function customizePage($target){//,#left-navigation
     // All links search with google
     $('a',$dataTable).each(function(){
         var $lnk = $(this);
-        $lnk.attr('href','#'+$lnk.text());
+        $lnk.attr('href','#'+$lnk.text()+'?SELF_MODE').attr('target','_self');
     });
 
     $target.empty().append($dataTable);

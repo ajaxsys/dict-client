@@ -15,8 +15,10 @@ var D = $.dict_extend({
 });
 
 var DICT_JID = '#'+DICT_ID,
-    PROXY_URI = '/dict/proxy.html##key#?IFRAME',
-    DICT_URL = D.PXY_DEV_MODE ? PROXY_URI+'&DEV_MODE' : PROXY_URI,
+    PROXY_DEV_URI = '/build/proxy.html##key#?IFRAME&DEV_MODE',
+    PROXY_RLS_URI =  '/dict/proxy.html##key#?IFRAME',
+    // D.DEV_MODE defined in loader.js
+    DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI,
     DICT_ISFIXED = "position_is_fixed";
 
 var _thisIP,

@@ -72,6 +72,8 @@ function detectExistedPluginByPrefix(url){
                 var matcher = url.match(  prefixRegexp  );
                 // Expect length=2. If key is "undefined" (length == 1), failed
                 if ( matcher && matcher.index===0 && matcher[1]){
+                    // Regist last type
+                    D.lastDictType = 'auto_' + pluginType;
                     return {
                               'type': pluginType,
                               'word': matcher[1], 

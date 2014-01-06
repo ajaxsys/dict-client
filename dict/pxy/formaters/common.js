@@ -19,7 +19,7 @@ function preformatCommonPage(pluginInfo, src, callback) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryStripTags(src, pluginInfo.removeTags);
     if (pluginInfo.isCleanLinks !== false)
-        cleanLinks($target, pluginInfo.prefix, pluginInfo.host);
+        cleanLinks($target, pluginInfo.prefix, pluginInfo.host, pluginInfo.isCleanLinkByText);
     if (typeof callback === 'function') {
         callback($target);
     }
@@ -47,7 +47,7 @@ function jQueryWithoutTags(src, tags) {
 }
 */
 
-function cleanLinks($$, prefixes, host) {
+function cleanLinks($$, prefixes, host, isCleanLinkByText) {
     var selfLink = '#'; //window.location.pathname + '#key'
 
     prefixes=[].concat(prefixes);
@@ -62,7 +62,15 @@ function cleanLinks($$, prefixes, host) {
             var prefixRegexp = prefixes[i];
             var m = href.match(prefixRegexp);
             if (m && m.index===0 && m[1] ) {// m[1] is searchKey
-                $(this).attr('href', selfLink + m[1])
+                var word;
+                if (isCleanLinkByText) {
+                    console.log(D.LC, '[formatter/common.js] Clean link by text. ');
+                    word = $(this).text();
+                } else {
+                    console.log(D.LC, '[formatter/common.js] Clean link by guess url. ');
+                    word = m[1]; // Guess text from URL
+                }
+                $(this).attr('href', selfLink + m[1] + '?SELF_MODE'  )
                        .attr('target', '_self');
                 return;
             } else {

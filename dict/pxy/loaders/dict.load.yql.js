@@ -15,7 +15,7 @@ var ajax, oldword;
 
 function queryDict(word, type, url){
     // URL already get from google
-    if (!url && url.indexOf('http://')===-1 && url.indexOf('https://')===-1){
+    if (url && url.indexOf('http://')===-1 && url.indexOf('https://')===-1){
         // 
         console.log(D.LC, '[loaders/dict.load.yql.js] ERROR, only support auto mode.');
         return;
@@ -43,7 +43,7 @@ function queryDict(word, type, url){
     var yql = "https://query.yahooapis.com/v1/public/yql?q=use%20'http%3A%2F%2Fgoo.gl%2FtUzHPI'%20as%20html.src%3Bselect%20*%20from%20html.src%20where%20url%3D'"
               +encodeURIComponent(url)+"'&format=json";
 
-    console.log(D.LC, '[loaders/dict.load.gae.js] JSONP load(via yql): ', url);
+    console.log(D.LC, '[loaders/dict.load.yql.js] JSONP load(via YQL): ', url);
     var params = {
       //q: encodeURI('use "http://goo.gl/tUzHPI" as html.src; select * from html.src where  url="')+url+encodeURI('"'),
       //format: 'json',
