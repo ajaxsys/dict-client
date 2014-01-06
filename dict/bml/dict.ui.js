@@ -15,7 +15,8 @@ var D = $.dict_extend({
 });
 
 var DICT_JID = '#'+DICT_ID,
-    DICT_URL = D.DEV_MODE ? '/build/proxy.html##key#?DEV_MODE' : '/dict/proxy.html##key#',
+    PROXY_URI = '/dict/proxy.html##key#?IFRAME',
+    DICT_URL = D.PXY_DEV_MODE ? PROXY_URI+'&DEV_MODE' : PROXY_URI,
     DICT_ISFIXED = "position_is_fixed";
 
 var _thisIP,

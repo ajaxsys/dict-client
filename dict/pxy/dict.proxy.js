@@ -7,7 +7,13 @@
 ;(function($){
 
 // All common util is regist at __DICT__
-var D = $.dict_extend();
+var url=window.location.href,
+    D = $.dict_extend({
+        // Check mode only once
+        PXY_IFRAME_MODE: ( url.indexOf('IFRAME') > -1 ),
+        PXY_DEV_MODE : ( url.indexOf('DEV_MODE') > -1 ), // UI_DEV_MODE is set in loader.js
+    });
+
 var $types,$searchBox;
 var WAIT_DEBUG=2000;
 

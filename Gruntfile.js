@@ -378,7 +378,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', testSubtasks);
 
   // JS build task.
-  grunt.registerTask('dist-js', ['removelogging','uglify']);
+  grunt.registerTask('dist-js', ['removelogging','jshint','uglify']);
 
   // CSS build task.
   grunt.registerTask('dist-css', ['cssmin']);
