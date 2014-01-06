@@ -53,6 +53,8 @@ function allCompleteAction(word, type) {
         $searchBox.val(word);
         if (D.PXY_IFRAME_MODE)
           $searchBox.select();
+        else
+          $result.focus();
         $result.show();
         $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
     },300);
