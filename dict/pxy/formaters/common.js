@@ -17,7 +17,7 @@ var D=$.dict_extend({
 
 function preformatCommonPage(pluginInfo, src, callback) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
-    var $target = jQueryWithoutTags(src, pluginInfo.removeTags);
+    var $target = jQueryStripTags(src, pluginInfo.removeTags);
     if (pluginInfo.isCleanLinks !== false)
         cleanLinks($target, pluginInfo.prefix, pluginInfo.host);
     if (typeof callback === 'function') {
@@ -26,6 +26,8 @@ function preformatCommonPage(pluginInfo, src, callback) {
     return $target;
 }
 
+/*
+// Prevent browser preload image
 function jQueryWithoutTags(src, tags) {
     //var tags = Array.prototype.slice.call(arguments, 1);
     // img,a,span --> <(img|a|span)
@@ -43,6 +45,7 @@ function jQueryWithoutTags(src, tags) {
 
     return $src;
 }
+*/
 
 function cleanLinks($$, prefixes, host) {
     var selfLink = '#'; //window.location.pathname + '#key'
@@ -71,6 +74,23 @@ function cleanLinks($$, prefixes, host) {
             }
         }
     });
+}
+
+function jQueryStripTags(src, removeTags){
+    for (var i in removeTags){
+        src = stripTags(src, removeTags[i]);
+    }
+    return $('<div>').append(src);
+}
+function stripTags(src, tag) {
+    var div = document.createElement('div');
+    div.innerHTML = src;
+    var tags = div.getElementsByTagName(tag);
+    var i = tags.length;
+    while (i--) {
+        tags[i].parentNode.removeChild(tags[i]);
+    }
+    return div.innerHTML;
 }
 
 
