@@ -1,15 +1,4 @@
-.hide
-    display none
-
-pre
-    overflow auto
-    white-space -moz-pre-wrap /* Mozilla */
-    white-space -pre-wrap     /* Opera 4-6 */
-    white-space -o-pre-wrap   /* Opera 7 */
-    white-space pre-wrap      /* CSS3 */
-    word-wrap break-word      /* IE 5.5+ */
-
-hr
+.__dict__ hr
     border 0
     height 1px
     background-image -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0))
@@ -52,10 +41,16 @@ hr
 
 
 /* My page IDs */
+COMMON_FONT_SIZE = 14px
+COMMON_FONT_FAMILY = "Helvetica Neue",Helvetica,Arial,sans-serif
+COMMON_FONT = COMMON_FONT_SIZE COMMON_FONT_FAMILY
+
 #__navi__ a
     text-decoration none
-    font-size 14px
-    font-family "Helvetica Neue",Helvetica,Arial,sans-serif
+    font COMMON_FONT
+    
+#__navi__ input
+    font COMMON_FONT
 
 #__explain_wrapper__
     margin-top 20px
