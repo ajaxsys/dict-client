@@ -106,10 +106,13 @@ function queryGoogle(word, type, opt){
             this.error();
             return;
           }
+          // Regist search info.
+          googleResultJsonArray.searchKey = searchKey;
+          googleResultJsonArray.word = word;
 
           var data = {};
           data.src = googleResultJsonArray;
-          data.word=searchKey;
+          data.word = searchKey;
           data.type=type; // "auto/google". Regist type used in format plugin
 
           // add to cache

@@ -24,9 +24,14 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
         r = json.results[i];
         var plugin = detectExistedPluginByPrefix( decodeURIComponent(r.unescapedUrl) );// Need unescapedUrl
         if (plugin) {
-            var word = plugin.word,
+            var word = json.word,
+                newWord = plugin.word,// Get new word from url. But not all url contains word!!
                 type = plugin.type,
-                url  = r.unescapedUrl;
+                url  = r.unescapedUrl;// used by YQL 
+            // Check if use new word
+            if (  newWord && newWord.toLowerCase().indexOf(word.toLowerCase())>=0   ){
+                word = newWord;
+            }
 
             console.log(D.LC, '[dict.formatter.auto.js] Decided using formatter: ', type, ' And key: ', word);
 
