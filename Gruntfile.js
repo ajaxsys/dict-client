@@ -183,7 +183,7 @@ module.exports = function(grunt) {
           sourceMap: 'target/dict/<%= pkg.name %>_ui.map',
           sourceMapRoot: '/',
           sourceMapPrefix: 1,
-          sourceMappingURL: '/dict/<%= pkg.name %>_ui.map',
+          sourceMappingURL: '<%= pkg.name %>_ui.map',
         },
         src: ['<%= concat.dict_ui.dest %>'],
         dest: 'target/dict/<%= pkg.name %>_ui.js'
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
           sourceMap: 'target/dict/<%= pkg.name %>_proxy.map',
           sourceMapRoot: '/',
           sourceMapPrefix: 1,
-          sourceMappingURL: '/dict/<%= pkg.name %>_proxy.map',
+          sourceMappingURL: '<%= pkg.name %>_proxy.map',
         },
         src: ['<%= concat.dict_proxy.dest %>'],
         dest: 'target/dict/<%= pkg.name %>_proxy.js'
