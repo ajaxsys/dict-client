@@ -11,6 +11,9 @@ var option = DICT_PLUGINS.google = {
 	'format': formatGoogle,
 };
 
+var SEARCH_SIZE = 8, searchStartPosition = 0, MAX_POSITION=40;
+
+
 // JSON sample
 // {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
 function formatGoogle(json) {
@@ -23,6 +26,8 @@ function formatGoogle(json) {
 }
 
 function firstMode(json) {
+    searchStartPosition = 0;
+
     console.log(D.LC, '[dict.formatter.google.js] format first start...');
     // If no existed formatter, show google result.
     var $resultDiv=$('<div id="__google_result__" style="margin-left:5px;" >');
@@ -42,6 +47,7 @@ function firstMode(json) {
 }
 
 function nextMode(json) {
+
     console.log(D.LC, '[dict.formatter.google.js] format next start...');
     // If no existed formatter, show google result.
 
@@ -67,18 +73,34 @@ function getContent(google_results){
         var $url = $('<div>').css('color','#006621')
                    .html(    (r.url.length>40)? (r.url.substring(0,40)+'...'):r.url    );
         // Combine all above
+
         $resultList.append(  $('<div>').append($lnk).append($content).append($url).append('<hr />')  );
+    }
+
+    if (searchStartPosition<MAX_POSITION){
+        var nextFlg = '<div class="__toBeReplace__" style="text-align:center">loading...</div>';
+        $('.__toBeReplace__').replaceWith('<hr />');
+        $('hr:last', $resultList).replaceWith(nextFlg);
     }
     return $resultList;
 }
 
 function registOnceOnScrollBottomForNextPage(){
     console.log(D.LC, '[dict.formatter.google.js] Regist event on scroll to bottom page.');
+    // Next search index
+    searchStartPosition+=SEARCH_SIZE;
+    if (searchStartPosition>=MAX_POSITION){
+        console.log(D.LC, '[loaders/formatter.google.js] Reach MAX search results. SearchStartPosition:',searchStartPosition);
+        $('.__toBeReplace__').replaceWith('<hr />');
+        return; // Stop Regist! Google seams return only max ~60.
+    }
+    console.log(D.LC, '[loaders/formatter.google.js] Next SearchStartPosition on page bottom:',searchStartPosition);
+
     // callback func called in dict.proxy.js
     D.triggerOnceOnScrollBottom = function(){
-        console.log(D.LC, '[dict.formatter.google.js] Regist event on scroll to bottom page fired.');
+        console.log(D.LC, '[dict.formatter.google.js] Event on registed on scroll to bottom page is fired.');
         // Use key word in search box
-        D.queryGoogleMore();
+        D.queryGoogleMore(searchStartPosition);
     }
 }
 

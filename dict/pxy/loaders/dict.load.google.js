@@ -14,21 +14,14 @@ var D=$.dict_extend({
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
 var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=jp";
-var SEARCH_SIZE = 8, searchStartPosition = 0, MAX_POSITION=40, DEFALUT_NEXT_LOADER='weblio';
+var SEARCH_SIZE = 8, DEFALUT_NEXT_LOADER='weblio';
 
 /*
  * Loading more search result
  */
-function queryGoogleMoreResults(){
+function queryGoogleMoreResults(searchStartPosition){
     var word = oldword; // always use first search key
     var type = 'google';
-
-    searchStartPosition+=SEARCH_SIZE;
-    if (searchStartPosition>=MAX_POSITION){
-        console.log(D.LC, '[loaders/dict.load.google.js] Reach MAX search results: ', word, '.searchStartPosition:',searchStartPosition);
-        return; // Google seams return only max ~60.
-    }
-    console.log(D.LC, '[loaders/dict.load.google.js] Load more: ', word, '.searchStartPosition:',searchStartPosition);
 
     ajax=$.jsonp({
         'data': {'q':word,'rsz':SEARCH_SIZE,'start':searchStartPosition},
@@ -41,7 +34,7 @@ function queryGoogleMoreResults(){
             data.word=word;
             data.type=type; // always google
 
-            console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load more success! Call formatter.');
+            console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load more success! Call formatter. searchStartPosition=', searchStartPosition);
             var result = window.DICT_format(data);
         },
         'beforeSend': doNothing,
@@ -59,7 +52,6 @@ function queryGoogle(word, type, opt){
     // Init
     console.log(D.LC, '[loaders/dict.load.google.js] Last search:' + oldword);
     oldword = word;// backup
-    searchStartPosition = 0; // reset when first search
 
     // Option
     var defaultOpt = {
@@ -75,7 +67,7 @@ function queryGoogle(word, type, opt){
     }
 
     console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API);
-    console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',searchStartPosition);
+    console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',0);
 
     // [1] Check cache
     var cache = D.getCache('GOOGLE_CACHE', searchKey);
@@ -96,7 +88,7 @@ function queryGoogle(word, type, opt){
           'word':word,
           'type':type,
       },
-      'data': {'q':searchKey,'rsz':SEARCH_SIZE,'start':searchStartPosition},
+      'data': {'q':searchKey,'rsz':SEARCH_SIZE,'start':0},
       'url': GOOGLE_SEARCH_API,
       'success': function(r){
           var googleResultJsonArray=r.responseData;

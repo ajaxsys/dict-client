@@ -52,7 +52,7 @@ function allCompleteAction(word, type) {
     setTimeout(function(){
         $searchBox.val(word);
         if (D.PXY_IFRAME_MODE)
-          $searchBox.select();
+          $searchBox.focus().select();
         else
           $('#__go_top__').focus();
         $result.show();
