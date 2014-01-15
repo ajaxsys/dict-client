@@ -40,7 +40,7 @@ function queryDict(word, type, url){
     //http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fgoo.gl%2FtUzHPI%22%20as%20html.src%3B%0A%20%20%20%20%20%20select%20*%20from%20html.src%20where%20%0A%20%20%20%20%20%20%20%20url%3D%22http%3A%2F%2Fja.wikipedia.org%2Fwiki%2FYahoo!%E2%80%8E%22%20&format=json&callback=
 
     // http://otherhost/dict/t/hello/?callback=DICT_format
-    var yql = "https://query.yahooapis.com/v1/public/yql?q=use%20'http%3A%2F%2Fgoo.gl%2FtUzHPI'%20as%20html.src%3Bselect%20*%20from%20html.src%20where%20url%3D'"
+    var yql = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='"
               +encodeURIComponent(url)+"'&format=json";
 
     console.log(D.LC, '[loaders/dict.load.yql.js] JSONP load(via YQL): ', url);

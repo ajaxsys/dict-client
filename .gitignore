@@ -2,5 +2,7 @@
 *.pyc
 .gaedata
 
+deploy-*
+
 node_modules
 target
