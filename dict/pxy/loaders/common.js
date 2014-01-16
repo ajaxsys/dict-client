@@ -29,7 +29,7 @@ var options = {
           this.dict._startTime = $.now();
           $searchBox.val(this.dict.word + ' is loading...');
           $('html,body').animate({scrollTop: 0},'fast');
-          $result.hide();
+          $result.css({opacity:"0.5"});
       },
       'complete': completeDefine,
       '_complete': completeDefine,
@@ -55,7 +55,7 @@ function allCompleteAction(word, type) {
           $searchBox.focus().select();
         else
           $('#__go_top__').focus();
-        $result.show();
+        $result.css({opacity:"1.0"});
         $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
     },300);
     console.log(D.LC, '[loaders/common.js] ============Complete Query. [key=',word,'& type=', type, ']=============' );

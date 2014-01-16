@@ -177,27 +177,42 @@ module.exports = function(grunt) {
         src: ['<%= concat.dict_bookmarklet.dest %>'],
         dest: 'target/dict/<%= pkg.name %>_bookmarklet.js'
       },
+      // Change for old browsers: "//# sourceMappingURL" to "//@ sourceMappingURL"
+      // Or fix it in "node_modules\grunt-contrib-uglify"
       dict_ui: {
         options: {
           banner: '<%= banner %>',
-          sourceMap: 'target/dict/<%= pkg.name %>_ui.map',
-          sourceMapRoot: '/',
-          sourceMapPrefix: 1,
+          sourceMap: getMapPath,
           sourceMappingURL: '<%= pkg.name %>_ui.map',
+          sourceMapIncludeSources: true,
+          sourceMapPrefix: 2,
+          sourceMapRoot: '/build'
         },
-        src: ['<%= concat.dict_ui.dest %>'],
-        dest: 'target/dict/<%= pkg.name %>_ui.js'
+        files: {'target/dict/<%= pkg.name %>_ui.js': ['<%= concat.dict_ui.dest %>'],}
       },
       dict_proxy: {
         options: {
           banner: '<%= banner %>',
-          sourceMap: 'target/dict/<%= pkg.name %>_proxy.map',
-          sourceMapRoot: '/',
-          sourceMapPrefix: 1,
-          sourceMappingURL: '<%= pkg.name %>_proxy.map',
+          sourceMap: getMapPath, // where to output sourcemap
+          // If not set, it will be NG: sources="target/dict/dict_proxy.map" in map
+          sourceMappingURL: '<%= pkg.name %>_proxy.map', 
+          sourceMapIncludeSources: true, // Not work???
+          // 1) + 2) = /build/dict_proxy.map (source path)
+          sourceMapPrefix: 2,      // 1) target/dict/dict_proxy.map --> /dict_proxy.map (remove target/dict)
+          sourceMapRoot: '/build', // 2) As source & minified file not in same folder. Source in `/build`
         },
-        src: ['<%= concat.dict_proxy.dest %>'],
-        dest: 'target/dict/<%= pkg.name %>_proxy.js'
+        files: {
+            'target/dict/<%= pkg.name %>_proxy.js': ['<%= concat.dict_proxy.dest %>'],
+        },
+        /* // Same as above
+        files: [{
+            expand: true,
+            cwd :  'target/build/', // Remove 'target/' in map files
+            src : ['<%= pkg.name %>_proxy.js'],
+            dest:  'target/dict/',
+            filter: 'isFile',
+        }],
+        */
       },
       dict_ui_clean: {
         options: {
@@ -347,6 +362,8 @@ module.exports = function(grunt) {
     }
     return arr;
   }
+
+  function getMapPath(path) { return path.replace(/.js/,".map")}
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-clean');
