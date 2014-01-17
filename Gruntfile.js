@@ -348,6 +348,27 @@ module.exports = function(grunt) {
       //   tasks: ['jshint:test']
       // }
     },
+
+    htmlbuild: {
+      dist: {
+        src:  'target/dict/proxy.html',
+        dest: 'target/dict/proxy-min.html',
+        options: {
+          beautify: false,// Keep tab
+          relative: true,
+          scripts: {
+            dict_proxy: 'target/dict/dict_proxy.js',
+          },
+          styles: {
+            dict_proxy: 'target/dict/dict_proxy.css',
+          },
+          data: {
+            // Data to pass to templates
+            version: '<%= pkg.version %>',
+          },
+        }
+      }
+    },
   
 
   }); // End grunt.initConfig
@@ -380,6 +401,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sprite-packer');
   grunt.loadNpmTasks("grunt-remove-logging");
 
+  grunt.loadNpmTasks('grunt-html-build');
+
   // TODO
   //grunt.loadNpmTasks('grunt-imagine');
   //grunt.loadNpmTasks('grunt-contrib-qunit');
@@ -400,11 +423,14 @@ module.exports = function(grunt) {
   // CSS build task.
   grunt.registerTask('dist-css', ['cssmin']);
 
+  // HTML build task.
+  grunt.registerTask('dist-html', ['htmlbuild']);
+
   // Sprite 
   grunt.registerTask('sprite', ['spritepacker','stylus']);
 
   // Full build task.
-  grunt.registerTask('dist', ['clean', 'copy','concat', 'dist-css', 'dist-js']);
+  grunt.registerTask('dist', ['clean', 'copy','concat', 'dist-css', 'dist-js', 'dist-html']);
 
   // Default task.
   grunt.registerTask('default', ['dist']);
