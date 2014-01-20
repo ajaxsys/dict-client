@@ -22,7 +22,7 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
     // Use other plugins if matched in google search result
     for (i in json.results) {
         r = json.results[i];
-        var plugin = detectExistedPluginByPrefix( decodeURIComponent(r.unescapedUrl) );// Need unescapedUrl
+        var plugin = detectExistedPluginByPrefix( r.unescapedUrl );// Need unescapedUrl
         if (plugin) {
             var word = json.word,
                 newWord = plugin.word,// Get new word from url. But not all url contains word!!
