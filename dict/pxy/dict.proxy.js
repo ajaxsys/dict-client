@@ -17,7 +17,7 @@ var url=window.location.href,
         },
     });
 
-var $types,$searchBox;
+var $types,$searchBox,$menuBtn;
 var WAIT_DEBUG=2000;
 
 // onload
@@ -26,6 +26,7 @@ $(function(){
     // init outter var here for loaded context
     $types = $('#__dict_types__');
     $searchBox = $('#__search__');
+    $menuBtn=$('#__dict_collapse__');
 
     updateOptionMenu(D.getOptionFromCookie().dict.dict_type);
     reloadWhenDictOptionChanged();
@@ -108,8 +109,8 @@ function reloadWhenDictOptionChanged(){
             // Reload dict
             D.loadQuery($searchBox.val(), new_dict);
         }
-        e.preventDefault();
-        return;// NG: return false. It will stop menu hide.
+        $menuBtn.click(); // Hide menu
+        return false;// Return false will stop event.
     });
 }
 
