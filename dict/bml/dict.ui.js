@@ -188,9 +188,10 @@ function resetPositionWhenOverflow($win){
     if (!$win || $win.length<=0){
         return;
     }
-    var MARGIN=300;
-    var W=$win.position().left+MARGIN,
-        H=$win.position().top+MARGIN,
+    var MARGIN_LEFT=$win.width(),
+        MARGIN_TOP =$win.height();
+    var W=$win.position().left+MARGIN_LEFT,
+        H=$win.position().top+MARGIN_TOP,
         brsSize = getBrowserSize(),
         MAX_W=brsSize.width,
         MAX_H=brsSize.height,
@@ -198,8 +199,8 @@ function resetPositionWhenOverflow($win){
         isHOver = (H > MAX_H) ;
     console.log(D.LC, '[dict.ui.js] W:', W,' H:',H,'MAX_W:',MAX_W,' MAX_H:',MAX_H,'isWOver:',isWOver,' isHOVer:',isHOver);
     if (isWOver||isHOver) {
-        var width = isWOver?(MAX_W-MARGIN):W-MARGIN ,
-            height= isHOver?(MAX_H-MARGIN):H-MARGIN ;
+        var width = isWOver?(MAX_W-MARGIN_LEFT):W-MARGIN_LEFT ,
+            height= isHOver?(MAX_H-MARGIN_TOP):H-MARGIN_TOP ;
         if (width<0) width=0;
         if (height<0) height=0;
             $.moveWindow(DICT_ID,width,height);
