@@ -107,14 +107,14 @@ module.exports = function(grunt) {
           //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
-          // formatter
+          // formatter(Notice: Priority - Decide which is use, when google show both results in bellow formatter.)
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',
           'dict/pxy/formaters/dict.formatter.auto.js',
           'dict/pxy/formaters/dict.formatter.google.js',
+          'dict/pxy/formaters/dict.formatter.weblio.js',
           'dict/pxy/formaters/dict.formatter.wiki_jp.js',
           'dict/pxy/formaters/dict.formatter.ewords.js',
-          'dict/pxy/formaters/dict.formatter.weblio.js',
           //'dict/pxy/formaters/dict.formatter.weblio_small.js',
           // main (MUST defined at last)
           'dict/pxy/dict.proxy.js', 
