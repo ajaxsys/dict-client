@@ -9,7 +9,8 @@
 (function($){
 
 // for test & hook
-var DICT_ID = '__dict_window_id__';
+var DICT_ID = '__dict_window_id__',
+    DICT_ADD_HIGHT = 41; // height not correct when $win.height()
 var D = $.dict_extend({
     'DICT_ID' : DICT_ID,
 });
@@ -150,7 +151,7 @@ function createNewWindow(title){
     var winSize = getWindowSizeFromCookie(),
         brsSize = getBrowserSize(),
         left = brsSize.width-winSize.width,
-        top = brsSize.height-winSize.height-41;
+        top = brsSize.height-winSize.height-DICT_ADD_HIGHT;
 
     console.log(D.LC, '[dict.ui.js] Win width: ', winSize.width, ' height: ', winSize.height, ' Top: ', top, ' left: ', left);
 
@@ -189,7 +190,7 @@ function resetPositionWhenOverflow($win){
         return;
     }
     var MARGIN_LEFT=$win.width(),
-        MARGIN_TOP =$win.height();
+        MARGIN_TOP =$win.height()+DICT_ADD_HIGHT;
     var W=$win.position().left+MARGIN_LEFT,
         H=$win.position().top+MARGIN_TOP,
         brsSize = getBrowserSize(),
