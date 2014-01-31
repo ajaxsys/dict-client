@@ -25,7 +25,7 @@ var DICT_JID = '#'+DICT_ID,
 var _thisIP,
     _lastSearchWord;
 
-console.log(D.LC, '[dict.ui.js] Loading ui resource...');
+console.log(D.LC+=10000, '[dict.ui.js] Loading ui resource...');
 D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 
 registTextSelectionEvent();
