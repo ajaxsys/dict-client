@@ -27,6 +27,7 @@ function customizePage($target){
     // .division3: info of auth
     $('.ad,.tab2,.division3,header,footer,aside,p.btn',$target).remove();
     $('.close', $target).removeClass('close').addClass('open');
+    $('ul', $target).removeClass('listArrow');
     // Too big title
     //$('.ttl1',$target).css('fontSize','22px');
 

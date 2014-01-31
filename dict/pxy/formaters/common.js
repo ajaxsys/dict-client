@@ -71,12 +71,13 @@ function cleanLinks($$, prefixes, host, isCleanLinkByText) {
                     word = m[1]; // Guess text from URL
                 }
                 $(this).attr('href', selfLink + m[1] + '?SELF_MODE'  )
-                       .attr('target', '_self');
+                       .attr('target', '_self')
+                       .attr('o-href', href);
                 return;
             } else {
                 $(this).attr('target','_blank');
                 // http://otherhost/... or //otherhost
-                if (href.indexOf('//')<7){ // <7 skip https://
+                if (href.indexOf('//') === -1 || href.indexOf('//')>7){ // <7 skip https://
                     $(this).attr('href', host+href);
                 }
             }
