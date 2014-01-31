@@ -70,6 +70,11 @@ function getUrlHashValue() {
 }
 
 function getSelectedDict(){
+    var type = D.getParamFromURL('type');
+    if (type) {
+        console.log(D.LC, '[dict.loader.js] Use direct search type: ',type);
+        return type;
+    }
     return $('#__dict_types__ li.active>a').attr('value');
 }
 
@@ -78,8 +83,7 @@ function isNotKey(word){
     return word.indexOf('__') !== 0;
 }
 
-
-/* // NO USE
+/* // NO USE: because search will redirect page to blank
 function searchToObject() {
   var pairs = window.location.search.substring(1).split("&"),
     obj = {},

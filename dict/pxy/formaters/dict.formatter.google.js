@@ -7,7 +7,7 @@
 
 /////////// Main Entry. /////////////
 var D=$.dict_extend();
-var option = DICT_PLUGINS.google = {
+DICT_PLUGINS.google = {
 	'format': formatGoogle,
 };
 
@@ -61,19 +61,28 @@ function nextMode(json) {
 
 function getContent(google_results){
     var $resultList = $('<div>');
+    var $lnk_ext = $('<a target="_blank" class="external">');
     for (var i in google_results) {
-        var r = google_results[i];
+        // 0) plugin detect
+        var r = google_results[i],
+            plugin = D.detectExistedPluginByPrefix(r),
+            // NG: ?type=xxx#word  : it will redirect the page to blank
+            href = plugin ? ("#" + plugin.word + "?type=auto_" + plugin.type) : r.unescapedUrl, 
+            $lnk = plugin ? $('<a target="_self">') : $lnk_ext.clone();
+
         // 1) title link
-        var $lnk = $('<a target="_blank">');
-        $lnk.attr('href',r.unescapedUrl).text(r.titleNoFormatting).css('color','blue');
+        $lnk.attr('href',href).text(r.titleNoFormatting).css('color','blue');
+
         // 2) content text
         var $content = $('<div>');
         $content.html(r.content.replace(/<script|script>/g,''));
-        // 3) url
-        var $url = $('<div>').css('color','#006621')
-                   .html(    (r.url.length>40)? (r.url.substring(0,40)+'...'):r.url    );
-        // Combine all above
 
+        // 3) url
+        var url = (r.url.length>40)? (r.url.substring(0,40)+'...')  :  r.url,
+            $url = $('<div>').css('color','#006621')
+                   .append(    url   ).append( plugin ?  $lnk_ext.clone().attr('href',url).html(' ')  : '' );
+
+        // Combine all above
         $resultList.append(  $('<div>').append($lnk).append($content).append($url).append('<hr />')  );
     }
 

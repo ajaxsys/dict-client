@@ -14,6 +14,7 @@ var D=$.dict_extend({
     'getOptionFromCookie' : getOptionFromCookie,
     'setOptionToCookie' : setOptionToCookie,
     'loadResource' : loadResource,
+    'getParamFromURL' : getParamFromURL,
     'Queue': Queue,
     'Stack': Stack,
 });
@@ -72,6 +73,15 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
     
     __DICT__.appendTag(tag);
 }
+
+
+function getParamFromURL(param){
+    console.log(D.LC, '[_cmn/dict.util.js] Get params from URL.');
+    var urlPatern = new RegExp(param + "=([^&?]+)");
+    var m = urlPatern.exec(window.location.href);
+    return m? m[1] : null;
+}
+
 
 
 //////////// Data Type /////////////

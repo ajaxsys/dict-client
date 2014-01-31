@@ -26,10 +26,10 @@ var options = {
       },
       'timeout': D.TIME_OUT,
       'beforeSend': function(){
+          $result.css({opacity:"0.5"});
           this.dict._startTime = $.now();
           $searchBox.val(this.dict.word + ' is loading...');
           $('html,body').animate({scrollTop: 0},'fast');
-          $result.css({opacity:"0.5"});
       },
       'complete': completeDefine,
       '_complete': completeDefine,
