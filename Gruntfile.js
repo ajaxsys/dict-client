@@ -71,7 +71,7 @@ module.exports = function(grunt) {
       dict_ui: {
         src: [
           // lib
-          'lib/jquery-1.11.1.js',
+          'lib/jquery-1.11.0.js',
           'lib/jquery.cookie.js',
           'lib/jquery.selection.js',
           'lib/jquery.plaintext.js',
