@@ -92,7 +92,7 @@ module.exports = function(grunt) {
       dict_proxy: {
         src: [
           // lib
-          'lib/jquery-1.10.2.js',
+          'lib/jquery-1.11.0.js',
           'lib/jquery.cookie.js',
           'lib/jquery.jsonp.js',
           'lib/bootstrap/js/bootstrap.js',
