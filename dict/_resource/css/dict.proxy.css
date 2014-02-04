@@ -1,12 +1,6 @@
 .__dict__ hr{border:0;height:1px;background-image:-webkit-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,0));background-image:-moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,0));background-image:-ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,0));background-image:-o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.75),rgba(0,0,0,0))}
 .navbar{min-width:280px}
 .nav-header{font-weight:bold}
-.__navi_div__{border-radius:3px;background-color:rgba(255,255,255,0.5);cursor:pointer;width:auto}
-.__navi_on__{background:transparent url('default/sprites.png') no-repeat -26px -29px; width: 20px; height:20px;}
-.__navi_off__{background:transparent url('default/sprites.png') no-repeat -2px -29px; width: 20px; height:20px;}
-.__window_go_top__{background:transparent url('default/sprites.png') no-repeat -22px -53px; width: 16px; height:16px;;cursor:pointer}
-.__window_go_next__{background:transparent url('default/sprites.png') no-repeat -42px -53px; width: 16px; height:16px;;cursor:pointer}
-.__window_go_back__{background:transparent url('default/sprites.png') no-repeat -2px -53px; width: 16px; height:16px;;cursor:pointer}
 #__navi__ a{text-decoration:none;font:14px "Helvetica Neue",Helvetica,Arial,sans-serif}
 #__navi__ input{font:14px "Helvetica Neue",Helvetica,Arial,sans-serif}
 #__explain_wrapper__{margin-top:20px}

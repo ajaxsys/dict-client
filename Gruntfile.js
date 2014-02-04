@@ -44,7 +44,7 @@ module.exports = function(grunt) {
           // a value of 2 will set it to become an error. 
           import: 2
         },
-        src: ['dict/_resource/css/dict.common.css']
+        src: ['dict/_resource/css/*.css']
       },
       lax: {
         options: {
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           // Otherwise all rules are considered warnings.
           import: false
         },
-        src: ['dict/_resource/css/dict.common.css']
+        src: ['dict/_resource/css/*.css']
       }
     },
 
@@ -126,14 +126,14 @@ module.exports = function(grunt) {
         src: [
           'lib/jwe/jquery.windows-engine.css',
           'lib/tooltip/tipsy.css',
-          'dict/_resource/css/dict.common.css',
+          'dict/_resource/css/dict.ui.css',
         ],
         dest: 'target/build/<%= pkg.name %>_ui.css'
       },
       dict_proxy_css: {
         src: [
           'lib/bootstrap/css/bootstrap.css',
-          'dict/_resource/css/dict.common.css',
+          'dict/_resource/css/dict.proxy.css',
         ],
         dest: 'target/build/<%= pkg.name %>_proxy.css'
       }
@@ -310,7 +310,8 @@ module.exports = function(grunt) {
           import : ['dict-sprite'],
         },
         files: {
-          'dict/_resource/css/dict.common.css': ['dict/_resource/css/dict.common.styl' ],    // compile and concat into single file
+          'dict/_resource/css/dict.proxy.css': ['dict/_resource/css/dict.proxy.styl' ],
+          'dict/_resource/css/dict.ui.css': ['dict/_resource/css/dict.ui.styl' ],
           'lib/jwe/jquery.windows-engine.css': ['lib/jwe/jquery.windows-engine.styl'], 
         }
       }
@@ -418,10 +419,10 @@ module.exports = function(grunt) {
   grunt.registerTask('test', testSubtasks);
 
   // JS build task.
-  grunt.registerTask('dist-js', ['removelogging','jshint','uglify']);
+  grunt.registerTask('dist-js', ['jshint','removelogging','uglify']);
 
   // CSS build task.
-  grunt.registerTask('dist-css', ['cssmin']);
+  grunt.registerTask('dist-css', ['cssmin']); // 'sprite' should manually because it depends imagick
 
   // HTML build task.
   grunt.registerTask('dist-html', ['htmlbuild']);
