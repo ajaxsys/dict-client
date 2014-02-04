@@ -9,7 +9,7 @@ var D = $.dict_extend();
 $.dict_extend({
     'getCache': getCache,
     'setCache': setCache,
-    'MAX_HIST': 10, // Cache of search result
+    'MAX_HIST': 30, // Cache of search result
     // Add cache here
     _cache: {
         'GAE_CACHE': new D.Queue(), // Datatype defined in _cmn/dict.util.js
