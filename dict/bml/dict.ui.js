@@ -267,7 +267,7 @@ function getWindowSizeFromCookie(){
 // Get static resource like `iframe/css` URL
 function static_host(){
     var dev_ip = 'http://127.0.0.1:8443',
-        rls_ip = 'https://dict-admin.appspot.com';
+        rls_ip = D.PROTOCAL + '//dict-admin.appspot.com';
 
     // Static IP
     // First time only
