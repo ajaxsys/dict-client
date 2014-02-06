@@ -116,9 +116,11 @@ function createOrUpdateWindow($obj, text) {
         $.updateWindowTitle(DICT_ID, text);
     }
     // Toggle it
-    if (text) {
-        $dict.fadeIn();// Show it when window reopen or first search
-    }else{
+    if (text && !$dict.is(':visible') ) {
+        $dict.fadeIn(function(){
+            resetPositionWhenOverflow($dict);
+        });// Show it when window reopen or first search
+    }else if (!text){
         $dict.hide(); // Hide it when init(pre-load)
     }
 

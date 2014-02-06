@@ -51,10 +51,13 @@ function completeDefine(){
 function allCompleteAction(word, type) {
     setTimeout(function(){
         $searchBox.val(word);
-        if (D.PXY_IFRAME_MODE)
+
+/*        if (D.PXY_IFRAME_MODE)
           $searchBox.focus().select();
         else
-          $('#__go_top__').focus();
+          $('#__go_top__').focus();    // Stop focus becase user can not copy the word       */
+        $searchBox.select();
+
         $result.css({opacity:"1.0"});
         $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
     },300);
