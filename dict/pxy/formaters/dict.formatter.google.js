@@ -71,7 +71,7 @@ function getContent(google_results){
             $lnk = plugin ? $('<a target="_self">') : $lnk_ext.clone();
 
         // 1) title link
-        $lnk.attr('href',href).text(r.titleNoFormatting).css('color','blue');
+        $lnk.attr('href',href).html(r.title).css('color','blue');
 
         // 2) content text
         var $content = $('<div>');
