@@ -86,7 +86,7 @@ function getContent(google_results){
         $resultList.append(  $('<div>').append($lnk).append($content).append($url).append('<hr />')  );
     }
 
-    if (searchStartPosition<MAX_POSITION){
+    if (searchStartPosition<MAX_POSITION && google_results.length == SEARCH_SIZE){
         var nextFlg = '<div class="__toBeReplace__" style="text-align:center">loading...</div>';
         $('.__toBeReplace__').replaceWith('<hr />');
         $('hr:last', $resultList).replaceWith(nextFlg);
