@@ -7,7 +7,7 @@
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from wiki is SoSlow&NotGood -vs- from google.
 DICT_PLUGINS.auto_wiki_jp = {
-    'autoKey'   : 'site:ja.wikipedia.org',    // a key will append to search key when `Auto Mode`
+    'autoKey'   : 'site:wikipedia.org',    // a key will append to search key when `Auto Mode`
     'nextLoader': 'wiki_jp', // same as defined bellow.
 }
 var option = DICT_PLUGINS.wiki_jp = {

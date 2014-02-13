@@ -75,7 +75,7 @@ function getSelectedDict(){
         console.log(D.LC, '[dict.loader.js] Use direct search type: ',type);
         return type;
     }
-    return $('#__dict_types__ li.active>a').attr('value');
+    return $('#__dict_type__ li.active>a').attr('value');
 }
 
 

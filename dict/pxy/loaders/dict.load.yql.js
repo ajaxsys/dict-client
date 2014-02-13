@@ -11,7 +11,7 @@ $.dict_extend({
     'queryDict': queryDict, // will override dict.load.gae.js
 });
 
-var ajax, oldword;
+var ajax;
 
 function queryDict(word, type, url){
     // URL already get from google
@@ -21,14 +21,10 @@ function queryDict(word, type, url){
         return;
     }
 
-    // Init
-    console.log(D.LC, '[loaders/dict.load.yql.js] Last search:' + oldword);
-    oldword = word;// backup
-
-    // Check cache
-    var cache=D.getCache('YQL_CACHE', word, type);
+    // Check cache, YQL use url as the key
+    var cache=D.getCache('YQL_CACHE', url); 
     if (cache) {
-        console.log(D.LC, '[loaders/dict.load.yql.js] Load from dict jsonp cache', type, word);
+        console.log(D.LC, '[loaders/dict.load.yql.js] Load from dict jsonp cache(url/type/word/lang)', url, type, word, D.lang);
         // foramt start
         window.DICT_format(cache, type);
         D.complete(word, type);
@@ -68,8 +64,12 @@ function queryDict(word, type, url){
                console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
                return;
            }
+           data.key = url; // YQL only need url as the key
+
+           // Fro formatter
            data.word = word;
            data.type = type;
+
            // add to cache
            D.setCache('YQL_CACHE', data);
           

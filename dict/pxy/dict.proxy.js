@@ -17,19 +17,22 @@ var url=window.location.href,
         },
     });
 
-var $types,$searchBox,$menuBtn;
+var $types,$langs,$searchBox,$menuBtn;
 var WAIT_DEBUG=2000;
 
 // onload
 console.log(D.LC, '[dict.proxy.js] iframe URL: ',window.location.href);
 $(function(){
     // init outter var here for loaded context
-    $types = $('#__dict_types__');
+    $types = $('#__dict_type__');
+    $langs = $('#__dict_lang__');
     $searchBox = $('#__search__');
     $menuBtn=$('#__dict_collapse__');
 
-    updateOptionMenu(D.getOptionFromCookie().dict.dict_type);
-    reloadWhenDictOptionChanged();
+    updateOptionMenu(D.getOptionFromCookie().dict.dict_lang, $langs);
+    updateOptionMenu(D.getOptionFromCookie().dict.dict_type, $types);
+    reloadWhenDictOptionChanged($langs);
+    reloadWhenDictOptionChanged($types);
 
     $(window).on('hashchange', function(e){
         var origEvent = e.originalEvent;
@@ -95,46 +98,65 @@ function registScrollBottomEvent(){
 }
 
 
-function reloadWhenDictOptionChanged(){
-    var $opt_lnks = $('a',$types);
+function reloadWhenDictOptionChanged($dropdown){
+    var $opt_lnks = $('a',$dropdown);
     $opt_lnks.click(function(e){
         var $this_opt = $(this).parent();
         if ($this_opt.hasClass('active') || $this_opt.hasClass('disabled')) {
             // No changed
         } else {
-            var new_dict=$(this).attr('value');
+            // Option changed
+            var new_opt=$(this).attr('value');
             // reset menu
-            updateOptionMenu(new_dict);
-            // Save to cookie
-            saveDictValToCookies(new_dict);
+            updateOptionMenu(new_opt, $dropdown);
+
+            // Get Cookie Key: 
+            //   __dict_type__ --> dict_type
+            //   __dict_lang__ --> dict_lang
+            var name = $dropdown.attr('id').replace(/__/g,''); 
+            if (!name){
+                console.log(D.LC, '[dict.proxy.js] [Error] Unexpected cookie name', name);
+            }else{
+                // Save to cookie
+                saveDictValToCookies(name, new_opt);
+            }
+
             // Reload dict
-            D.loadQuery($searchBox.val(), new_dict);
+            D.loadQuery($searchBox.val());
         }
         $menuBtn.click(); // Hide menu
         return false;// Return false will stop event.
     });
 }
 
-function updateOptionMenu(val) {
-    val = val || 'auto';
-    // if ($('a[value="'+val+'"]',$types).length===0){
-    //     return;
-    // }
-    $('li',$types).each(function(){
+function updateOptionMenu(val, $dropdown) {
+
+    console.log(D.LC, '[dict.proxy.js] Select menu option:', val);
+    // default 1st option
+    val = val || $('li:first > a',$dropdown).attr('value'); 
+
+    $('li',$dropdown).each(function(){
         var $lnk = $('a', this);
         if (val == $lnk.attr('value')){
             $(this).addClass('active');
             // Update header text
-            $('#__dict_selected__ > span').text($lnk.text());
+            $(this).closest('.dropdown').find('.dropdown-toggle > span').text($lnk.text());
         } else {
             $(this).removeClass('active');
         }
     });
+
+    D.lang = getSelectedLang();
 }
 
-function saveDictValToCookies(val){
+function getSelectedLang(){
+    return $('#__dict_lang__ li.active>a').attr('value') || D.lang;
+}
+
+
+function saveDictValToCookies(key, val){
     var opt = D.getOptionFromCookie();
-    opt.dict.dict_type = val;
+    opt.dict[key] = val;
     D.setOptionToCookie(opt);
 }
 

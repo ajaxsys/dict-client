@@ -13,7 +13,7 @@ var D=$.dict_extend({
 
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
-var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=jp";
+var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=";
 var SEARCH_SIZE = 8, DEFALUT_NEXT_LOADER='weblio';
 
 /*
@@ -25,7 +25,7 @@ function queryGoogleMoreResults(searchStartPosition){
 
     ajax=$.jsonp({
         'data': {'q':word,'rsz':SEARCH_SIZE,'start':searchStartPosition},
-        'url': GOOGLE_SEARCH_API,
+        'url': GOOGLE_SEARCH_API + D.lang,
         'success': function(r){
             var json=r.responseData;
             json.isNextMode=true;// google next mode.
@@ -66,11 +66,11 @@ function queryGoogle(word, type, opt){
       console.log(D.LC, '[loaders/dict.load.google.js] Redirect search key : ',word, '--->', searchKey);
     }
 
-    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API);
+    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API + D.lang);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',0);
 
     // [1] Check cache
-    var cache = D.getCache('GOOGLE_CACHE', searchKey);
+    var cache = D.getCache('GOOGLE_CACHE', [searchKey,type,D.lang].join('&')  );
     if (cache){
         console.log(D.LC, '[loaders/dict.load.google.js] Load from google jsonp cache', type, searchKey);
         // foramt start
@@ -89,7 +89,7 @@ function queryGoogle(word, type, opt){
           'type':type,
       },
       'data': {'q':searchKey,'rsz':SEARCH_SIZE,'start':0},
-      'url': GOOGLE_SEARCH_API,
+      'url': GOOGLE_SEARCH_API + D.lang,
       'success': function(r){
           var googleResultJsonArray=r.responseData;
           if (!googleResultJsonArray){
@@ -103,6 +103,10 @@ function queryGoogle(word, type, opt){
           googleResultJsonArray.word = word;
 
           var data = {};
+
+          // For cache
+          data.key = [searchKey,type,D.lang].join('&');
+
           data.src = googleResultJsonArray;
           data.word = searchKey;
           data.type=type; // "auto/google". Regist type used in format plugin

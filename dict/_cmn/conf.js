@@ -23,6 +23,7 @@ $.dict_extend({
     WORD_MAX_LENGTH: 50,// For word seletion, max length : "xxxxxxxx".length <= 50
     WORD_MAX_COUNT: 3,  // For word seletion, max support: "w1 w2 w3".split(" ").length<=3
     PROTOCAL : ("https:" === window.location.protocol)? "https:" : "http:",
+    lang: 'jp', // Default language
 });
 
 // TODO: User settings: From cookie or logined user.
