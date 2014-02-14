@@ -25,7 +25,7 @@ function doQuery(query, type){
         console.log(D.LC, '[dict.loader.js] [WARN] No Search Key.');
         return;
     }
-    type = type || getSelectedDict() || 'auto';
+    type = type || D.getSelectedType() || 'auto';
 
     var word = decodeURIComponent(query);
     console.log(D.LC, '[dict.loader.js] Decode search key:', query, ' -> ', word, ' | type=', type);
@@ -68,16 +68,6 @@ function getUrlHashValue() {
     else
         return '';
 }
-
-function getSelectedDict(){
-    var type = D.getParamFromURL('type');
-    if (type) {
-        console.log(D.LC, '[dict.loader.js] Use direct search type: ',type);
-        return type;
-    }
-    return $('#__dict_type__ li.active>a').attr('value');
-}
-
 
 function isNotKey(word){
     return word.indexOf('__') !== 0;

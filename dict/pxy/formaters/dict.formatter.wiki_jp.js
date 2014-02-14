@@ -11,9 +11,9 @@ DICT_PLUGINS.auto_wiki_jp = {
     'nextLoader': 'wiki_jp', // same as defined bellow.
 }
 var option = DICT_PLUGINS.wiki_jp = {
-    'host': '//ja.wikipedia.org',
-    'mobile_host': '//ja.m.wikipedia.org',
-    'prefix': [   /^http:\/\/ja\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
+    'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
+    'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
+    'prefix': [   /^http:\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
     'format': formatWikiJP,
     'removeTags': ['iframe','noscript','script'],
 };

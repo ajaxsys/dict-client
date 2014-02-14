@@ -15,6 +15,8 @@ var url=window.location.href,
         PXY_SELF_MODE : function (){
             return ( window.location.href.indexOf('SELF_MODE') > -1 );
         },
+        getSelectedLang: getSelectedLang,
+        getSelectedType: getSelectedType,
     });
 
 var $types,$langs,$searchBox,$menuBtn;
@@ -122,7 +124,8 @@ function reloadWhenDictOptionChanged($dropdown){
             }
 
             // Reload dict
-            D.loadQuery($searchBox.val());
+            D.lang = D.getSelectedLang();
+            D.loadQuery($searchBox.val(), D.getSelectedType());
         }
         $menuBtn.click(); // Hide menu
         return false;// Return false will stop event.
@@ -146,18 +149,29 @@ function updateOptionMenu(val, $dropdown) {
         }
     });
 
-    D.lang = getSelectedLang();
 }
-
-function getSelectedLang(){
-    return $('#__dict_lang__ li.active>a').attr('value') || D.lang;
-}
-
 
 function saveDictValToCookies(key, val){
     var opt = D.getOptionFromCookie();
     opt.dict[key] = val;
     D.setOptionToCookie(opt);
+}
+
+function getSelectedLang(){
+    return getSelectedMenu('lang') ||  D.lang;
+}
+function getSelectedType(){
+    return getSelectedMenu('type');
+}
+
+
+function getSelectedMenu(key){
+    var value = D.getParamFromURL(key);
+    if (value) {
+        console.log(D.LC, '[dict.loader.js] Use direct search : ',key, value);
+        return value;
+    }
+    return $('#__dict_' + key + '__ li.active>a').attr('value');
 }
 
 // END OF AMD
