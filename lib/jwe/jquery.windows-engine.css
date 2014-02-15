@@ -5,9 +5,9 @@
 #__dict_window_id__ .window-titleBar-content{height:23px;text-align:center;padding-top:3px;background:transparent url("default/top_mid.gif") repeat-x;cursor:move}
 #__dict_window_id__ .window-titleBar-leftCorner{background:transparent url('default/sprites.png') no-repeat -2px -2px; width: 9px; height:23px;;position:absolute;left:0;top:0}
 #__dict_window_id__ .window-titleBar-rightCorner{background:transparent url('default/sprites.png') no-repeat -15px -2px; width: 9px; height:23px;;position:absolute;right:0;top:0}
-#__dict_window_id__ .window-minimizeButton{background:transparent url('default/sprites.png') no-repeat -76px -21px; width: 14px; height:15px;;position:absolute;left:35px;top:5px;cursor:pointer}
-#__dict_window_id__ .window-maximizeButton{background:transparent url('default/sprites.png') no-repeat -76px -2px; width: 14px; height:15px;;position:absolute;left:55px;top:5px;cursor:pointer}
-#__dict_window_id__ .window-closeButton{background:transparent url('default/sprites.png') no-repeat -76px -40px; width: 14px; height:14px;;position:absolute;left:15px;top:5px;cursor:pointer}
+#__dict_window_id__ .window-minimizeButton{background:transparent url('default/sprites.png') no-repeat -33px -29px; width: 14px; height:15px;;position:absolute;left:35px;top:5px;cursor:pointer}
+#__dict_window_id__ .window-maximizeButton{background:transparent url('default/sprites.png') no-repeat -15px -29px; width: 14px; height:15px;;position:absolute;left:55px;top:5px;cursor:pointer}
+#__dict_window_id__ .window-closeButton{background:transparent url('default/sprites.png') no-repeat -51px -29px; width: 14px; height:14px;;position:absolute;left:15px;top:5px;cursor:pointer}
 #__dict_window_id__ .window-content{width:auto;height:100%;background-color:#fff;font-size:13px;font-family:verdana;color:#000;border-left:1px solid #aaa;border-right:1px solid #aaa;overflow:auto}
 #__dict_window_id__ .window-statusBar{width:auto;height:19px;position:relative;border-left:1px solid #aaa;overflow:hidden;background:transparent url("default/bottom_mid.gif") repeat-x}
-#__dict_window_id__ .window-resizeIcon{background:transparent url('default/sprites.png') no-repeat -50px -29px; width: 9px; height:19px;;position:absolute;right:0;bottom:0;cursor:se-resize}
+#__dict_window_id__ .window-resizeIcon{background:transparent url('default/sprites.png') no-repeat -2px -29px; width: 9px; height:19px;;position:absolute;right:0;bottom:0;cursor:se-resize}

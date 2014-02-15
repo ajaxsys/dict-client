@@ -55,7 +55,22 @@ $(function(){
     registRetry();
     registScrollBottomEvent();
     registDebug();
+    registClearBtn();
 });
+
+function registClearBtn() {
+ 
+  function tog(v){return v?'addClass':'removeClass';} 
+  
+  $(document).on('input click', 'input.__clearable__', function(){
+    $(this)[tog(this.value)]('__clearable_x__');
+  }).on('mousemove', 'input.__clearable_x__', function( e ){
+    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]('__clearable_onX__');
+  }).on('click', 'input.__clearable_onX__', function(){
+    $(this).removeClass('__clearable_x__ __clearable_onX__').val('');
+  });
+  
+}
 
 function registDebug(){
     var timer;
