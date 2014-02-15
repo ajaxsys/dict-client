@@ -57,6 +57,7 @@ function allCompleteAction(word, type) {
         else
           $('#__go_top__').focus();    // Stop focus becase user can not copy the word       */
         $searchBox.select();
+        $('#__go_top__').focus();
 
         $result.css({opacity:"1.0"});
         $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
