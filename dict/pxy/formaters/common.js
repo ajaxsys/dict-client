@@ -64,6 +64,8 @@ function cleanLinks($$, prefixes, host, isCleanLinkByText) {
 
     prefixes=[].concat(prefixes);
     console.log(D.LC, '[formatter/common.js] Prefix is: ' + prefixes);
+    console.log(D.LC, '[formatter/common.js] Clean link by ', isCleanLinkByText ? 'link text. ': 'guess url. ');
+
     $('a', $$).each(function(){
         var href = $(this).attr('href');
         if (!href){
@@ -75,11 +77,10 @@ function cleanLinks($$, prefixes, host, isCleanLinkByText) {
             var m = href.match(prefixRegexp);
             if (m && m.index===0 && m[1] ) {// m[1] is searchKey
                 var word;
+                
                 if (isCleanLinkByText) {
-                    console.log(D.LC, '[formatter/common.js] Clean link by text. ');
                     word = $(this).text();
                 } else {
-                    console.log(D.LC, '[formatter/common.js] Clean link by guess url. ');
                     word = m[1]; // Guess text from URL
                 }
                 $(this).attr('href', selfLink + m[1] + '?SELF_MODE'  )
