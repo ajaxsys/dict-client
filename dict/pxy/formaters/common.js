@@ -18,14 +18,26 @@ var D=$.dict_extend({
 function preformatCommonPage(pluginInfo, src, callback) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryStripTags(src, pluginInfo.removeTags);
-    if (pluginInfo.isCleanLinks !== false)
-        cleanLinks($target, pluginInfo.prefix, pluginInfo.host, pluginInfo.isCleanLinkByText);
+    if (pluginInfo.isCleanLinks !== false){
+        var host = gressHostIfRegexp(src, pluginInfo.host);
+        cleanLinks($target, pluginInfo.prefix, host, pluginInfo.isCleanLinkByText);
+    }
     if (typeof callback === 'function') {
         callback($target);
     }
     return $target;
 }
 
+function gressHostIfRegexp(src, hostStrOrRegexp){
+    var host=src.match(hostStrOrRegexp);
+    //return host ? host[0] : hostStrOrRegexp;
+    if (host){
+        console.log(D.LC, '[formatter/common.js] Host guessed by regexp:', host[0]);
+        return host[0];
+    }else{
+        return hostStrOrRegexp;
+    }
+}
 /*
 // Prevent browser preload image
 function jQueryWithoutTags(src, tags) {

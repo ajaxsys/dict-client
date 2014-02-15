@@ -29,7 +29,7 @@ $(function(){
     $types = $('#__dict_type__');
     $langs = $('#__dict_lang__');
     $searchBox = $('#__search__');
-    $menuBtn=$('#__dict_collapse__');
+    $menuBtn=$('#__dict_collapse_btn__');
 
     updateOptionMenu(D.getOptionFromCookie().dict.dict_lang, $langs);
     updateOptionMenu(D.getOptionFromCookie().dict.dict_type, $types);
@@ -127,7 +127,12 @@ function reloadWhenDictOptionChanged($dropdown){
             D.lang = D.getSelectedLang();
             D.loadQuery($searchBox.val(), D.getSelectedType());
         }
-        $menuBtn.click(); // Hide menu
+        // Hide menu
+        if ($menuBtn.is(':visible'))// [Fix, add check hidden] Bugs that can NOT go back to smartphone menu in FF
+            $menuBtn.click(); // Hide all 
+        else
+            $dropdown.parent().removeClass('open');
+
         return false;// Return false will stop event.
     });
 }
