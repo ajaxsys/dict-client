@@ -67,6 +67,10 @@ module.exports = function(grunt) {
               'dict/bml/loader.js'],
         dest: 'target/build/<%= pkg.name %>_bookmarklet.js'
       },
+      dict_userscript: {
+        src: ['dict/bml/loader_userscript.js'],
+        dest: 'target/dict/<%= pkg.name %>_userscript.js'
+      },
       // Dict UI (Also is a loader for proxy.js)
       dict_ui: {
         src: [
@@ -266,7 +270,6 @@ module.exports = function(grunt) {
                  .concat(copyToMulti('dict/_resource/sprite/','*.png', CONST.dest_css))
           .concat(copyToMulti('dict/_resource/img/',          ['*.*'], CONST.dest_css))
       }
-
     },
 
 /*
