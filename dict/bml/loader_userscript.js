@@ -11,12 +11,6 @@ if(isSkipFrame()) return;
 
 function isSkipFrame(){
     try {
-        var size = getBrowserSize();
-        //console.log("----------",window.top, window.location.href, size.width, size.height);
-
-        // DICT needs at least a 300*300 area
-        if (size.height>300 || size.width>300)
-            return false;
         
         // Top page, enable
         if (window == window.top)
@@ -27,8 +21,14 @@ function isSkipFrame(){
             return true;
         }
 
+        var size = getBrowserSize();
+        //console.log("----------",window.top, window.location.href, size.width, size.height);
+        // DICT needs at least a 300*300 area
+
         // Enable dict on other host iframe. 
-        if (window != window.top && window.top && window.top.location   &&   (window.location.host+window.location.port !== window.top.location.host+window.top.location.port) )
+        if ((window != window.top && window.top && window.top.location) &&   
+            (window.location.host+window.location.port !== window.top.location.host+window.top.location.port) &&
+            (size.height>300 || size.width>300))
             return false; 
     }catch(e){
         // Enable dict on other host iframe. (Only same host iframe can get top location)
