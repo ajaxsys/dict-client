@@ -99,19 +99,26 @@ function cleanLinks($$, prefixes, host, isCleanLinkByText) {
 }
 
 function jQueryStripTags(src, removeTags){
-    for (var i in removeTags){
-        src = stripTags(src, removeTags[i]);
-    }
+    // `src` attribute of img tag is special
+    // Images start loading image files (either live or from cache) once their src is set, whether or not they are attached to anything in the DOM.
+    src = src.replace(/src[ ]*=/g, 'src-disabled=');
+    src = stripTags(src, removeTags);
+    src = src.replace(/src-disabled=/g, 'src=');
     return $('<div>').append(src);
 }
-function stripTags(src, tag) {
+
+function stripTags(src, removeTags) {
     var div = document.createElement('div');
     div.innerHTML = src;
-    var tags = div.getElementsByTagName(tag);
-    var i = tags.length;
-    while (i--) {
-        tags[i].parentNode.removeChild(tags[i]);
+    for (var i in removeTags){
+        var tag = removeTags[i];
+        var tags = div.getElementsByTagName(tag);
+        var j = tags.length;
+        while (j--) {
+            tags[j].parentNode.removeChild(tags[j]);
+        }
     }
+    
     return div.innerHTML;
 }
 

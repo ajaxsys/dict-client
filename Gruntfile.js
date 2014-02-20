@@ -114,11 +114,7 @@ module.exports = function(grunt) {
           // formatter(Notice: Priority - Decide which is use, when google show both results in bellow formatter.)
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',
-          'dict/pxy/formaters/dict.formatter.auto.js',
-          'dict/pxy/formaters/dict.formatter.google.js',
-          'dict/pxy/formaters/dict.formatter.weblio.js',
-          'dict/pxy/formaters/dict.formatter.wiki_jp.js',
-          'dict/pxy/formaters/dict.formatter.ewords.js',
+          'dict/pxy/formaters/dict.formatter.*.js',
           //'dict/pxy/formaters/dict.formatter.weblio_small.js',
           // main (MUST defined at last)
           'dict/pxy/dict.proxy.js', 
