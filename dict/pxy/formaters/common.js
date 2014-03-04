@@ -23,7 +23,11 @@ function preformatCommonPage(pluginInfo, src, callback) {
         cleanLinks($target, pluginInfo.prefix, host, pluginInfo.isCleanLinkByText);
     }
     if (typeof callback === 'function') {
-        callback($target);
+        var result = callback($target);
+        // Callback can customize a return object
+        if (result && result instanceof jQuery){
+            return result;
+        }
     }
     return $target;
 }

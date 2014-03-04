@@ -27,10 +27,10 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
 
         if (plugin) {
             var word = json.word,
-                newWord = plugin.word,// Get new word from url. But not all url contains word!!
+                newWord = plugin.word,// Get new word from url. But not all url contains word!! *1
                 type = plugin.type,
                 url  = plugin.unescapedUrl;// used by YQL 
-            // Check if use new word
+            // Check if use new word, only new word contains word, then use it. *1
             if (  newWord && newWord.toLowerCase().indexOf(word.toLowerCase())>=0   ){
                 word = newWord;
             }
@@ -75,12 +75,12 @@ function detectExistedPluginByPrefix(aResult){
                 var prefixRegexp = prefixes[j];
                 var matcher = url.match(  prefixRegexp  );
                 // Expect length=2. If key is "undefined" (length == 1), failed
-                if ( matcher && matcher.index===0 && matcher[1]){
+                if ( matcher && matcher.index===0){ //  && matcher[1] : NOT all url contains word!! *1
                     // Regist last type
                     D.lastDictType = 'auto_' + pluginType;
                     return {
                               'type': pluginType,
-                              'word': matcher[1],
+                              'word': matcher[1], // undefined if UN-match. *1
                               'unescapedUrl' : url
                            };
                 }

@@ -39,7 +39,7 @@ function firstMode(json) {
     var header = '<div style="text-align:center;margin-top:-10px;"><img src="/dict/default/google.png" alt="Power By Google "><br></div>';
     $resultDiv.append(header)
 
-    $resultDiv.append(getContent(json.results));
+    $resultDiv.append(getContent(json));
 
     registOnceOnScrollBottomForNextPage();
 
@@ -51,7 +51,7 @@ function nextMode(json) {
     console.log(D.LC, '[dict.formatter.google.js] format next start...');
     // If no existed formatter, show google result.
 
-    $('#__google_result__').append(getContent(json.results));
+    $('#__google_result__').append(getContent(json));
 
     registOnceOnScrollBottomForNextPage();
 
@@ -59,15 +59,17 @@ function nextMode(json) {
     return;
 }
 
-function getContent(google_results){
-    var $resultList = $('<div>');
-    var $lnk_ext = $('<a target="_blank" class="external">');
+function getContent(json){
+    var google_results = json.results,
+        word = json.word,
+        $resultList = $('<div>'),
+        $lnk_ext = $('<a target="_blank" class="external">');
     for (var i in google_results) {
         // 0) plugin detect
         var r = google_results[i],
             plugin = D.detectExistedPluginByPrefix(r),
             // NG: ?type=xxx#word  : it will redirect the page to blank
-            href = plugin ? ("#" + plugin.word + "?type=auto_" + plugin.type) : r.unescapedUrl, 
+            href = plugin ? ("#" + word + "?type=auto_" + plugin.type) : r.unescapedUrl, 
             $lnk = plugin ? $('<a target="_self">') : $lnk_ext.clone();
 
         // 1) title link
