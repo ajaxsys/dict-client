@@ -111,6 +111,8 @@ module.exports = function(grunt) {
           //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
+          // Analyze result from search engine
+          'dict/pxy/dict.proxy.dispatcher.js',
           // formatter(Notice: Priority - Decide which is use, when google show both results in bellow formatter.)
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',
