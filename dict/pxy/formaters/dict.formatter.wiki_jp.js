@@ -6,20 +6,21 @@
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from wiki is SoSlow&NotGood -vs- from google.
-DICT_PLUGINS.auto_wiki_jp = {
+DICT_PLUGINS.auto_wiki = {
     'autoKey'   : 'site:wikipedia.org',    // a key will append to search key when `Auto Mode`
-    'nextLoader': 'wiki_jp', // same as defined bellow.
+    'nextLoader': 'wiki', // same as defined bellow.
 }
-var option = DICT_PLUGINS.wiki_jp = {
+var option = DICT_PLUGINS.wiki = {
+    'type' : 'wiki',
     'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
     'prefix': [   /^http:\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
-    'format': formatWikiJP,
+    'format': formatWiki,
     'removeTags': ['iframe','noscript','script'],
 };
 
 // JSON sample
-function formatWikiJP(src) {
+function formatWiki(src) {
     console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] format start...');
     return $.dict_extend().preFormat(option, src, customizePage);
 }

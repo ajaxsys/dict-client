@@ -11,13 +11,14 @@ DICT_PLUGINS.auto_kotobank = {
     'nextLoader': 'kotobank',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.kotobank = {
+    'type' : 'kotobank',
     'host' : '//kotobank.jp',
     'mobile_host' : '//m.kotobank.jp',
     'prefix': [ /^http:\/\/kotobank\.jp\/word\/([^\/]+)$/   ,  /^\/word\/([^\/]+)$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatKotobank,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
-    //'isCleanLinkByText': true,
+    'isCleanLinkByText': true,
 };
 
 // JSON sample

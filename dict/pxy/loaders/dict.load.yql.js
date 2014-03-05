@@ -8,15 +8,15 @@
 
 var D=$.dict_extend();
 $.dict_extend({
-    'queryDict': queryDict, // will override dict.load.gae.js
+    'queryDictByYQL': queryDict, // will override dict.load.gae.js
 });
 
 var ajax;
 
 function queryDict(word, type, url){
     // URL already get from google
-    if (url && url.indexOf('http://')===-1 && url.indexOf('https://')===-1){
-        // 
+    if (url && !url.startsWith('http://') && !url.startsWith('https://') ){ 
+        // NOT support: url.startsWith('//')
         console.log(D.LC, '[loaders/dict.load.yql.js] ERROR, only support auto mode.');
         return;
     }
@@ -37,7 +37,7 @@ function queryDict(word, type, url){
 
     // http://otherhost/dict/t/hello/?callback=DICT_format
     var yql = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='"
-              +encodeURIComponent(url)+"'&format=json";
+              +encodeURIComponent( url )+"'&format=json";
 
     console.log(D.LC, '[loaders/dict.load.yql.js] JSONP load(via YQL): ', url);
     var params = {

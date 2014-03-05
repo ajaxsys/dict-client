@@ -15,6 +15,9 @@ var D=$.dict_extend({
     'setOptionToCookie' : setOptionToCookie,
     'loadResource' : loadResource,
     'getParamFromURL' : getParamFromURL,
+    'getUrlHashValue' : getUrlHashValue,
+    'getAbsUrl' : getAbsUrl,
+    'isRelativeURL' : isRelativeURL,
     'Queue': Queue,
     'Stack': Stack,
 });
@@ -76,13 +79,30 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
 
 
 function getParamFromURL(param){
-    console.log(D.LC, '[_cmn/dict.util.js] Get params from URL.');
+    console.log(D.LC+1, '[_cmn/dict.util.js] Get params from URL - ', param);
     var urlPatern = new RegExp(param + "=([^&?]+)");
     var m = urlPatern.exec(window.location.href);
     return m? m[1] : null;
 }
 
+function getUrlHashValue() {
+    var vals = window.location.href.split('#');
+    if (vals.length > 1)
+        return vals[1].split('?')[0];
+    else
+        return '';
+}
 
+// Get abstract path from relative path
+function getAbsUrl(s){
+    var a = document.createElement('a');
+    a.href = s
+    return a.href;
+}
+
+function isRelativeURL(href){
+    return href.indexOf('//') === -1 || href.indexOf('//')>7; // <7 skip https://
+}
 
 //////////// Data Type /////////////
 
@@ -145,6 +165,17 @@ Queue.prototype.get = function(i) {
 
 Queue.prototype.toString = function() {
 	return '[' + this.__a.join(',') + ']';
+}
+
+
+//
+// Prototype enhance
+//
+String.prototype.contains = function(str) {
+    return this.indexOf(str) > -1;
+}
+String.prototype.startsWith = function(str) {
+    return this.indexOf(str) === 0;
 }
 
 

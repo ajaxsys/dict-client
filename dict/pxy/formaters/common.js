@@ -11,59 +11,45 @@
 ;(function($){
 // Regist common methods
 var D=$.dict_extend({
-    preFormat: preformatCommonPage,
+    'preFormat': preformatCommonPage,
+    'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
 });
 
 
-function preformatCommonPage(pluginInfo, src, callback) {
+function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryStripTags(src, pluginInfo.removeTags);
-    if (pluginInfo.isCleanLinks !== false){
-        var host = gressHostIfRegexp(src, pluginInfo.host);
-        cleanLinks($target, pluginInfo.prefix, host, pluginInfo.isCleanLinkByText);
-    }
-    if (typeof callback === 'function') {
-        var result = callback($target);
+
+    if (typeof customizePageFnc === 'function') {
+        var result = customizePageFnc($target);
         // Callback can customize a return object
         if (result && result instanceof jQuery){
-            return result;
+            $target = result;
         }
     }
+
+    if (pluginInfo.isCleanLinks !== false){
+        // Like wiki, with I18 support, host will change when lang change
+        var host = gressHostIfRegexp(src, pluginInfo.host); 
+        cleanLinks($target, pluginInfo.prefix, host, pluginInfo.type, pluginInfo.isCleanLinkByText);
+    }
+
     return $target;
 }
 
 function gressHostIfRegexp(src, hostStrOrRegexp){
-    var host=src.match(hostStrOrRegexp);
-    //return host ? host[0] : hostStrOrRegexp;
-    if (host){
-        console.log(D.LC, '[formatter/common.js] Host guessed by regexp:', host[0]);
-        return host[0];
-    }else{
-        return hostStrOrRegexp;
+    if (hostStrOrRegexp instanceof RegExp) {
+        var host=src.match(hostStrOrRegexp);
+        //return host ? host[0] : hostStrOrRegexp;
+        if (host){
+            console.log(D.LC, '[formatter/common.js] Host guessed by regexp:', host[0]);
+            return host[0];
+        }
     }
+    return hostStrOrRegexp;
 }
-/*
-// Prevent browser preload image
-function jQueryWithoutTags(src, tags) {
-    //var tags = Array.prototype.slice.call(arguments, 1);
-    // img,a,span --> <(img|a|span)
-    var tags_left = '<('+tags.join('|')+')',
-        tags_right=  '('+tags.join('|')+')>';
 
-        // Prevent resource load when `$(html)`: rename img/iframe/script/lnk/base... tags
-    src=src.replace(new RegExp(tags_left, 'ig'), '<xxx class="__disabled_tag__" original="$1" style="display:none;" ');
-    src=src.replace(new RegExp(tags_right,'ig'), 'xxx>');
-
-    var $src = $('<div>').append(src);
-
-        // Remove tags
-    $('xxx', $src).remove();
-
-    return $src;
-}
-*/
-
-function cleanLinks($$, prefixes, host, isCleanLinkByText) {
+function cleanLinks($$, prefixes, host, type, isCleanLinkByText) {
     var selfLink = '#'; //window.location.pathname + '#key'
 
     prefixes=[].concat(prefixes);
@@ -76,30 +62,41 @@ function cleanLinks($$, prefixes, host, isCleanLinkByText) {
             return;
         }
 
+        $(this).attr('href', getHrefWithHost(host,href) );
         for (var i in prefixes) {
             var prefixRegexp = prefixes[i];
             var m = href.match(prefixRegexp);
-            if (m && m.index===0 && m[1] ) {// m[1] is searchKey
+            if (m && m.index===0 ) {// && m[1] : m[1] is not always searchKey
                 var word;
                 
-                if (isCleanLinkByText) {
-                    word = $(this).text();
+                if (!isCleanLinkByText && m[1]) {
+                    word = m[1]; // default: Guess text from URL
                 } else {
-                    word = m[1]; // Guess text from URL
+                    word = $(this).text(); // Use text of link
                 }
-                $(this).attr('href', selfLink + m[1] + '?SELF_MODE'  )
-                       .attr('target', '_self')
-                       .attr('o-href', href);
+                //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + getHrefWithHost(host,href) )
+                createOrEnhanceLinkForIframeClick(word, type, $(this));
+                $(this).attr('o-href', href);
                 return;
             } else {
                 $(this).attr('target','_blank');
-                // http://otherhost/... or //otherhost
-                if (href.indexOf('//') === -1 || href.indexOf('//')>7){ // <7 skip https://
-                    $(this).attr('href', host+href);
-                }
             }
         }
     });
+}
+
+function createOrEnhanceLinkForIframeClick(word, type, $lnk){
+    if (!$lnk || !($lnk instanceof jQuery) ){
+        $lnk = $('<a>');
+    }
+    $lnk.attr('__dict_word__', word)
+        .attr('__dict_type__', type)
+        .attr('target', '_self');
+    return $lnk;
+}
+
+function getHrefWithHost(host, href){
+    return D.isRelativeURL(href) ? (host+href) : href;
 }
 
 function jQueryStripTags(src, removeTags){
@@ -126,5 +123,26 @@ function stripTags(src, removeTags) {
     return div.innerHTML;
 }
 
+
+/*
+// Prevent browser preload image
+function jQueryWithoutTags(src, tags) {
+    //var tags = Array.prototype.slice.call(arguments, 1);
+    // img,a,span --> <(img|a|span)
+    var tags_left = '<('+tags.join('|')+')',
+        tags_right=  '('+tags.join('|')+')>';
+
+        // Prevent resource load when `$(html)`: rename img/iframe/script/lnk/base... tags
+    src=src.replace(new RegExp(tags_left, 'ig'), '<xxx class="__disabled_tag__" original="$1" style="display:none;" ');
+    src=src.replace(new RegExp(tags_right,'ig'), 'xxx>');
+
+    var $src = $('<div>').append(src);
+
+        // Remove tags
+    $('xxx', $src).remove();
+
+    return $src;
+}
+*/
 
 })(jQuery);

@@ -11,8 +11,9 @@ DICT_PLUGINS.auto_goo = {
     'nextLoader': 'goo',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.goo = {
-    'host' : '//dictionary.goo.ne.jp', // http://dictionary.goo.ne.jp/leaf/...
-    'prefix': [ /^http:\/\/dictionary\.goo\.ne\.jp\/leaf\/(.*)$/  ] ,  // NOTICE MUST contain a group. key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'type' : 'goo',
+    'host' : 'http://dictionary.goo.ne.jp', // http://dictionary.goo.ne.jp/leaf/...
+    'prefix': [    /^http:\/\/dictionary\.goo\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatGoo,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
@@ -29,7 +30,8 @@ function formatGoo(src) {
 // Customize for this page
 function customizePage($target){
     var $tmp = $('#main' ,$target); 
-    $('.dicSwitcher,.ejdicMode,.sbm' ,$tmp).remove();
+    $('.dicSwitcher,.ejdicMode,.sbm,.jndicMode' ,$tmp).remove();
+    $('#spoLine' ,$tmp).nextAll().remove();
     return $tmp;// Keep id = main only. If no return , $target will be content.
 }
 

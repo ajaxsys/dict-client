@@ -125,25 +125,10 @@ function queryGoogle(word, type, opt){
               this._complete(e,t,x)
           }
       },
-      'error': function(e,t,x) {
-        if (type==='auto') {
-            console.log(D.LC, '[loaders/dict.load.google.js] Google load error, try other loader...');
-            // foramt start
-            queryNextLoader(word, option.nextLoader);
-        } else { // google only
-            this._error(e,t,x)
-        }
-      },
     });
 
 }
 
-
-function queryNextLoader(word, loader){
-    loader = loader || DEFALUT_NEXT_LOADER;
-    console.log(D.LC, '[loaders/dict.load.google.js] Next loader:' ,loader);
-    D.queryDict(word, loader); // Google failed, use another... D.DEFAULT_FORMATTER
-}
 
 
 // END OF AMD

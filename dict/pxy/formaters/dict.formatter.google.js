@@ -68,12 +68,18 @@ function getContent(json){
         // 0) plugin detect
         var r = google_results[i],
             plugin = D.detectExistedPluginByPrefix(r),
-            // NG: ?type=xxx#word  : it will redirect the page to blank
-            href = plugin ? ("#" + word + "?type=auto_" + plugin.type) : r.unescapedUrl, 
-            $lnk = plugin ? $('<a target="_self">') : $lnk_ext.clone();
+            $lnk;
+
+        // NG: ?type=xxx#word  : it will redirect the page to blank
+        if (plugin){
+            $lnk = D.createLinkForIframeClick( word, plugin.type );
+        } else {
+            $lnk = $lnk_ext.clone();
+        }
 
         // 1) title link
-        $lnk.attr('href',href).html(r.title).css('color','blue');
+        $lnk.attr('href',r.unescapedUrl).html(r.title)
+            .css('color','blue').css('fontSize','medium');
 
         // 2) content text
         var $content = $('<div>');
@@ -82,7 +88,8 @@ function getContent(json){
         // 3) url
         var url = (r.url.length>40)? (r.url.substring(0,40)+'...')  :  r.url,
             $url = $('<div>').css('color','#006621')
-                   .append(    url   ).append( plugin ?  $lnk_ext.clone().attr('href',url).html(' ')  : '' );
+                   .append(    url   )
+                   .append( plugin ?  $lnk_ext.clone().attr('href',url).html(' ')  : '' ); // Add External mark
 
         // Combine all above
         $resultList.append(  $('<div>').append($lnk).append($content).append($url).append('<hr />')  );

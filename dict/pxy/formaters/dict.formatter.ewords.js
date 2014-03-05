@@ -11,13 +11,14 @@ DICT_PLUGINS.auto_ewords = {
     'nextLoader': 'ewords',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.ewords = {
+    'type' : 'ewords',
     'host' : '//e-words.jp',
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
     'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr'],
-    'isCleanLinks': false,
-    //'isCleanLinkByText': true,
+    'isCleanLinks': true,
+    'isCleanLinkByText': true,
 };
 
 // JSON sample
@@ -39,12 +40,6 @@ function customizePage($target){//,#left-navigation
     $('div,form',$dataTable).remove();
     // Remvoe bunya
     $('#side>ul:eq(0)',$dataTable).remove();
-
-    // All links search with google
-    $('a',$dataTable).each(function(){
-        var $lnk = $(this);
-        $lnk.attr('href','#'+$lnk.text()+'?SELF_MODE').attr('target','_self');
-    });
 
     $target.empty().append($dataTable);
     //$(".header,#footer,.printfooter,#page-actions,.mw-search-pager-bottom,#mw-mf-page-left,[id$='navigation'],#jump-to-nav,#search",$target).remove();

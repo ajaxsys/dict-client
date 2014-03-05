@@ -12,9 +12,6 @@ var url=window.location.href,
         // Check mode only once
         PXY_IFRAME_MODE: ( url.indexOf('IFRAME') > -1 ),
         PXY_DEV_MODE : ( url.indexOf('DEV_MODE') > -1 ), // UI `DEV_MODE` is set in loader.js
-        PXY_SELF_MODE : function (){
-            return ( window.location.href.indexOf('SELF_MODE') > -1 );
-        },
         getSelectedLang: getSelectedLang,
         getSelectedType: getSelectedType,
     });
@@ -40,13 +37,12 @@ $(function(){
         var origEvent = e.originalEvent;
         console.log(D.LC+1, '[dict.proxy.js] Hash:', origEvent.newURL);
         console.log(D.LC+1, '[dict.proxy.js] From:', origEvent.oldURL);
-        if (D.PXY_SELF_MODE()){
-            console.log(D.LC+1, '[dict.proxy.js] Use lastDictType:', D.lastDictType);
-            D.loadQuery(null, D.lastDictType);
-        } else {
-            D.loadQuery();
-        }
-        
+
+        // URL first, do NOT use this when links in iframe is clicked.
+        var url = D.getParamFromURL('url');
+        var type = D.getParamFromURL('type');
+        D.loadQuery(null, type, url); //D.lastDictType
+       
     });
     D.loadQuery();
 
@@ -56,7 +52,11 @@ $(function(){
     registScrollBottomEvent();
     registDebug();
     registClearBtn();
+    registPageLinkCliecked();
+    registOthers();
 });
+
+
 
 function registClearBtn() {
  
@@ -72,11 +72,27 @@ function registClearBtn() {
   
 }
 
+function registPageLinkCliecked(){
+    $('#__explain_wrapper__').on('click', 'a[__dict_type__]', function(){
+        var $lnk = $(this);
+        D.loadQuery($lnk.attr('__dict_word__'), $lnk.attr('__dict_type__'), $lnk.attr('href'));
+        return false;
+    });
+}
+
+function registOthers(){
+    $('#__inner_navi__').hover(function(){
+        $(this).css('opacity', '1');
+    }, function(){
+        $(this).css('opacity', '0.25');
+    });
+}
 function registDebug(){
     var timer;
     $('#__go_top__').mouseover(function(){
         timer = setTimeout(function(){
             $('#__debug__').removeClass('hidden');
+            $('#__debugSelf__').attr('href', window.location.href);
         },WAIT_DEBUG);
     }).mouseleave(function(){
         clearTimeout(timer);
@@ -186,11 +202,11 @@ function getSelectedType(){
 
 
 function getSelectedMenu(key){
-    var value = D.getParamFromURL(key);
+    /*var value = D.getParamFromURL(key);
     if (value) {
         console.log(D.LC, '[dict.loader.js] Use direct search : ',key, value);
         return value;
-    }
+    }*/
     return $('#__dict_' + key + '__ li.active>a').attr('value');
 }
 

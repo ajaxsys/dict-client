@@ -27,7 +27,7 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
 
         if (plugin) {
             var word = json.word,
-                newWord = plugin.word,// Get new word from url. But not all url contains word!! *1
+                newWord = plugin.wordFromURL,// Get new word from url. But not all url contains word!! *1
                 type = plugin.type,
                 url  = plugin.unescapedUrl;// used by YQL 
             // Check if use new word, only new word contains word, then use it. *1
@@ -37,10 +37,8 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
 
             console.log(D.LC, '[dict.formatter.auto.js] Decided using formatter: ', type, ' And key: ', word);
 
-            // If possible, change to URL for SP
-            url = changeToMobileUrl(url, type);
             // Recall loader/dict.load.xxx.js
-            D.queryDict(word, type, url);
+            D.loadQueryDirectly(word, type, url);
             D.isSearchRedirect = true; // tell caller(dict.load.google.js) not stop
             return;
         }
@@ -49,17 +47,7 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
     return DICT_PLUGINS.google.format(json);
 }
 
-// Change to URL for SP if possible
-function changeToMobileUrl(url,type){
-    var opt = DICT_PLUGINS[type];
-    if (opt && opt.host && opt.mobile_host){
-        var newUrl = url.replace(opt.host, opt.mobile_host);
-        console.log(D.LC, '[dict.formatter.auto.js] URL ',url,' changed to mobile url:', newUrl);
-        return newUrl;
-    }else{
-        return url;
-    }
-}
+
 
 function detectExistedPluginByPrefix(aResult){
     for (var pluginType in window.DICT_PLUGINS) {
@@ -77,10 +65,9 @@ function detectExistedPluginByPrefix(aResult){
                 // Expect length=2. If key is "undefined" (length == 1), failed
                 if ( matcher && matcher.index===0){ //  && matcher[1] : NOT all url contains word!! *1
                     // Regist last type
-                    D.lastDictType = 'auto_' + pluginType;
                     return {
                               'type': pluginType,
-                              'word': matcher[1], // undefined if UN-match. *1
+                              'wordFromURL': matcher[1], // undefined if UN-match. *1
                               'unescapedUrl' : url
                            };
                 }

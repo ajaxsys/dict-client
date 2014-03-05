@@ -8,6 +8,7 @@
 
 var D = $.dict_extend({
     'loadQuery': doQuery,
+    'loadQueryDirectly': callFetchURLLoader,
 });
 
 function init(){
@@ -16,11 +17,11 @@ function init(){
     D.isSearchRedirect = false;// Reset redirect flg
 }
 
-function doQuery(query, type){
+function doQuery(query, type, url){
     init();
     console.log(D.LC, '[dict.loader.js] =========doQuery Start============');
     // Get from caller
-    query = query || getUrlHashValue();
+    query = query || D.getUrlHashValue();
     if (!query) {
         console.log(D.LC, '[dict.loader.js] [WARN] No Search Key.');
         return;
@@ -32,19 +33,33 @@ function doQuery(query, type){
 
     if (query && type && isNotKey(word)) {
         $('#__search__').val(word);
-        callLoader(word, type);
-        // others
-        $('#__debugSelf__').attr('href', window.location.href);
+        if (url){
+            console.log(D.LC, '[dict.loader.js] Using directly mode:', url);
+            callFetchURLLoader(word, type, url);
+        }else{
+            callGoogleLoader(word, type);
+        }
     } else {
         console.log(D.LC, '[dict.loader.js] NG search:', query, type, word);
     }
 }
 
-// Loader will auto call formatter.
-function callLoader(word, type){
+function callFetchURLLoader(word, type, url){
+    // Change URL
+    url = changeToMobileUrl(url, type);
+    url = addHttpWhenBothProtocalsOK(url);
 
-  // ajuster mode: `type` must be auto
-  if (type && (type.indexOf('auto')>=0 || type.indexOf('google')>=0) ) {
+    D.queryDictByYQL(word, type, url);// Load by URL directly
+}
+
+// Loader will auto call formatter.
+function callGoogleLoader(word, type){
+    if (!type){
+        type = 'auto';
+    } else if (type.indexOf('auto')!==0 && type!=='google'){
+        type = 'auto_' + type;
+    }
+
     // If auto key exist use Auto Mode with addtion key
     var plugin = window.DICT_PLUGINS[type];
     if (plugin && plugin.autoKey){
@@ -55,22 +70,34 @@ function callLoader(word, type){
         D.queryGoogle(word, type);
     }
 
-  } else {
     // Deprecated
-    D.queryDict(word, type);
-  }
-}
-
-function getUrlHashValue() {
-    var vals = window.location.href.split('#');
-    if (vals.length > 1)
-        return vals[1].split('?')[0];
-    else
-        return '';
+    // D.queryDict(word, type);
 }
 
 function isNotKey(word){
     return word.indexOf('__') !== 0;
+}
+
+// Change to URL for SP if possible
+function changeToMobileUrl(url,type){
+    var opt = DICT_PLUGINS[type];
+    if (opt && opt.host && opt.mobile_host){
+        if (url.contains(opt.mobile_host)){
+            console.log(D.LC, '[dict.formatter.auto.js] Already mobile URL , NO need change to mobile url:', url);
+            return url;
+        }
+        var newUrl = url.replace(opt.host, opt.mobile_host);
+        console.log(D.LC, '[dict.formatter.auto.js] URL ',url,' changed to mobile url:', newUrl);
+        return newUrl;
+    }else{
+        return url;
+    }
+}
+function addHttpWhenBothProtocalsOK(url){
+    if (url.indexOf('//')===0){
+        return 'http:' + url;
+    }
+    return url;
 }
 
 /* // NO USE: because search will redirect page to blank

@@ -11,6 +11,7 @@ DICT_PLUGINS.auto_weblio = {
     'nextLoader': 'weblio',  // same as defined bellow.
 }
 var option = DICT_PLUGINS.weblio = {
+    'type' : 'weblio',
     'host' : '//ejje.weblio.jp',
     'mobile_host' : '//ejje.weblio.jp/small',
 	'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 

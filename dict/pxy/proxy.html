@@ -37,19 +37,17 @@
 						<ul id='__dict_type__' class="dropdown-menu">
 							<li class='active'><a href="#" value='auto'>I'm Feeling Lucky</a></li>
 							<li class="divider"></li>
-							<li class="nav-header">☄ Search Engine</li>
+							<li class="nav-header">☄ Main Engine</li>
 							<li><a href="#" value='google'>Google</a></li>
+							<li><a href="#" value='auto_wiki'>Wikipedia</a></li>
 							<li class="disabled"><a href="#" value='bing'>Bing(TODO)</a></li>
 							<li class="divider"></li>
-							<li class="nav-header">☄ Professional Site</li>
-							<li><a href="#" value='auto_wiki_jp'>Wikipedia</a></li>
-							<li><a href="#" value='auto_ewords'>E-words</a></li>
-							<li class="divider"></li>
-							<li class="nav-header">☄ Dictionary(英←→和)</li>
+							<li class="nav-header">☄ Plugins</li>
 							<li><a href="#" value='auto_weblio'>Weblio辞書</a></li>
+							<li><a href="#" value='auto_ewords'>E-words(Beta)</a></li>
+							<li><a href="#" value='auto_kotobank'>Kotobank(Beta)</a></li>
+							<li><a href="#" value='auto_goo'>Goo辞書(Beta)</a></li>
 							<li class="disabled"><a href="#" value='yahoo'>Yahoo!辞書(TODO)</a></li>
-							<li class="divider"></li>
-							<li class="nav-header">☄ Dictionary(日←→中)</li>
 							<li class="disabled"><a href="#" value='xiaoD'>XiaoD辞書(TODO)</a></li>
 							<li class="disabled"><a href="#" value='eXcite'>eXcite辞書(TODO)</a></li>
 							<li class="divider"></li>
@@ -82,8 +80,10 @@
 
 	<div id='__loading__' class='container hidden'></div>
 
-	<div style='position:fixed;right:0;bottom:0;z-index:99999;'>
-		<a id="__go_top__" href="#__TOP__" style="color: #0066CC;font-weight:bold;text-decoration: none;">&nbsp↑&nbsp</a>
+	<div id='__inner_navi__' style='position:fixed;right:0;bottom:0;z-index:99999;background-color:gray;opacity: 0.25;border-radius: 3px 3px 3px 3px;'>
+		<a id="__go_bef__" href="javascript:void(window.history.back())" style="color: #fff;font-weight:bold;text-decoration: none;">&nbsp＜</a>
+		<a id="__go_top__" href="#__TOP__" style="color: #fff;font-weight:bold;text-decoration: none;">&nbsp△&nbsp</a>
+		<a id="__go_aft__" href="javascript:void(window.history.forward())" style="color: #fff;font-weight:bold;text-decoration: none;">＞&nbsp</a>
 	</div>
 
 	<div class='hidden alert alert-warning' id='__error_msg__'><br>
