@@ -103,6 +103,7 @@ module.exports = function(grunt) {
           // share
           'dict/_cmn/conf.js',
           'dict/_cmn/dict.util.js',
+
           // loader
           'dict/pxy/dict.proxy.loader.js',
           'dict/pxy/loaders/common.js',
@@ -111,13 +112,17 @@ module.exports = function(grunt) {
           //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
-          // Analyze result from search engine
-          'dict/pxy/dict.proxy.dispatcher.js',
+
           // formatter(Notice: Priority - Decide which is use, when google show both results in bellow formatter.)
           'dict/pxy/dict.proxy.formatter.js',
-          'dict/pxy/formaters/common.js',
-          'dict/pxy/formaters/dict.formatter.*.js',
+          'dict/pxy/formaters/common.js',                  // common
+          'dict/pxy/formaters/dict.formatter.*.js',        // core
+          'dict/pxy/formaters/plugins/dict.formatter.*.js',// plugins
           //'dict/pxy/formaters/dict.formatter.weblio_small.js',
+
+          // Analyze result from search engine
+          'dict/pxy/dict.proxy.dispatcher.js',
+
           // main (MUST defined at last)
           'dict/pxy/dict.proxy.js', 
         ],
