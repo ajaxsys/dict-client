@@ -14,7 +14,7 @@ var option = DICT_PLUGINS.wiki = {
     'type' : 'wiki',
     'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^http:\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
     'format': formatWiki,
     'removeTags': ['iframe','noscript','script'],
 };

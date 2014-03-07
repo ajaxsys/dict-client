@@ -63,23 +63,21 @@ function cleanLinks($$, prefixes, host, type, isCleanLinkByText) {
         }
 
         $(this).attr('href', getHrefWithHost(host,href) );
+        $(this).attr('target','_blank');
         for (var i in prefixes) {
             var prefixRegexp = prefixes[i];
             var m = href.match(prefixRegexp);
             if (m && m.index===0 ) {// && m[1] : m[1] is not always searchKey
-                var word;
+                var word = $(this).text();
                 
-                if (!isCleanLinkByText && m[1]) {
-                    word = m[1]; // default: Guess text from URL
-                } else {
-                    word = $(this).text(); // Use text of link
+                if ( isCleanLinkByText!==true && m[1] ) {
+                    //Default: Guess text from URL
+                    word = m[1]; 
                 }
                 //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + getHrefWithHost(host,href) )
                 createOrEnhanceLinkForIframeClick(word, type, $(this));
                 $(this).attr('o-href', href);
                 return;
-            } else {
-                $(this).attr('target','_blank');
             }
         }
     });
