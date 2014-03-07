@@ -133,6 +133,13 @@ Stack.prototype.toString = function() {
 	return '[' + this.__a.join(',') + ']';
 }
 
+Stack.prototype.get = function(i) {
+    if( this.__a.length < i ) {
+        return null;
+    }
+    return this.__a[i];
+} 
+
 //
 // Queue (FIFO)
 //

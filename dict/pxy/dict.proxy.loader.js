@@ -9,6 +9,7 @@
 var D = $.dict_extend({
     'loadQuery': doQuery,
     'loadQueryDirectly': callFetchURLLoader,
+    'loadQueryWithHistory' : doQueryWithHistory,
 });
 
 function init(){
@@ -17,11 +18,16 @@ function init(){
     D.isSearchRedirect = false;// Reset redirect flg
 }
 
-function doQuery(query, type, url){
+function doQueryWithHistory(query, type, url){
+    doQuery(query, type, url, 'useHistory');    
+}
+
+function doQuery(query, type, url, isPushToHistory){
+    var $searchBox = $('#__search__');
     init();
     console.log(D.LC, '[dict.loader.js] =========doQuery Start============');
     // Get from caller
-    query = query || D.getUrlHashValue();
+    query = query || D.getUrlHashValue() || $searchBox.val();
     if (!query) {
         console.log(D.LC, '[dict.loader.js] [WARN] No Search Key.');
         return;
@@ -32,7 +38,11 @@ function doQuery(query, type, url){
     console.log(D.LC, '[dict.loader.js] Decode search key:', query, ' -> ', word, ' | type=', type);
 
     if (query && type && isNotKey(word)) {
-        $('#__search__').val(word);
+        if (isPushToHistory){
+            D.pushNavi([query, type, url]);
+        }
+
+        $searchBox.val(word);
         if (url){
             console.log(D.LC, '[dict.loader.js] Using directly mode:', url);
             callFetchURLLoader(word, type, url);

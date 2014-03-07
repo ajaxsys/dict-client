@@ -41,10 +41,10 @@ $(function(){
         // URL first, do NOT use this when links in iframe is clicked.
         var url = D.getParamFromURL('url');
         var type = D.getParamFromURL('type');
-        D.loadQuery(null, type, url); //D.lastDictType
-       
+        D.loadQueryWithHistory(null, type, url); //D.lastDictType
+
     });
-    D.loadQuery();
+    D.loadQueryWithHistory();
 
     // Enhance page event
     registSearchKeyEvent();
@@ -53,7 +53,6 @@ $(function(){
     registDebug();
     registClearBtn();
     registPageLinkCliecked();
-    registOthers();
 });
 
 
@@ -75,18 +74,11 @@ function registClearBtn() {
 function registPageLinkCliecked(){
     $('#__explain_wrapper__').on('click', 'a[__dict_type__]', function(){
         var $lnk = $(this);
-        D.loadQuery($lnk.attr('__dict_word__'), $lnk.attr('__dict_type__'), $lnk.attr('href'));
+        D.loadQueryWithHistory($lnk.attr('__dict_word__'), $lnk.attr('__dict_type__'), $lnk.attr('href'));
         return false;
     });
 }
 
-function registOthers(){
-    $('#__inner_navi__').hover(function(){
-        $(this).css('opacity', '1');
-    }, function(){
-        $(this).css('opacity', '0.25');
-    });
-}
 function registDebug(){
     var timer;
     $('#__go_top__').mouseover(function(){
@@ -102,7 +94,7 @@ function registDebug(){
 function registSearchKeyEvent(){
     var $searchForm = $('#__search_form__');
     $searchForm.submit(function(){
-        D.loadQuery($searchBox.val());
+        D.loadQueryWithHistory($searchBox.val());
         return false;
     });
     $searchBox.mouseover(function(){
@@ -156,7 +148,7 @@ function reloadWhenDictOptionChanged($dropdown){
 
             // Reload dict
             D.lang = D.getSelectedLang();
-            D.loadQuery($searchBox.val(), D.getSelectedType());
+            D.loadQueryWithHistory($searchBox.val(), D.getSelectedType());
         }
         // Hide menu
         if ($menuBtn.is(':visible'))// [Fix, add check hidden] Bugs that can NOT go back to smartphone menu in FF

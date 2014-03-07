@@ -81,9 +81,11 @@
 	<div id='__loading__' class='container hidden'></div>
 
 	<div id='__inner_navi__' style='position:fixed;right:0;bottom:0;z-index:99999;background-color:gray;opacity: 0.25;border-radius: 3px 3px 3px 3px;'>
-		<a id="__go_bef__" href="javascript:void(window.history.back())" style="color: #fff;font-weight:bold;text-decoration: none;">&nbsp＜</a>
+		<!--javascript:void(window.history.back())-->
+		<a id="__go_back__" href="#__go_back__" style="color: #fff;font-weight:bold;text-decoration: none;">&nbsp＜</a>
 		<a id="__go_top__" href="#__TOP__" style="color: #fff;font-weight:bold;text-decoration: none;">&nbsp△&nbsp</a>
-		<a id="__go_aft__" href="javascript:void(window.history.forward())" style="color: #fff;font-weight:bold;text-decoration: none;">＞&nbsp</a>
+		<!--javascript:void(window.history.forward())-->
+		<a id="__go_forward__" href="#__go_forward__" style="color: #fff;font-weight:bold;text-decoration: none;">＞&nbsp</a>
 	</div>
 
 	<div class='hidden alert alert-warning' id='__error_msg__'><br>
