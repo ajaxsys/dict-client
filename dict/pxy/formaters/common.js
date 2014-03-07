@@ -15,7 +15,9 @@ var D=$.dict_extend({
     'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
 });
 
-
+// 1.Remove tags defined in plugin.removeTags
+// 2.Call customized page callback which pass from params
+// 3.Clean links which match plugin.prefix
 function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     console.log(D.LC, '[formatter/common.js] Common Preformat Start...');
     var $target = jQueryStripTags(src, pluginInfo.removeTags);
@@ -62,6 +64,25 @@ function cleanLinks($$, prefixes, host, type, isCleanLinkByText) {
             return;
         }
 
+        // Skip anchor 
+        if (href.startsWith('#')){
+            // __tells proxy.html to ignore this when url changed.
+            $(this).attr('href', href.replace('#', '#__'));
+
+            // target anchor change to match above new __ id
+            try{
+                var $anchorId = $(href, $$); // #someText
+                var anchorId = $anchorId.attr('id');
+                // Recheck
+                if ('#'+anchorId === href){
+                    $anchorId.attr('id', '__' + anchorId);
+                }
+            }catch(e){}
+            
+            return; 
+        }
+
+        // Clean links match prefix
         $(this).attr('href', getHrefWithHost(host,href) );
         $(this).attr('target','_blank');
         for (var i in prefixes) {
