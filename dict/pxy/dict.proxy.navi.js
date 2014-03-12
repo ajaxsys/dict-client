@@ -28,7 +28,9 @@ function registHistoryNavi(){
 
 // NaviQ plugin
 var naviQ = new D.Stack(),
-    naviQPointor = 0;
+    naviQPointor = 0,
+    ENABLE_COLOR='#fff',
+    DISABLE_COLOR='#aaa';
 
 function pushNaviCallbackParamters(key){
     if (!key || key === naviQ.get(naviQPointor)) {
@@ -44,6 +46,11 @@ function pushNaviCallbackParamters(key){
     }
     naviQ.push(key);
     naviQPointor = naviQ.size();
+
+    if (naviQPointor > 1){
+        enableBtn($('#__go_back__'));
+    }
+    disableBtn($('#__go_forward__'));
 }
 
 function naviQBack(){
@@ -58,6 +65,12 @@ function naviQBack(){
     var args = naviQ.get(naviQPointor-1);
     if (args)
         D.naviCallback.apply(this||window, args);
+
+    enableBtn($('#__go_forward__'));
+    if (naviQPointor === 1){
+        disableBtn($('#__go_back__'));
+    }
+
     return false;
 }
 
@@ -73,8 +86,25 @@ function naviQForword(){
     var args = naviQ.get(naviQPointor-1);
     if (args)
         D.naviCallback.apply(this||window, args);
-    
+
+    enableBtn($('#__go_back__'));
+    if (naviQPointor === naviQ.size()){
+        disableBtn($('#__go_forward__'));
+    }
+
     return false;
+}
+
+function enableBtn($btn){
+    $btn.css('color', ENABLE_COLOR)
+        .css('fontWeight', 'bold')
+        .css('cursor', 'pointer');
+}
+
+function disableBtn($btn){
+    $btn.css('color', DISABLE_COLOR)
+        .css('fontWeight', 'normal')
+        .css('cursor', 'default');
 }
 
 })(jQuery);

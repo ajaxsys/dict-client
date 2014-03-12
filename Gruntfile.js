@@ -117,7 +117,11 @@ module.exports = function(grunt) {
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',                  // common
           'dict/pxy/formaters/dict.formatter.*.js',        // core
-          'dict/pxy/formaters/plugins/dict.formatter.*.js',// plugins
+          'dict/pxy/formaters/plugins/dict.formatter.weblio.js',// plugins, do NOT use *,because it define the priority
+          'dict/pxy/formaters/plugins/dict.formatter.wiki.js',
+          'dict/pxy/formaters/plugins/dict.formatter.ewords.js',
+          'dict/pxy/formaters/plugins/dict.formatter.kotobank.js',
+          'dict/pxy/formaters/plugins/dict.formatter.goo.js',
           //'dict/pxy/formaters/dict.formatter.weblio_small.js',
 
           // Analyze result from search engine
