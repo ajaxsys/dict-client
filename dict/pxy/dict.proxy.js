@@ -112,7 +112,7 @@ function registRetry(){
 function registScrollBottomEvent(){
     $(window).scroll(function() {
         // Fix some site scrollTop need more 1 px: http://goo.gl/6Do3rn
-        if($(window).scrollTop() + 2 >= $(document).height() - $(window).height()) {
+        if($(window).scrollTop() + 10 >= $(document).height() - $(window).height()) {
             // ajax call get data from server and append to the div
             if (typeof D.triggerOnceOnScrollBottom === 'function'){
                 D.triggerOnceOnScrollBottom();

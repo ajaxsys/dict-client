@@ -11,8 +11,13 @@ D = $.dict_extend({
     'naviCallback' : D.loadQuery, // Should regist from other js files
 });
 
+var $goBack,$goForward;
+
 // Regist to Navi bar
 $(function(){
+    $goBack = $('#__go_back__');
+    $goForward = $('#__go_forward__');
+
     registHistoryNavi();
 });
 
@@ -22,8 +27,11 @@ function registHistoryNavi(){
     }, function(){
         $(this).css('opacity', '0.25');
     });
-    $('#__go_back__').click(naviQBack);
-    $('#__go_forward__').click(naviQForword);
+
+    $goBack.click(naviQBack);
+    $goForward.click(naviQForword);
+    disableBtn($goBack);
+    disableBtn($goForward);
 }
 
 // NaviQ plugin
@@ -48,9 +56,9 @@ function pushNaviCallbackParamters(key){
     naviQPointor = naviQ.size();
 
     if (naviQPointor > 1){
-        enableBtn($('#__go_back__'));
+        enableBtn($goBack);
     }
-    disableBtn($('#__go_forward__'));
+    disableBtn($goForward);
 }
 
 function naviQBack(){
@@ -66,9 +74,9 @@ function naviQBack(){
     if (args)
         D.naviCallback.apply(this||window, args);
 
-    enableBtn($('#__go_forward__'));
+    enableBtn($goForward);
     if (naviQPointor === 1){
-        disableBtn($('#__go_back__'));
+        disableBtn($goBack);
     }
 
     return false;
@@ -87,9 +95,9 @@ function naviQForword(){
     if (args)
         D.naviCallback.apply(this||window, args);
 
-    enableBtn($('#__go_back__'));
+    enableBtn($goBack);
     if (naviQPointor === naviQ.size()){
-        disableBtn($('#__go_forward__'));
+        disableBtn($goForward);
     }
 
     return false;

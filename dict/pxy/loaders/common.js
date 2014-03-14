@@ -50,7 +50,7 @@ function completeDefine(){
 
 function allCompleteAction(word, type) {
     setTimeout(function(){
-        $searchBox.val(word).select();
+        $searchBox.val(word);
 
 /*        if (D.PXY_IFRAME_MODE)
           $searchBox.focus().select();

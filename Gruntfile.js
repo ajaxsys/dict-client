@@ -113,16 +113,16 @@ module.exports = function(grunt) {
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
 
-          // formatter(Notice: Priority - Decide which is use, when google show both results in bellow formatter.)
+          // formatter
           'dict/pxy/dict.proxy.formatter.js',
           'dict/pxy/formaters/common.js',                  // common
           'dict/pxy/formaters/dict.formatter.*.js',        // core
-          'dict/pxy/formaters/plugins/dict.formatter.weblio.js',// plugins, do NOT use *,because it define the priority
+          // Plugins: Priority defines with order bellow.
+          'dict/pxy/formaters/plugins/dict.formatter.weblio.js',
           'dict/pxy/formaters/plugins/dict.formatter.wiki.js',
           'dict/pxy/formaters/plugins/dict.formatter.ewords.js',
-          'dict/pxy/formaters/plugins/dict.formatter.kotobank.js',
-          'dict/pxy/formaters/plugins/dict.formatter.goo.js',
-          //'dict/pxy/formaters/dict.formatter.weblio_small.js',
+          // Dropins < Plugins(priority): load by alphabet order.
+          'dict/pxy/formaters/dropins/dict.formatter.*.js',
 
           // Analyze result from search engine
           'dict/pxy/dict.proxy.dispatcher.js',
