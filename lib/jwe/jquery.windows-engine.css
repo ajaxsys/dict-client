@@ -2,7 +2,7 @@
 #__dict_window_id__.window-container{width:350px;position:absolute;left:350;top:200;font-size:13px;font-family:verdana}
 #__dict_window_id__.window-shaddow{box-shadow:0 45px 30px 0 #c9c9c9;-webkit-box-shadow:0 45px 30px 0 #c9c9c9;-moz-box-shadow:0 45px 30px 0 #c9c9c9}
 #__dict_window_id__ .window-titleBar{width:auto;height:23px;margin:0 9px 0 9px;text-align:center}
-#__dict_window_id__ .window-titleBar-content{height:23px;text-align:center;padding-top:3px;background:transparent url("default/top_mid.gif") repeat-x;cursor:move}
+#__dict_window_id__ .window-titleBar-content{height:23px;text-align:center;padding-top:3px;background:transparent url("default/top_mid.gif") repeat-x;cursor:move;color:#000;font:1em serif}
 #__dict_window_id__ .window-titleBar-leftCorner{background:transparent url('default/sprites.png') no-repeat -2px -2px; width: 9px; height:23px;;position:absolute;left:0;top:0}
 #__dict_window_id__ .window-titleBar-rightCorner{background:transparent url('default/sprites.png') no-repeat -15px -2px; width: 9px; height:23px;;position:absolute;right:0;top:0}
 #__dict_window_id__ .window-minimizeButton{background:transparent url('default/sprites.png') no-repeat -33px -29px; width: 14px; height:15px;;position:absolute;left:35px;top:5px;cursor:pointer}
