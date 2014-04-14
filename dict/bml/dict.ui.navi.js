@@ -15,6 +15,7 @@ var D = $.dict_extend({
     'DICT_SERVICE': true, // ON/OFF switch
 });
 
+var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');
 initNavi(); 
 
 function initNavi(){
@@ -23,7 +24,6 @@ function initNavi(){
     //var on='☂',off='☄',
     var ttlOn='ON',ttlOff='OFF',
         classOn='__navi_on__',classOff='__navi_off__',
-        $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>'),
         $imgOn = $('<div>').addClass(classOn).attr('title',ttlOn),
         $imgOff = $('<div>').addClass(classOff).attr('title',ttlOff).hide();
 
@@ -37,10 +37,39 @@ function initNavi(){
             if (!D.DICT_SERVICE){
                 $.closeWindow(D.DICT_ID);
             }
+        }).hoverIntent({
+            over: showSearchPanel,
+            interval: 500,
+            out: hideSearchPanel,
+            timeout: 1000,
         });
     },500);
 }
 
+var $quickSearch = $('<input type="text">');
+$quickSearch.hide().appendTo($navi).click(function(){
+    $(this).select();
+    return false;// Stop event propagation
+});
+
+function showSearchPanel(){
+    console.log('show it');
+    $quickSearch.val('').show().focus();
+    $quickSearch.keydown(function(e){
+        if (e.keyCode == 13){
+            // enter, call DICT search
+            var key = $quickSearch.val();
+            if (key) D.doQuery(key);
+        } else if (e.keyCode == 27){
+            // Escape, hide it
+            hideSearchPanel();
+        }
+    });
+}
+
+function hideSearchPanel(){
+    $quickSearch.hide();
+}
 
 
 })(jQuery);

@@ -13,6 +13,7 @@ var DICT_ID = '__dict_window_id__',
     DICT_ADD_HIGHT = 41; // height not correct when $win.height()
 var D = $.dict_extend({
     'DICT_ID' : DICT_ID,
+    'doQuery' : createOrUpdateWindow,
 });
 
 var DICT_JID = '#'+DICT_ID,
@@ -31,7 +32,7 @@ D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 registTextSelectionEvent();
 registWebElementToTextEvent();
 
-createOrUpdateWindow('body','');
+createOrUpdateWindow();
 
 $( window ).resize(function() {
     resetPositionWhenOverflow($(DICT_JID));
@@ -54,7 +55,7 @@ function getSelection(e, win){
             if (text && text != _lastSearchWord && isWord(text) ){
                     _lastSearchWord = text;
                     D.LC++;// For logger
-                    createOrUpdateWindow($target, text);
+                    createOrUpdateWindow(text, $target);
             }
         }
     }
@@ -88,7 +89,7 @@ function registWebElementToTextEvent() {
     $.plaintext('body a, body img, body select, body :button', option);
 }
 
-function createOrUpdateWindow($obj, text) {
+function createOrUpdateWindow(text, $obj) {
 
     /* Window move to selected word.
     var offset = $obj.position(),

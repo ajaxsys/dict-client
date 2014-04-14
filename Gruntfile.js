@@ -78,6 +78,7 @@ module.exports = function(grunt) {
           'lib/jquery-1.11.0.js',
           'lib/jquery.cookie.js',
           'lib/jquery.selection.js',
+          'lib/jquery.hoverIntent.js',
           'lib/jquery.plaintext.js',
           'lib/tooltip/jquery.tipsy.js',
           'lib/jwe/jquery.windows-engine.js',
