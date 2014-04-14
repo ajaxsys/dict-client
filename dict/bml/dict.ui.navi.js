@@ -40,31 +40,35 @@ function initNavi(){
         }).hoverIntent({
             over: showSearchPanel,
             interval: 500,
-            out: hideSearchPanel,
-            timeout: 1000,
+            out: function(){}, //hideSearchPanel,
+            // timeout: 1000,
         });
     },500);
 }
 
-var $quickSearch = $('<input type="text">');
-$quickSearch.hide().appendTo($navi).click(function(){
+var $quickSearch = $('<input type="text" placeholder="Quick Search">');
+$quickSearch.hide().appendTo($navi)
+.click(function(){
     $(this).select();
     return false;// Stop event propagation
-});
+})
+.keydown(function(e){
+    if (e.keyCode == 13){
+        // enter, call DICT search
+        var key = $quickSearch.val();
+        if (key) D.doQuery(key);
+    } else if (e.keyCode == 27){
+        // Escape, hide it
+        hideSearchPanel();
+    }
+}).blur(hideSearchPanel);
 
 function showSearchPanel(){
-    console.log('show it');
+    if (!D.DICT_SERVICE){
+        return;
+    }
+
     $quickSearch.val('').show().focus();
-    $quickSearch.keydown(function(e){
-        if (e.keyCode == 13){
-            // enter, call DICT search
-            var key = $quickSearch.val();
-            if (key) D.doQuery(key);
-        } else if (e.keyCode == 27){
-            // Escape, hide it
-            hideSearchPanel();
-        }
-    });
 }
 
 function hideSearchPanel(){
