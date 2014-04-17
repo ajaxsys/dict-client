@@ -232,6 +232,10 @@ function isSimpleWord(t){
     if (t.length===1 && t.charCodeAt(0)<256){
         return true;
     }
+    // Contain number is simple word
+    if (t.search(/[0-9]/)>-1){
+        return true;
+    }
     // More...
     return false;
 }
