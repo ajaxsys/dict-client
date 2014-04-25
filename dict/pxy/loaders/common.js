@@ -26,9 +26,10 @@ var options = {
       },
       'timeout': D.TIME_OUT,
       'beforeSend': function(){
+          processStart();
           $result.css({opacity:"0.5"});
           this.dict._startTime = $.now();
-          $searchBox.val(this.dict.word + ' is loading...');
+          //$searchBox.val(this.dict.word + ' is loading...');
           $('html,body').animate({scrollTop: 0},'fast');
       },
       'complete': completeDefine,
@@ -49,8 +50,9 @@ function completeDefine(){
 }
 
 function allCompleteAction(word, type) {
+    processComplete();
     setTimeout(function(){
-        $searchBox.val(word);
+        //$searchBox.val(word);
 
 /*        if (D.PXY_IFRAME_MODE)
           $searchBox.focus().select();
@@ -72,6 +74,21 @@ function errorDefine(jqXHR, textStatus, errorThrown) {
     }else{ // As timeout
         $result.empty().append($("#__timeout_msg__").clone(true).removeClass('hidden'));
     }
+}
+
+function processStart() {
+  //only add progress bar if added yet.
+  if ($("#__progress__").length === 0) {
+    $("body").append($("<div><dt/><dd/></div>").attr("id", "__progress__"));
+    $("#__progress__").width((50 + Math.random() * 30) + "%");
+  }
+}
+
+function processComplete() {
+    //End loading animation
+    $("#__progress__").width("101%").delay(200).fadeOut(400, function() {
+      $(this).remove();
+    });
 }
 
 $.jsonp.setup( options )
