@@ -15,6 +15,11 @@ var D = $.dict_extend({
     'DICT_SERVICE': true, // ON/OFF switch
 });
 
+// If load failed on some pages. [issue 20140425]
+if (!D.loaded){
+    return;
+}
+
 var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');
 initNavi(); 
 
@@ -27,10 +32,10 @@ function initNavi(){
         $imgOn = $('<div>').addClass(classOn).attr('title',ttlOn),
         $imgOff = $('<div>').addClass(classOff).attr('title',ttlOff).hide();
 
-    $navi.append($imgOn).append($imgOff).appendTo('body');// Prepend: lost to other max z-index.
-
+        $navi.append($imgOn).append($imgOff).appendTo('body');// Prepend: lost to other max z-index.
     // Waiting dom compute css , see SO: get-actual-value-specified-in-css-using-jquery
     setTimeout(function(){
+    //$('#'+D.DICT_ID).load(function() {
         $navi.click(function(){
             $imgOn.add($imgOff).toggle();
             D.DICT_SERVICE=$imgOn.is(':visible'); 
@@ -43,7 +48,9 @@ function initNavi(){
             out: function(){}, //hideSearchPanel,
             // timeout: 1000,
         });
+    //});
     },500);
+
 }
 
 var $quickSearch = $('<input type="text" placeholder="Quick Search">');

@@ -27,10 +27,34 @@ var _thisIP,
     _lastSearchWord;
 
 console.log(D.LC+=10000, '[dict.ui.js] Loading ui resource...');
+
+//loadCSSwithAllFrames(document, window);// TODO support tooltip in iframe 1-1(load css in all frames)
 D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 
-registTextSelectionEvent();
-registWebElementToTextEvent();
+// Fix page that dont contains body tags! [@issue 20140425]
+// like: http://help.eclipse.org/
+if ($('body').length === 0) {
+    var $body=$("<body>"); 
+    $body.css("padding","0px").css("margin","0px");
+    $("html>*").not( "head" ).wrap($body);
+    //alert("Please wait page reload");
+    console.log(D.LC+=10000, '[dict.ui.js] [ERROR] Missing `body` tag. Please reload DICT again later...');
+    D.loaded = false;  // Stop All other script
+
+    var $frames = $('iframe, frame'), countFrameLoaded=0;
+
+    $frames.load(function(){
+        countFrameLoaded++;
+        if ($frames.length === countFrameLoaded) {
+            console.log('Reloaded!!!!!!!!!!!!');
+        }
+    });
+    return;            // Stop this script
+}
+
+
+registTextSelectionEvent(document, window);
+registWebElementToTextEvent(document);
 
 createOrUpdateWindow();
 
@@ -40,6 +64,26 @@ $( window ).resize(function() {
 
 
 ///////////////////// private func //////////////////////
+/* TODO support tooltip in iframe 1-2 (load css in all frames)
+function loadCSSwithAllFrames(parentDocument, parentWindow) {
+    D.loadResource($, static_host()+'/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
+
+    // Regist iframe the same events.(Not support iframe in iframe)
+    var $iframes = $('iframe, frame', parentDocument);
+    console.log(D.LC, '[dict.ui.js] Found iframe numbers (loadCSSwithAllFrames):', $iframes.length);
+    $iframes.each(function(){
+        try{
+            var childWindow = this.contentWindow;
+            var childDocument = childWindow.document;
+            // Recuive
+            loadCSSwithAllFrames(childDocument, childWindow);
+        }catch(e){
+            console.log(D.LC, '[dict.ui.js] iframe can not access:', this);
+        }
+    });
+
+}
+*/
 
 function getSelection(e, win){
     win = win || window;
@@ -61,36 +105,58 @@ function getSelection(e, win){
     }
     // WARN: Do not `return false` here. If so, other mouseup be affected.
 }
-function registTextSelectionEvent() {
+function registTextSelectionEvent(parentDocument, parentWindow) {
     console.log(D.LC, '[dict.ui.js] Regist text selector');
     //console.log(D.LC, '[dict.ui.js] ', $('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
-    $(document).on('mouseup.dict','body', getSelection);
+    $(parentDocument).on('mouseup.dict','body', function(e){
+        getSelection(e, parentWindow);
+    });
     // Regist iframe the same events.(Not support iframe in iframe)
-    $('iframe').each(function(){
-        var child_win = this.contentWindow;
+    var $iframes = $('iframe, frame', parentDocument);
+    console.log(D.LC, '[dict.ui.js] Found iframe numbers (registTextSelectionEvent):', $iframes.length);
+    $iframes.each(function(){
         try{
-            var doc = child_win.document;
-            $(doc).on('mouseup.dict','body',function(e){
-                getSelection(e, child_win);
-            });
+            var childWindow = this.contentWindow;
+            var childDocument = childWindow.document;
+            // Recuive
+            registTextSelectionEvent(childDocument, childWindow);
         }catch(e){
             console.log(D.LC, '[dict.ui.js] iframe can not access:', this);
         }
     });
 }
 
-function registWebElementToTextEvent() {
+function registWebElementToTextEvent(parentDocument) {
     var option = {
-            checkService: function(){
+            'checkService': function(){
                 return D.DICT_SERVICE;
             },
+            'document' : parentDocument || document,
         };
 
     $.plaintext('body a, body img, body select, body :button', option);
+
+    /* TODO support tooltip in iframe 2 (regist event to all frames)
+    // Regist iframe the same events.(Not support iframe in iframe)
+    var $iframes = $('iframe, frame', parentDocument);
+    console.log(D.LC, '[dict.ui.js] Found iframe numbers (registWebElementToTextEvent):', $iframes.length);
+    $iframes.each(function(){
+        try{
+            var childWindow = this.contentWindow;
+            var childDocument = childWindow.document;
+            // Recuive
+            registWebElementToTextEvent(childDocument);
+        }catch(e){
+            console.log(D.LC, '[dict.ui.js] iframe can not access:', this);
+        }
+    });
+    */
 }
 
 function createOrUpdateWindow(text, $obj) {
-
+    if (!text) {
+        text = "";
+    }
     /* Window move to selected word.
     var offset = $obj.position(),
         textWidthHeight = getTextWH(text,$obj),

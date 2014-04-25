@@ -41,20 +41,22 @@ function setOptionToCookie(opt) {
 
 
 // Load resource and append to DOM
-function loadResource($, rscURL, rscType, callback, tag, done, readystate){
+function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readystate){
     if (!__DICT__.appendTag) {
         alert('Need dict.util.sharebml.js');
         return;
     }
+    doc = doc || document;
+    win = win || window;
     console.log(D.LC, '[_cmn/dict.util.js] Loading:',rscURL);
     if (rscType=="js") {
         // Create a script element.
-        tag = document.createElement( 'script' );
+        tag = doc.createElement( 'script' );
         tag.type = 'text/javascript';
         tag.src = rscURL;
     } else if (rscType=="css") {
         // Create a css link element.
-        tag = document.createElement( 'link' );
+        tag = doc.createElement( 'link' );
         tag.type = 'text/css';
         tag.type = 'text/css';
         tag.rel = 'stylesheet';
