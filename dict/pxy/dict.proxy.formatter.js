@@ -16,7 +16,7 @@ window.DICT_format = function(data, type){
     console.log($.dict_extend().LC, '[dict.formatter.js] Format start by type: ',type);
     var $explain = formatDict(data.src, type);
     if ($explain) {
-        var $result = $('#__explain_wrapper__');
+        var $result = $('#__explain_wrapper_appender__');
         $result.empty().append($explain);
     }
     return data;

@@ -9,9 +9,11 @@
 var D=$.dict_extend();
 $.dict_extend({
     'queryDictByYQL': queryDict, // will override dict.load.gae.js
+    'queryByYQL': queryByYQL,
 });
 
-var ajax;
+var ajax, ajaxDirect,
+    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
 
 function queryDict(word, type, url){
     // URL already get from google
@@ -36,8 +38,7 @@ function queryDict(word, type, url){
     //http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fgoo.gl%2FtUzHPI%22%20as%20html.src%3B%0A%20%20%20%20%20%20select%20*%20from%20html.src%20where%20%0A%20%20%20%20%20%20%20%20url%3D%22http%3A%2F%2Fja.wikipedia.org%2Fwiki%2FYahoo!%E2%80%8E%22%20&format=json&callback=
 
     // http://otherhost/dict/t/hello/?callback=DICT_format
-    var yql = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='"
-              +encodeURIComponent( url )+"'&format=json";
+    var yql = YQL_URL.replace('#URL#', encodeURIComponent(url));
 
     console.log(D.LC, '[loaders/dict.load.yql.js] JSONP load(via YQL): ', url);
     var params = {
@@ -57,7 +58,7 @@ function queryDict(word, type, url){
       'url': yql,
       'data': params,
       'success': function(json, textStatus, xOptions) {
-           data = {};
+           var data = {};
            try {
                data.src = json.query.results.resources.content;
            } catch(e){
@@ -81,6 +82,53 @@ function queryDict(word, type, url){
 
     // Others:Change debug URL when connect to YQL.
     $('#__debugAjax__').attr('href', url);
+}
+
+function DO_NOTHING(){}
+function queryByYQL(url, callback) {
+  if (typeof callback !== 'function'){
+    console.log(D.LC, '[loaders/dict.load.yql.js] [ERROR] queryByYQL MUST provide a callback function.');
+    return;
+  }
+
+  // Check cache, YQL use url as the key
+  var cache=D.getCache('YQL_CACHE', url); 
+  if (cache) {
+      console.log(D.LC, '[loaders/dict.load.yql.js] Load from dict jsonp cache(url/type/word/lang)', url);
+      callback(cache);
+      return;
+  }
+
+  var yql = YQL_URL.replace('#URL#', encodeURIComponent(url));
+  
+  if (ajaxDirect) {
+      ajaxDirect.abort();
+  }
+  ajaxDirect=$.jsonp({
+      'url': yql,
+      'success': function(json, textStatus, xOptions) {
+           var data = {};
+           try {
+               data.src = json.query.results.resources.content;
+           } catch(e){
+               console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
+               return;
+           }
+           data.key = url; // YQL only need url as the key
+
+           // add to cache
+           D.setCache('YQL_CACHE', data);
+          
+           console.log(D.LC, '[loaders/dict.load.yql.js] Dict JSONP load Success! Calling callback.');
+
+           callback(data);
+  
+      },
+      beforeSend : DO_NOTHING,
+      complete: DO_NOTHING,
+      error: DO_NOTHING,
+    });
+
 }
 
 // END OF AMD
