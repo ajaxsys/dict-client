@@ -272,7 +272,8 @@ module.exports = function(grunt) {
         ]
       },
       html: {
-        files: [].concat(copyToMulti('dict/pxy/',        'proxy.html', CONST.dest    ))
+        files: [{expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'}]
+                .concat(copyToMulti('dict/pxy/',        'proxy.html', CONST.dest    ))
       },
       img: {
         files: [].concat(copyToMulti('lib/jwe/default/',  '*_mid.gif', CONST.dest_css))
