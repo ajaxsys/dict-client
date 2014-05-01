@@ -30,7 +30,7 @@ var options = {
           $result.css({opacity:"0.5"});
           this.dict._startTime = $.now();
           //$searchBox.val(this.dict.word + ' is loading...');
-          $('html,body').animate({scrollTop: 0},'fast');
+          //$('html,body').animate({scrollTop: 0},'fast');
       },
       'complete': completeDefine,
       '_complete': completeDefine,
@@ -62,7 +62,9 @@ function allCompleteAction(word, type) {
             $('#__go_top__').focus();
 
         $result.css({opacity:"1.0"});
-        $('html,body').animate({scrollTop: $result.offset().top-10},'fast');
+        // Keep page 
+        //$('html,body').animate({scrollTop: $result.offset().top-10},'fast');
+        $('html,body').animate({scrollTop: 0},'fast');
     },300);
     console.log(D.LC, '[loaders/common.js] ============Complete Query. [key=',word,'& type=', type, ']=============' );
 }
