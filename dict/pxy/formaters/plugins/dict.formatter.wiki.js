@@ -41,10 +41,13 @@ function customizePageBef($target){//,#left-navigation
 var FLG_LOADED = 'lang-loaded',$MODAL;
 
 function customizeWikiLanguageLink($target){//,#left-navigation
-    $MODAL = $("#__title_only_modal__");
-
     var $lang = $("#page-secondary-actions >a", $target);
+    if ($lang.length === 0){
+        return; // No language seletion
+    }
+
     var href = 'http:'+$lang.attr("href").replace(option.host, option.mobile_host);
+    $MODAL = $("#__title_only_modal__");
     
     //$lang.attr("data-toggle","modal").attr("data-target","#myModal");
     $lang
