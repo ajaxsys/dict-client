@@ -18,6 +18,7 @@ var D=$.dict_extend({
     'getUrlHashValue' : getUrlHashValue,
     'getAbsUrl' : getAbsUrl,
     'isRelativeURL' : isRelativeURL,
+    'delayWindowEvent' : delayWindowEvent,
     'Queue': Queue,
     'Stack': Stack,
 });
@@ -104,6 +105,23 @@ function getAbsUrl(s){
 
 function isRelativeURL(href){
     return href.indexOf('//') === -1 || href.indexOf('//')>7; // <7 skip https://
+}
+
+function delayWindowEvent(win, event, callback, args) {
+    var didEvent = false;
+
+    $( win )[event](function() {
+        didEvent = true;
+    });
+
+    setInterval(function(){
+        if (didEvent){
+            didEvent = false;
+            $( win )[event](function() {
+                callback(args);
+            });
+        }
+    }, 250);
 }
 
 //////////// Data Type /////////////

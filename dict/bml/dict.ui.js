@@ -58,10 +58,7 @@ registWebElementToTextEvent(document);
 
 createOrUpdateWindow();
 
-$( window ).resize(function() {
-    resetPositionWhenOverflow($(DICT_JID));
-});
-
+registWindowResizeEvent(window);
 
 ///////////////////// private func //////////////////////
 /* TODO support tooltip in iframe 1-2 (load css in all frames)
@@ -151,6 +148,12 @@ function registWebElementToTextEvent(parentDocument) {
         }
     });
     */
+}
+
+function registWindowResizeEvent(win) {
+    D.delayWindowEvent(win, 'resize', function() {
+        resetPositionWhenOverflow($(DICT_JID));
+    });
 }
 
 function createOrUpdateWindow(text, $obj) {
