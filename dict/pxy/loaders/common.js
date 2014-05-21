@@ -78,16 +78,23 @@ function errorDefine(jqXHR, textStatus, errorThrown) {
     }
 }
 
+var waiting;
 function processStart() {
   //only add progress bar if added yet.
   if ($("#__progress__").length === 0) {
     $("body").append($("<div><dt/><dd/></div>").attr("id", "__progress__"));
-    $("#__progress__").width((50 + Math.random() * 30) + "%");
+    var percent = (40 + Math.random() * 20) ; // 40 ~ 70%
+    $("#__progress__").width(percent + "%");
+    waiting = setInterval(function(){
+      percent++;
+      $("#__progress__").width(percent + "%");
+    },500);
   }
 }
 
 function processComplete() {
     //End loading animation
+    clearInterval(waiting);
     $("#__progress__").width("101%").delay(200).fadeOut(400, function() {
       $(this).remove();
     });
