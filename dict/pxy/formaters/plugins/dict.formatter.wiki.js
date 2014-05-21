@@ -14,7 +14,7 @@ var optionWikipedia = DICT_PLUGINS.wiki = {
     'type' : 'wiki',
     'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // ([^:\/]+) keeps strick for wikipedia
     'format': formatWiki,
     'removeTags': ['iframe','noscript','script'],
     'isCleanLinks': true,
@@ -33,7 +33,7 @@ var optionWiktionary = DICT_PLUGINS.wiktionary = {
     'type' : 'wiktionary',
     'host': /(\/\/[a-z]+)(\.wiktionary\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wiktionary\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wiktionary\.org\/wiki\/.*$/,   /^\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
     'format': formatWiktionary,
     'removeTags': ['iframe','noscript','script'],
     'isCleanLinks': false, // cause there is MIX links(wikipedia/wiktionary/wikibooks...) on same page
@@ -55,7 +55,7 @@ var optionWikibooks = DICT_PLUGINS.wikibooks = {
     'type' : 'wikibooks',
     'host': /(\/\/[a-z]+)(\.wikibooks\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikibooks\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikibooks\.org\/wiki\/.*$/,   /^\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
     'format': formatWikibooks,
     'removeTags': ['iframe','noscript','script'],
     'isCleanLinks': false,
@@ -73,18 +73,29 @@ function formatWiki(src, opt) {
     opt = opt || optionWikipedia;
     console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] format start...');
     var $preFormatedTarget = $.dict_extend().preFormat(opt, src, customizePageBef);
-    customizeWikiLanguageLink($preFormatedTarget, opt);
     // Because 'isCleanLinks': false, need clean links manually
     if (opt.isCleanLinks === false){
-        customizeMultiLinks(src, $preFormatedTarget);
+        customizeMultiLinks(src, $preFormatedTarget, opt);
     }
+    // NOTICT: customizeWikiLanguageLink must be after customize links
+    // cause it must change `/wiki/...` to `http://en.wikipeidia.org/wiki/...`
+    customizeWikiLanguageLink($preFormatedTarget, opt);
+
     return $preFormatedTarget;
 }
 
-function customizeMultiLinks(src, $target){
-    $.dict_extend().cleanLinks($target, src, optionWikipedia);
-    $.dict_extend().cleanLinks($target, src, optionWiktionary);
-    $.dict_extend().cleanLinks($target, src, optionWikibooks);
+function customizeMultiLinks(src, $target, opt){
+    $.dict_extend().cleanLinks($target, src, opt);
+
+    if (opt !== optionWikipedia) {
+        $.dict_extend().cleanLinks($target, src, optionWikipedia);
+    }
+    else if (opt !== optionWiktionary) {
+        $.dict_extend().cleanLinks($target, src, optionWiktionary);
+    }
+    else if (opt !== optionWikibooks) {
+        $.dict_extend().cleanLinks($target, src, optionWikibooks);
+    }
 }
 
 
