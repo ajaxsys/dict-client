@@ -12,6 +12,7 @@
 // Regist common methods
 var D=$.dict_extend({
     'preFormat': preformatCommonPage,
+    'cleanLinks': cleanLinks,
     'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
 });
 
@@ -32,8 +33,8 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
 
     if (pluginInfo.isCleanLinks !== false){
         // Like wiki, with I18 support, host will change when lang change
-        var host = gressHostIfRegexp(src, pluginInfo.host); 
-        cleanLinks($target, pluginInfo.prefix, host, pluginInfo.type, pluginInfo.isCleanLinkByText);
+        
+        cleanLinks($target, src, pluginInfo);
     }
 
     return $target;
@@ -51,7 +52,12 @@ function gressHostIfRegexp(src, hostStrOrRegexp){
     return hostStrOrRegexp;
 }
 
-function cleanLinks($$, prefixes, host, type, isCleanLinkByText) {
+function cleanLinks($$, src, pluginInfo) { //
+    var host = gressHostIfRegexp(src, pluginInfo.host),
+        prefixes = pluginInfo.prefix, 
+        type = pluginInfo.type, 
+        isCleanLinkByText = pluginInfo.isCleanLinkByText;
+
     var selfLink = '#'; //window.location.pathname + '#key'
 
     prefixes=[].concat(prefixes);
