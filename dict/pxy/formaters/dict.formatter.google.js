@@ -36,7 +36,7 @@ function firstMode(json) {
         return $resultDiv.append('<h4>No search result!</h4>');
     }
 
-    var header = '<div style="text-align:center;margin-top:-10px;"><img src="/dict/default/google.png" alt="Power By Google "><br></div>';
+    var header = '<div style="margin:-10px auto 0 auto;" class="icon_google"></div>';
     $resultDiv.append(header)
 
     $resultDiv.append(getContent(json));

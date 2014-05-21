@@ -33,7 +33,7 @@ function customizePageBef($target){//,#left-navigation
     $("#footer,#disambigbox,#page-actions,#mw-mf-page-left,#jump-to-nav,#search,[id$='navigation'],"+ // id
         ".header,.edit-page,.printfooter,.mw-search-pager-bottom", // class
         $target).remove();
-    $("#section_0", $target).prepend("<img src='/dict/default/wiki.gif'>");
+    $("#section_0", $target).prepend("<span style='display:inline-block;' class='icon_wiki'>");
 }
 
 
