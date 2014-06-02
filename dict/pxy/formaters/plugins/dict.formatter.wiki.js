@@ -14,10 +14,10 @@ var optionWikipedia = DICT_PLUGINS.wiki = {
     'type' : 'wiki',
     'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/,   /^\/wiki\/([^:\/]+)$/   ], // ([^:\/]+) keeps strick for wikipedia
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikipedia\.org\/wiki\/([^:\/]+)$/  ], // ([^:\/]+) keeps strick for wikipedia
     'format': formatWiki,
     'removeTags': ['iframe','noscript','script'],
-    'isCleanLinks': true,
+    'isCleanLinks': false, // Some link from wikipedia to wiki books.
 };
 
 
@@ -33,7 +33,7 @@ var optionWiktionary = DICT_PLUGINS.wiktionary = {
     'type' : 'wiktionary',
     'host': /(\/\/[a-z]+)(\.wiktionary\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wiktionary\.org\/wiki\/.*$/,   /^\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wiktionary\.org\/wiki\/.*$/  ], // URL Displayed in google search result  & self page
     'format': formatWiktionary,
     'removeTags': ['iframe','noscript','script'],
     'isCleanLinks': false, // cause there is MIX links(wikipedia/wiktionary/wikibooks...) on same page
@@ -55,7 +55,7 @@ var optionWikibooks = DICT_PLUGINS.wikibooks = {
     'type' : 'wikibooks',
     'host': /(\/\/[a-z]+)(\.wikibooks\.org)/,
     'mobile_host': "$1.m$2",                //  `//jp.wiki`...--> `//jp.m.wiki`...
-    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikibooks\.org\/wiki\/.*$/,   /^\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
+    'prefix': [   /^[htps:]*\/\/[a-z]+\.wikibooks\.org\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
     'format': formatWikibooks,
     'removeTags': ['iframe','noscript','script'],
     'isCleanLinks': false,
@@ -71,7 +71,7 @@ function formatWikibooks(src){
 // JSON sample
 function formatWiki(src, opt) {
     opt = opt || optionWikipedia;
-    console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] format start...');
+    console.log($.dict_extend().LC, '[dict.formatter.wiki.js] format start...');
     var $preFormatedTarget = $.dict_extend().preFormat(opt, src, customizePageBef);
     // Because 'isCleanLinks': false, need clean links manually
     if (opt.isCleanLinks === false){
@@ -85,17 +85,13 @@ function formatWiki(src, opt) {
 }
 
 function customizeMultiLinks(src, $target, opt){
-    $.dict_extend().cleanLinks($target, src, opt);
+    // Move this process after page show
+    var clone = jQuery.extend(true, {}, opt);
+    clone.prefix = [].concat(optionWikipedia.prefix)
+                     .concat(optionWiktionary.prefix)
+                     .concat(optionWikibooks.prefix);
 
-    if (opt !== optionWikipedia) {
-        $.dict_extend().cleanLinks($target, src, optionWikipedia);
-    }
-    else if (opt !== optionWiktionary) {
-        $.dict_extend().cleanLinks($target, src, optionWiktionary);
-    }
-    else if (opt !== optionWikibooks) {
-        $.dict_extend().cleanLinks($target, src, optionWikibooks);
-    }
+    $.dict_extend().cleanLinks($target, src, clone);
 }
 
 
@@ -121,7 +117,12 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
         return; // No language seletion
     }
 
-    var href = 'http:'+$lang.attr("href").replace(option.host, option.mobile_host);
+    //var href = $lang.attr('href').replace(option.host, option.mobile_host);
+    var href = D.changeToMobileUrl($lang.attr('href'), option);
+    //if (!href.startsWith('http:')){
+    //    href = 'http:' + href;
+    //}
+
     $MODAL = $("#__title_only_modal__");
     
     //$lang.attr("data-toggle","modal").attr("data-target","#myModal");
@@ -130,7 +131,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
         .mouseover(function(){
             var $thisLnk = $(this);
             if ($thisLnk.data(FLG_LOADED)){
-                console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] Lang loaded already.');
+                console.log($.dict_extend().LC, '[dict.formatter.wiki.js] Lang loaded already.');
                 return;
             }
             loadLanguageLinkByAjax($thisLnk, false);
@@ -139,7 +140,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
         .click(function(){
             var $thisLnk = $(this);
             if (!$thisLnk.data(FLG_LOADED)){
-                console.log($.dict_extend().LC, '[dict.formatter.wiki_jp.js] Lang is loading, try load again.');
+                console.log($.dict_extend().LC, '[dict.formatter.wiki.js] Lang is loading, try load again.');
                 loadLanguageLinkByAjax($thisLnk, true);
             } else {
                 $MODAL.modal("show");

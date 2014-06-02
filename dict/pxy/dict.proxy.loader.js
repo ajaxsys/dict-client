@@ -56,8 +56,8 @@ function doQuery(query, type, url, isPushToHistory){
 
 function callFetchURLLoader(word, type, url){
     // Change URL
-    url = changeToMobileUrl(url, type);
-    url = addHttpWhenBothProtocalsOK(url);
+    url = D.changeToMobileUrl(url, DICT_PLUGINS[type]);
+    url = D.addHttpProtocal(url);
 
     D.queryDictByYQL(word, type, url);// Load by URL directly
 }
@@ -88,27 +88,9 @@ function isNotKey(word){
     return word.indexOf('__') !== 0;
 }
 
-// Change to URL for SP if possible
-function changeToMobileUrl(url,type){
-    var opt = DICT_PLUGINS[type];
-    if (opt && opt.host && opt.mobile_host){
-        if (url.contains(opt.mobile_host)){
-            console.log(D.LC, '[dict.formatter.auto.js] Already mobile URL , NO need change to mobile url:', url);
-            return url;
-        }
-        var newUrl = url.replace(opt.host, opt.mobile_host);
-        console.log(D.LC, '[dict.formatter.auto.js] URL ',url,' changed to mobile url:', newUrl);
-        return newUrl;
-    }else{
-        return url;
-    }
-}
-function addHttpWhenBothProtocalsOK(url){
-    if (url.indexOf('//')===0){
-        return 'http:' + url;
-    }
-    return url;
-}
+
+
+
 
 /* // NO USE: because search will redirect page to blank
 function searchToObject() {

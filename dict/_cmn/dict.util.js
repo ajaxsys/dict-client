@@ -18,10 +18,16 @@ var D=$.dict_extend({
     'getUrlHashValue' : getUrlHashValue,
     'getAbsUrl' : getAbsUrl,
     'isRelativeURL' : isRelativeURL,
+
+    'addHttpProtocal' : addHttpProtocal,
+    'getHrefWithHost' : getHrefWithHost,
+    'changeToMobileUrl' : changeToMobileUrl,
+
     'delayWindowEvent' : delayWindowEvent,
     'Queue': Queue,
     'Stack': Stack,
 });
+
 
 ////////////////////////// COMMONS ////////////////////
 var COOKIE_NAME='__DICT_OPTIONS__';
@@ -106,6 +112,39 @@ function getAbsUrl(s){
 function isRelativeURL(href){
     return href.indexOf('//') === -1 || href.indexOf('//')>7; // <7 skip https://
 }
+
+function getHrefWithHost(host, href){
+    host = addHttpProtocal(host);
+    if ( !href.startsWith('/') && !host.endsWith('/') ){
+        host = host + '/';
+    }
+    return isRelativeURL(href) ? (host+href) : href;
+}
+
+function addHttpProtocal(host){
+    if (host.startsWith('//')){
+        host = 'http:' + host;
+    } else if (!host.startsWith('http')){
+        host = 'http://' + host;
+    }
+    return host;
+}
+
+// Change to URL for SP if possible
+function changeToMobileUrl(url, opt){
+    if (opt && opt.host && opt.mobile_host){
+        if (url.contains(opt.mobile_host)){
+            console.log(D.LC, '[dict.util.js] Already mobile URL , NO need change to mobile url:', url);
+            //return url;
+        } else {
+            var oldUrl = url;
+            url = url.replace(opt.host, opt.mobile_host);
+            console.log(D.LC, '[dict.util.js] URL ',oldUrl,' changed to mobile url:', url);
+        }
+    }
+    return url;
+}
+
 
 function delayWindowEvent(win, event, callback, args) {
     var didEvent = false;
@@ -204,6 +243,9 @@ String.prototype.contains = function(str) {
 String.prototype.startsWith = function(str) {
     return this.indexOf(str) === 0;
 }
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 
 })(jQuery);

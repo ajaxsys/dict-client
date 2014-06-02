@@ -12,7 +12,7 @@ DICT_PLUGINS.auto_ewords = {
 }
 var option = DICT_PLUGINS.ewords = {
     'type' : 'ewords',
-    'host' : '//e-words.jp',
+    'host' : '//e-words.jp/w',
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
     'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,

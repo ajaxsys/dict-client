@@ -72,6 +72,10 @@ function cleanLinks($$, src, pluginInfo) { //
 
         // Skip anchor 
         if (href.startsWith('#')){
+            if (href.startsWith('#__')){
+                // Already enhanced
+                return;
+            }
             // __tells proxy.html to ignore this when url changed.
             $(this).attr('href', href.replace('#', '#__'));
 
@@ -89,11 +93,11 @@ function cleanLinks($$, src, pluginInfo) { //
         }
 
         // Clean links match prefix
-        $(this).attr('href', getHrefWithHost(host,href) );
-        $(this).attr('target','_blank');
+        var URL = D.getHrefWithHost(host,href);
+        $(this).attr('href', URL).attr('target','_blank');
         for (var i in prefixes) {
             var prefixRegexp = prefixes[i];
-            var m = href.match(prefixRegexp);
+            var m = URL.match(prefixRegexp);
             if (m && m.index===0 ) {// && m[1] : m[1] is not always searchKey
                 var word = $(this).text();
                 
@@ -101,15 +105,19 @@ function cleanLinks($$, src, pluginInfo) { //
                     //Default: Guess text from URL
                     word = m[1]; 
                 }
-                //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + getHrefWithHost(host,href) )
-                createOrEnhanceLinkForIframeClick(word, type, $(this));
-                $(this).attr('o-href', href);
+                //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + D.getHrefWithHost(host,href) )
+                //createOrEnhanceLinkForIframeClick(word, type, $(this));
+                $(this).attr('__dict_word__', word)
+                       .attr('__dict_type__', type)
+                       .attr('target', '_self')
+                       .attr('o-href', href);
                 return;
             }
         }
     });
 }
 
+/*
 function createOrEnhanceLinkForIframeClick(word, type, $lnk){
     if (!$lnk || !($lnk instanceof jQuery) ){
         $lnk = $('<a>');
@@ -119,10 +127,10 @@ function createOrEnhanceLinkForIframeClick(word, type, $lnk){
         .attr('target', '_self');
     return $lnk;
 }
+*/
 
-function getHrefWithHost(host, href){
-    return D.isRelativeURL(href) ? (host+href) : href;
-}
+
+
 
 function jQueryStripTags(src, removeTags){
     // `src` attribute of img tag is special
