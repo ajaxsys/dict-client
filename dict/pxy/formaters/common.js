@@ -13,7 +13,7 @@
 var D=$.dict_extend({
     'preFormat': preformatCommonPage,
     'cleanLinks': cleanLinks,
-    'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
+    //'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
 });
 
 // 1.Remove tags defined in plugin.removeTags

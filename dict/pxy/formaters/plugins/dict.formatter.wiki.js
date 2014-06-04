@@ -3,6 +3,8 @@
  **************************************************/
 ;(function($){
 
+var D = $.dict_extend();
+
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from wiki is SoSlow&NotGood -vs- from google.
@@ -71,8 +73,8 @@ function formatWikibooks(src){
 // JSON sample
 function formatWiki(src, opt) {
     opt = opt || optionWikipedia;
-    console.log($.dict_extend().LC, '[dict.formatter.wiki.js] format start...');
-    var $preFormatedTarget = $.dict_extend().preFormat(opt, src, customizePageBef);
+    console.log(D.LC, '[dict.formatter.wiki.js] format start...');
+    var $preFormatedTarget = D.preFormat(opt, src, customizePageBef);
     // Because 'isCleanLinks': false, need clean links manually
     if (opt.isCleanLinks === false){
         customizeMultiLinks(src, $preFormatedTarget, opt);
@@ -91,7 +93,7 @@ function customizeMultiLinks(src, $target, opt){
                      .concat(optionWiktionary.prefix)
                      .concat(optionWikibooks.prefix);
 
-    $.dict_extend().cleanLinks($target, src, clone);
+    D.cleanLinks($target, src, clone);
 }
 
 
@@ -131,7 +133,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
         .mouseover(function(){
             var $thisLnk = $(this);
             if ($thisLnk.data(FLG_LOADED)){
-                console.log($.dict_extend().LC, '[dict.formatter.wiki.js] Lang loaded already.');
+                console.log(D.LC, '[dict.formatter.wiki.js] Lang loaded already.');
                 return;
             }
             loadLanguageLinkByAjax($thisLnk, false);
@@ -140,7 +142,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
         .click(function(){
             var $thisLnk = $(this);
             if (!$thisLnk.data(FLG_LOADED)){
-                console.log($.dict_extend().LC, '[dict.formatter.wiki.js] Lang is loading, try load again.');
+                console.log(D.LC, '[dict.formatter.wiki.js] Lang is loading, try load again.');
                 loadLanguageLinkByAjax($thisLnk, true);
             } else {
                 $MODAL.modal("show");
@@ -153,7 +155,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
 
 function loadLanguageLinkByAjax($thisLnk, isShowDefault){
     $thisLnk.data(FLG_LOADED, 'loading');
-    $.dict_extend().queryByYQL($thisLnk.attr('href'), function(json){
+    D.queryByYQL($thisLnk.attr('href'), function(json){
         $thisLnk.data(FLG_LOADED, 'loaded');
 
         var $langHtml = $(json.src);
