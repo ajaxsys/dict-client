@@ -13,7 +13,8 @@
 var D=$.dict_extend({
     'preFormat': preformatCommonPage,
     'cleanLinks': cleanLinks,
-    //'createLinkForIframeClick': createOrEnhanceLinkForIframeClick,
+    // Create common link format for Dict-client
+    'createLinkForLoader': createOrEnhanceLinkForLoader,
 });
 
 // 1.Remove tags defined in plugin.removeTags
@@ -106,19 +107,16 @@ function cleanLinks($$, src, pluginInfo) { //
                     word = m[1]; 
                 }
                 //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + D.getHrefWithHost(host,href) )
-                //createOrEnhanceLinkForIframeClick(word, type, $(this));
-                $(this).attr('__dict_word__', word)
-                       .attr('__dict_type__', type)
-                       .attr('target', '_self')
-                       .attr('o-href', href);
+                createOrEnhanceLinkForLoader(word, type, $(this));
+                $(this).attr('o-href', href);
                 return;
             }
         }
     });
 }
 
-/*
-function createOrEnhanceLinkForIframeClick(word, type, $lnk){
+
+function createOrEnhanceLinkForLoader(word, type, $lnk){
     if (!$lnk || !($lnk instanceof jQuery) ){
         $lnk = $('<a>');
     }
@@ -127,7 +125,7 @@ function createOrEnhanceLinkForIframeClick(word, type, $lnk){
         .attr('target', '_self');
     return $lnk;
 }
-*/
+
 
 
 

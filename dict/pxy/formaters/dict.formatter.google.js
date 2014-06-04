@@ -72,7 +72,7 @@ function getContent(json){
 
         // NG: ?type=xxx#word  : it will redirect the page to blank
         if (plugin){
-            $lnk = D.createLinkForIframeClick( word, plugin.type );
+            $lnk = D.createLinkForLoader( word, plugin.type );
         } else {
             $lnk = $lnk_ext.clone();
         }
