@@ -1,7 +1,23 @@
-How to use:
+dict-client
+===========
 
+#DEMO
+
+http://dict-admin.appspot.com/
+
+#Run local:
+
+Clone `dict-client` to local
+
+##Compile
+$ cd dict-client
 $ npm install
-$ ./run
+$ grunt
+$ grunt watch
 
-Visit:
+##Run simple http server
+$ cd tool
+$ node run-server-js
+
+Then visit on your browser:
  http://localhost:8443/build/test/test.html
