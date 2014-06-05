@@ -75,7 +75,7 @@ module.exports = function(grunt) {
       dict_ui: {
         src: [
           // lib
-          'lib/jquery-1.11.0.js',
+          'lib/jquery.js',
           'lib/jquery.cookie.js', // TODO:Will be delete for a while.
           'lib/json2.js',
           'lib/jstorage.js',
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
       dict_proxy: {
         src: [
           // lib
-          'lib/jquery-1.11.0.js',
+          'lib/jquery.js',
           'lib/jquery.cookie.js', // TODO:Will be delete for a while.
           'lib/json2.js',
           'lib/jstorage.js',
