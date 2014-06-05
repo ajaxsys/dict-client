@@ -32,8 +32,8 @@ var D=$.dict_extend({
 ////////////////////////// COMMONS ////////////////////
 var COOKIE_NAME='__DICT_OPTIONS__';
 function getOptionFromCookie(){
-    $.cookie.json = true;
-    var target = $.cookie(COOKIE_NAME) || {};
+    $.removeCookie(COOKIE_NAME, { path: '/' }); // TODO:Will be delete for a while
+    var target = $.jStorage.get(COOKIE_NAME) || {};
     var default_opt={'dict':{'dict_type':'auto','dict_lang':'jp'},'ui':{'width':400,'height':300}};
     $.extend(default_opt, target);// Merge target to options
     console.log(D.LC, '[_cmn/dict.util.js] Cookie read:' + JSON.stringify(default_opt) );
@@ -41,9 +41,10 @@ function getOptionFromCookie(){
 }
 
 function setOptionToCookie(opt) {
-    $.cookie.json = true;
-    $.cookie(COOKIE_NAME, opt , { expires: 365, path: '/' });
-    console.log(D.LC, '[_cmn/dict.util.js] Cookie saved:' + JSON.stringify($.cookie(COOKIE_NAME)) );
+    //$.cookie.json = true;
+    //$.cookie(COOKIE_NAME, opt , { expires: 365, path: '/' });
+    $.jStorage.set(COOKIE_NAME, opt);
+    console.log(D.LC, '[_cmn/dict.util.js] Cookie saved:' + JSON.stringify($.jStorage.get(COOKIE_NAME)) );
 }
 
 

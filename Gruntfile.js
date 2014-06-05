@@ -76,7 +76,10 @@ module.exports = function(grunt) {
         src: [
           // lib
           'lib/jquery-1.11.0.js',
-          'lib/jquery.cookie.js',
+          'lib/jquery.cookie.js', // TODO:Will be delete for a while.
+          'lib/json2.js',
+          'lib/jstorage.js',
+
           'lib/jquery.selection.js',
           'lib/jquery.hoverIntent.js',
           'lib/jquery.plaintext.js',
@@ -98,7 +101,9 @@ module.exports = function(grunt) {
         src: [
           // lib
           'lib/jquery-1.11.0.js',
-          'lib/jquery.cookie.js',
+          'lib/jquery.cookie.js', // TODO:Will be delete for a while.
+          'lib/json2.js',
+          'lib/jstorage.js',
           'lib/jquery.jsonp.js',
           'lib/bootstrap/js/bootstrap.js',
           // share
