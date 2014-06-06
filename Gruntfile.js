@@ -133,6 +133,7 @@ module.exports = function(grunt) {
           // Analyze result from search engine
           'dict/pxy/dict.proxy.dispatcher.js',
           'dict/pxy/dict.proxy.navi.js',
+          'dict/pxy/dict.proxy.modal-dialog.js',
 
           // main (MUST defined at last)
           'dict/pxy/dict.proxy.js', 

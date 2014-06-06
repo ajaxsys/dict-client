@@ -111,9 +111,10 @@ function customizePageBef($target){//,#left-navigation
 
 
 // Customize language seletors
-var FLG_LOADED = 'lang-loaded',$MODAL;
+var FLG_LOAD = 'lang-load', isShowDefault;
 
 function customizeWikiLanguageLink($target, option){//,#left-navigation
+    isShowDefault = false;
     var $lang = $("#page-secondary-actions >a", $target);
     if ($lang.length === 0){
         return; // No language seletion
@@ -125,54 +126,54 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
     //    href = 'http:' + href;
     //}
 
-    $MODAL = $("#__title_only_modal__");
     
     //$lang.attr("data-toggle","modal").attr("data-target","#myModal");
     $lang
         .attr("href",href)
         .mouseover(function(){
-            var $thisLnk = $(this);
-            if ($thisLnk.data(FLG_LOADED)){
-                console.log(D.LC, '[dict.formatter.wiki.js] Lang loaded already.');
-                return;
-            }
-            loadLanguageLinkByAjax($thisLnk, false);
+            loadLanguageLinkByAjax($(this));
             
         })
         .click(function(){
             var $thisLnk = $(this);
-            if (!$thisLnk.data(FLG_LOADED)){
-                console.log(D.LC, '[dict.formatter.wiki.js] Lang is loading, try load again.');
-                loadLanguageLinkByAjax($thisLnk, true);
+            if ($thisLnk.attr(FLG_LOAD) == FLG_LOAD){
+                D.MODAL_DIALOG.show();
             } else {
-                $MODAL.modal("show");
-            }
+                // First load or next load
+                console.log(D.LC, '[dict.formatter.wiki.js] Lang is first load');
+                loadLanguageLinkByAjax($(this)); // Tab device no mouseover.
+                isShowDefault = true;
+            } 
             return false;
         });
 
 }
 
 
-function loadLanguageLinkByAjax($thisLnk, isShowDefault){
-    $thisLnk.data(FLG_LOADED, 'loading');
+function loadLanguageLinkByAjax($thisLnk){
+    if ($thisLnk.attr(FLG_LOAD)){
+        // loading
+        return;
+    }
+    $thisLnk.attr(FLG_LOAD, FLG_LOAD + "ing");
     D.queryByYQL($thisLnk.attr('href'), function(json){
-        $thisLnk.data(FLG_LOADED, 'loaded');
+        $thisLnk.attr(FLG_LOAD, FLG_LOAD);
 
         var $langHtml = $(json.src);
         // set modal title
-        $('.modal-title', $MODAL).text( $('#content p:first', $langHtml).text() );
+        D.MODAL_DIALOG.title( $('#content p:first', $langHtml).text() );
 
         // set modal content
         var $langList =  $('#mw-mf-language-selection', $langHtml);
         moveFavorateLangLinkToHead($langList);
-        $('.modal-body', $MODAL).empty().append( $langList );
+        D.MODAL_DIALOG.body( $langList );
 
         // Active link in DICT by append '__dict_type__'
-        $('a', $MODAL).attr('__dict_type__','wiki').click(function(){
-            $MODAL.modal('hide');
+        $('a', D.MODAL_DIALOG.$body).attr('__dict_type__','wiki').click(function(){
+            D.MODAL_DIALOG.hide();
         });
         if (isShowDefault) {
-            $MODAL.modal('show');
+            D.MODAL_DIALOG.show();
         }
     });
 }

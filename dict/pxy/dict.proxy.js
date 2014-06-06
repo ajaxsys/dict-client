@@ -50,9 +50,10 @@ $(function(){
     registSearchKeyEvent();
     registRetry();
     registScrollBottomEvent();
-    registDebug();
     registClearBtn();
     registPageLinkCliecked();
+    registDebug();
+    registAbout();
 });
 
 
@@ -83,7 +84,7 @@ function registDebug(){
     var timer;
     $('#__go_top__').mouseover(function(){
         timer = setTimeout(function(){
-            $('#__debug__').removeClass('hidden');
+            $('#__debug__').removeClass('hidden'); // show() not work when !important
             $('#__debugSelf__').attr('href', window.location.href);
         },WAIT_DEBUG);
     }).mouseleave(function(){
@@ -200,6 +201,13 @@ function getSelectedMenu(key){
         return value;
     }*/
     return $('#__dict_' + key + '__ li.active>a').attr('value');
+}
+
+function registAbout(){
+    $('#__dict_about__').click(function(){
+        D.MODAL_DIALOG.title('About Me').body($('#__dict_about_content__')).show();
+        return false;
+    });
 }
 
 // END OF AMD
