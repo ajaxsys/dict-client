@@ -74,8 +74,8 @@ function detectExistedPluginByPrefixWithPluginOrder(results){
     return null; 
 }
 
-function detectExistedPluginByPrefix(aResult){ 
-    var url = aResult.unescapedUrl;                  //  URL outside *2
+function detectExistedPluginByPrefix(url){ 
+    //var url = aResult.unescapedUrl;                  //  URL outside *2
     if (url) {
         for (var pluginType in window.DICT_PLUGINS) {
             var thisPrefix = window.DICT_PLUGINS[pluginType].prefix;
@@ -90,7 +90,7 @@ function detectExistedPluginByPrefix(aResult){
                     return {
                               'type': pluginType,
                               'wordFromURL': matcher[1], // undefined if UN-match. *1
-                              'unescapedUrl' : url
+                              'url' : url
                            };
                 }
             }

@@ -17,7 +17,6 @@ var option = DICT_PLUGINS.goo = {
     'format': formatGoo,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
-    'isCleanLinkByText': true, // Cant guess real word from url
 };
 
 // JSON sample

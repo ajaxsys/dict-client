@@ -18,7 +18,6 @@ var option = DICT_PLUGINS.ewords = {
     'format': formatEWords,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr'],
     'isCleanLinks': true,
-    'isCleanLinkByText': true,
 };
 
 // JSON sample

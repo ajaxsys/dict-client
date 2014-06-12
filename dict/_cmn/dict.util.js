@@ -134,12 +134,18 @@ function addHttpProtocal(host){
 // Change to URL for SP if possible
 function changeToMobileUrl(url, opt){
     if (opt && opt.host && opt.mobile_host){
-        if (url.contains(opt.mobile_host)){
+        if ( (opt.mobile_host instanceof RegExp && url.match(opt.mobile_host)) || url.contains(opt.mobile_host) ) {
             console.log(D.LC, '[dict.util.js] Already mobile URL , NO need change to mobile url:', url);
             //return url;
         } else {
             var oldUrl = url;
-            url = url.replace(opt.host, opt.mobile_host);
+
+            if (typeof opt.changeToMobileUrl == 'function'){
+                url = opt.changeToMobileUrl(url);
+            } else {
+                url = url.replace(opt.host, opt.mobile_host);
+            }
+            
             console.log(D.LC, '[dict.util.js] URL ',oldUrl,' changed to mobile url:', url);
         }
     }

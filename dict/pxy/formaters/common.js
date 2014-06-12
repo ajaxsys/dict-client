@@ -14,7 +14,7 @@ var D=$.dict_extend({
     'preFormat': preformatCommonPage,
     'cleanLinks': cleanLinks,
     // Create common link format for Dict-client
-    'createLinkForLoader': createOrEnhanceLinkForLoader,
+    'createLinkForLoader': createLinkForLoader,
 });
 
 // 1.Remove tags defined in plugin.removeTags
@@ -41,29 +41,25 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     return $target;
 }
 
-function gressHostIfRegexp(src, hostStrOrRegexp){
-    if (hostStrOrRegexp instanceof RegExp) {
-        var host=src.match(hostStrOrRegexp);
-        //return host ? host[0] : hostStrOrRegexp;
-        if (host){
-            console.log(D.LC, '[formatter/common.js] Host guessed by regexp:', host[0]);
-            return host[0];
+function gressHostIfRegexp(src, opt){
+    var hosts = [opt.host, opt.mobile_host];
+    for (var i = hosts.length - 1; i >= 0; i--) {
+        var hostStrOrRegexp = hosts[i];
+
+        if (hostStrOrRegexp && hostStrOrRegexp instanceof RegExp) {
+            var host=src.match(hostStrOrRegexp);
+            //return host ? host[0] : hostStrOrRegexp;
+            if (host){
+                console.log(D.LC, '[formatter/common.js] Host guessed by regexp:', host[0]);
+                return host[0];
+            }
         }
     }
-    return hostStrOrRegexp;
+    return opt.host;
 }
 
 function cleanLinks($$, src, pluginInfo) { //
-    var host = gressHostIfRegexp(src, pluginInfo.host),
-        prefixes = pluginInfo.prefix, 
-        type = pluginInfo.type, 
-        isCleanLinkByText = pluginInfo.isCleanLinkByText;
-
-    var selfLink = '#'; //window.location.pathname + '#key'
-
-    prefixes=[].concat(prefixes);
-    console.log(D.LC, '[formatter/common.js] Prefix is: ' + prefixes);
-    console.log(D.LC, '[formatter/common.js] Clean link by ', isCleanLinkByText ? 'link text. ': 'guess url. ');
+    var host = gressHostIfRegexp(src, pluginInfo);
 
     $('a', $$).each(function(){
         var href = $(this).attr('href');
@@ -94,35 +90,29 @@ function cleanLinks($$, src, pluginInfo) { //
         }
 
         // Clean links match prefix
-        var URL = D.getHrefWithHost(host,href);
-        $(this).attr('href', URL).attr('target','_blank');
-        for (var i in prefixes) {
-            var prefixRegexp = prefixes[i];
-            var m = URL.match(prefixRegexp);
-            if (m && m.index===0 ) {// && m[1] : m[1] is not always searchKey
-                var word = $(this).text();
-                
-                if ( isCleanLinkByText!==true && m[1] ) {
-                    //Default: Guess text from URL
-                    word = m[1]; 
-                }
-                //$(this).attr('href', selfLink + m[1] + '?type='+type+'&url=' + D.getHrefWithHost(host,href) )
-                createOrEnhanceLinkForLoader(word, type, $(this));
-                $(this).attr('o-href', href);
-                return;
-            }
+        var newURL = D.getHrefWithHost(host, href);
+        
+        $(this).attr('href', newURL)
+               .attr('o-href', href)
+               .attr('target','_blank');
+
+        var pluginInfoFromURL = D.detectExistedPluginByPrefix(newURL);
+        if ( pluginInfoFromURL ){
+            // Detect text from URL
+            createLinkForLoader($(this).text(), pluginInfoFromURL.type, $(this));
+            return;
         }
     });
 }
 
 
-function createOrEnhanceLinkForLoader(word, type, $lnk){
+function createLinkForLoader(word, type, $lnk){
     if (!$lnk || !($lnk instanceof jQuery) ){
         $lnk = $('<a>');
     }
     $lnk.attr('__dict_word__', word)
         .attr('__dict_type__', type)
-        .attr('target', '_self');
+        .attr('target', '_self')
     return $lnk;
 }
 
@@ -174,6 +164,23 @@ function jQueryWithoutTags(src, tags) {
 
     return $src;
 }
+
+
+// getLocation from given URL. Support IE & relative URL
+// Input Sample URL: "http://example.com:3000/pathname/?search=test#hash"
+// Output: protocol => "http:"|host => "example.com:3000"|hostname => "example.com"|port => "3000"|pathname => "/pathname/"|hash => "#hash"|search => "?search=test"
+function getLocation(href) {
+    var location = document.createElement("a");
+    location.href = href;
+    // IE doesn't populate all link properties when setting .href with a relative URL,
+    // however .href will return an absolute URL which then can be used on itself
+    // to populate these additional fields.
+    if (location.host === "") {
+      location.href = location.href;
+    }
+    return location;
+}
+
 */
 
 })(jQuery);

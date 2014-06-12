@@ -67,7 +67,7 @@ function getContent(json){
     for (var i in google_results) {
         // 0) plugin detect
         var r = google_results[i],
-            plugin = D.detectExistedPluginByPrefix(r),
+            plugin = D.detectExistedPluginByPrefix(r.unescapedUrl),
             $lnk;
 
         // NG: ?type=xxx#word  : it will redirect the page to blank

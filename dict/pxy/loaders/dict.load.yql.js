@@ -23,6 +23,10 @@ function queryDict(word, type, url){
         return;
     }
 
+    if (ajax) {
+        ajax.abort();
+    }
+
     // Check cache, YQL use url as the key
     var cache=D.getCache('YQL_CACHE', url); 
     if (cache) {
@@ -47,9 +51,6 @@ function queryDict(word, type, url){
     };
 
     // No cache, get & push to cache.
-    if (ajax) {
-        ajax.abort();
-    }
     ajax=$.jsonp({
       'dict':{
           'word': word,
@@ -60,10 +61,11 @@ function queryDict(word, type, url){
       'success': function(json, textStatus, xOptions) {
            var data = {};
            try {
-               data.src = json.query.results.resources.content;
+              data.src = '<!--' + url + '-->'; // Append url/key to src for guest host from it.
+              data.src += json.query.results.resources.content;
            } catch(e){
-               console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
-               return;
+              console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
+              return;
            }
            data.key = url; // YQL only need url as the key
 

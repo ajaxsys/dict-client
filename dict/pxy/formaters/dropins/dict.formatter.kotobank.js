@@ -18,7 +18,6 @@ var option = DICT_PLUGINS.kotobank = {
     'format': formatKotobank,
     'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
-    'isCleanLinkByText': true,
 };
 
 // JSON sample

@@ -69,6 +69,10 @@ function queryGoogle(word, type, opt){
     console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API + D.lang);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',0);
 
+    if (ajax) {
+        ajax.abort();
+    }
+    
     // [1] Check cache
     var cache = D.getCache('GOOGLE_CACHE', [searchKey,type,D.lang].join('&')  );
     if (cache){
@@ -80,9 +84,6 @@ function queryGoogle(word, type, opt){
     }
 
     // No cache, get & push to cache.
-    if (ajax) {
-        ajax.abort();
-    }
     ajax=$.jsonp({
       'dict': {
           'word':word,
