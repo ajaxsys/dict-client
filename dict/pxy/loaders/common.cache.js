@@ -23,7 +23,7 @@ function getCache(cacheName, key){
     var cache=D._cache[cacheName];
     // next page mode not load cache
     if (key && cache.size()>0) {
-      for (var i=0;i<cache.size();i++){
+      for (var i = cache.size() - 1; i >= 0; i--) {
         var json = cache.get(i);
 
         if (key && json.key && key.toLowerCase()===json.key.toLowerCase())
