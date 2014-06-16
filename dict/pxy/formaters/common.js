@@ -38,8 +38,16 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
         cleanLinks($target, src, pluginInfo);
     }
 
+    removeForbiddenTag($target);
+
     return $target;
 }
+
+function removeForbiddenTag($$) {
+    // meta/script tags is awalys forbidden.
+    $('meta, script', $$).remove();
+}
+
 
 function gressHostIfRegexp(src, opt){
     var hosts = [opt.host, opt.mobile_host];
