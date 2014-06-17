@@ -14,7 +14,7 @@ var D=$.dict_extend({
 });
 
 
-var $result = $('#__explain_wrapper__'),
+var $result = $('#__explain_wrapper_appender__'),
     $searchBox = $('#__search__');
 
 var options = {
