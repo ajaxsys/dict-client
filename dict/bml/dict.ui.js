@@ -54,6 +54,7 @@ if ($('body').length === 0) {
 
 
 registTextSelectionEvent(document, window);
+
 registWebElementToTextEvent(document);
 
 createOrUpdateWindow();
@@ -108,15 +109,23 @@ function registTextSelectionEvent(parentDocument, parentWindow) {
     $(parentDocument).on('mouseup.dict','body', function(e){
         getSelection(e, parentWindow);
     });
+    
     // Regist iframe the same events.(Not support iframe in iframe)
     var $iframes = $('iframe, frame', parentDocument);
     console.log(D.LC, '[dict.ui.js] Found iframe numbers (registTextSelectionEvent):', $iframes.length);
-    $iframes.each(function(){
+    
+    $iframes.each(function(i){
+        
         try{
             var childWindow = this.contentWindow;
             var childDocument = childWindow.document;
-            // Recuive
-            registTextSelectionEvent(childDocument, childWindow);
+            // Fix browser freeze in safari. Recuive, but delay event registion.
+            if (childWindow && childDocument){
+                setTimeout(function(){
+                    registTextSelectionEvent(childDocument, childWindow);
+                }, i * 1000 + 1000 );
+            }
+
         }catch(e){
             console.log(D.LC, '[dict.ui.js] iframe can not access:', this);
         }

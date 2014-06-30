@@ -29,10 +29,10 @@ function formatKotobank(src) {
 
 // Customize for this page
 function customizePage($t){
-    $("#footer_link, #get_app, #bookmark, #contents>div:first", $t).remove();
+    $("#footer_link, #get_app, #bookmark, #contents>div:first, .ad_source_c", $t).remove();
     $("#relatedKeyword",$t).nextAll().remove();
     $(".word_copy",$t).prev().andSelf().remove();
-    $('#logo', $t).replaceWith('<span>kotobank</span>');
+    $('#logo', $t).replaceWith('<span>KotoBank</span>');
 }
 
 
