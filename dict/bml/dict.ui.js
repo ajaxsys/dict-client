@@ -54,7 +54,6 @@ if ($('body').length === 0) {
 
 
 registTextSelectionEvent(document, window);
-
 registWebElementToTextEvent(document);
 
 createOrUpdateWindow();
@@ -122,7 +121,7 @@ function registTextSelectionEvent(parentDocument, parentWindow) {
             // Fix browser freeze in safari. Recuive, but delay event registion.
             if (childWindow && childDocument){
                 setTimeout(function(){
-                    registTextSelectionEvent(childDocument, childWindow);
+            registTextSelectionEvent(childDocument, childWindow);
                 }, i * 1000 + 1000 );
             }
 
@@ -169,6 +168,79 @@ function createOrUpdateWindow(text, $obj) {
     if (!text) {
         text = "";
     }
+    // Get From local storage
+    var mode = D.winMode;
+
+    if (mode === 'inner')
+        createOrUpdateInnerWindow(text, $obj);
+    if (mode === 'popup')
+        createOrUpdatePopupWindow(text, $obj);
+    if (mode === 'iframe')
+        createOrUpdateIFrameWindow(text, $obj);
+}
+
+function createOrUpdatePopupWindow(text, $obj) {
+    if (!text) {
+        return;
+    }
+
+    var winSize = getWindowSizeFromCookie(),
+        frameURL = static_host() + DICT_URL;
+
+    frameURL = frameURL.replace('#key#',encodeURIComponent(text));
+
+    // Default : 400 * 600
+    open_win(frameURL, 'Dict!', winSize.width, winSize.height < 600 ? 600 : winSize.height);
+}
+
+//Open windows to center of screen
+var win;
+function open_win(url,windowname,width,height) {
+	console.log(url,windowname,width,height);
+    if (win && win.location) {
+        console.log(D.LC, '[dict.ui.js] open in existing popup windows: ', url);
+        win.location.href = url;
+        return;
+    }
+
+    console.log(D.LC, '[dict.ui.js] Create new popup windows: ', url);
+    var features="menubar=no, status=no, scrollbars=yes, resizable=yes, toolbar=no";
+    if (width) {
+        //width: right
+        if (window.screen.width > width){
+            features+=", left="+((window.screen.width-width));
+        }
+        else{
+            width=window.screen.width;
+            features+=", left=0";
+        }
+        features+=", width="+width;
+    }
+    if (height) {
+        //height: bottom
+        if (window.screen.height > height){
+            features+=", top="+((window.screen.height-height));
+        }
+        else{
+            height=window.screen.height;
+            features+=", top=0";
+        }
+        features+=", height="+height;
+    }
+    win = window.open(url,windowname,features);
+    // Regist events
+    $(window).on('unload', function() { win.close(); });
+    // TODO: Disabled because security on CROSS site
+    $(win).resize(function(){ setWindowSizeToCookie( $(win) ); });
+}
+
+
+function createOrUpdateIFrameWindow(text, $obj) {
+
+}
+
+function createOrUpdateInnerWindow(text, $obj) {
+
     /* Window move to selected word.
     var offset = $obj.position(),
         textWidthHeight = getTextWH(text,$obj),
@@ -336,12 +408,13 @@ function isLongSentence(t){
     return t.split(spliter).length > D.WORD_MAX_COUNT;
 }
 
-function setWindowSizeToCookie(){
-    var $win = $(DICT_JID);
+function setWindowSizeToCookie($win){
+    $win = $win || $(DICT_JID);
     var opt = D.getOptionFromCookie();
     opt.ui.width = $win.width();
     opt.ui.height = $win.height();
     D.setOptionToCookie(opt);
+    console.log(D.LC, '[dict.ui.js] Set win size to width: ',opt.ui.width, 'height: ', opt.ui.height);
 }
 
 function getWindowSizeFromCookie(){
@@ -361,13 +434,18 @@ function static_host(){
 
     // 1 DEV_MODE/ST_MODE setting in loader.js
     if (D.DEV_MODE || D.ST_MODE){
-        // 2 Intranet test(http only): No `.` before first `/` in hostname
+        // 2 Intranet test(http only, e.g: http://fc-pc/  ): No `.` before first `/` in hostname
         var intrRegxp = /^http(|s):(\/\/[^\/\.]+?)\/.*$/;
         var matcher = intrRegxp.exec(window.location.href);
         if ( matcher ){
             var ip = matcher[2];
             console.log(D.LC, '[dict.ui.js] Use intranet ip:', ip);
             _thisIP = ip;
+            // Run a ajax connection test, if NOT work, use dev_ip
+            // host + /dict/dict_ui.css
+            $.ajax({url: 'http:'+ip+'/dict/dict_ui.css', type:'HEAD', async:false, error:function(){
+                _thisIP = ip = dev_ip;
+            }});
             return ip;
         }
 
