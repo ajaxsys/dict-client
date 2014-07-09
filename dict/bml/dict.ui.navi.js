@@ -20,7 +20,10 @@ if (!D.loaded){
     return;
 }
 
-var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');
+var $naviWrapper = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__">');
+
+var $navi = $('<div>');
+//var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');
 initNavi(); 
 
 function initNavi(){
@@ -32,7 +35,7 @@ function initNavi(){
         $imgOn = $('<div>').addClass(classOn).attr('title',ttlOn),
         $imgOff = $('<div>').addClass(classOff).attr('title',ttlOff).hide();
 
-        $navi.append($imgOn).append($imgOff).appendTo('body');// Prepend: lost to other max z-index.
+        $navi.append($imgOn).append($imgOff).appendTo($naviWrapper);// Prepend: lost to other max z-index.
     // Waiting dom compute css , see SO: get-actual-value-specified-in-css-using-jquery
     setTimeout(function(){
     //$('#'+D.DICT_ID).load(function() {
@@ -53,8 +56,28 @@ function initNavi(){
 
 }
 
+
+
+$naviWrapper.appendTo('body');
+
+
+
+
+var $naviInnerWrapper = $('<div class="__navi_inner_wrapper__">');
+$naviInnerWrapper.hide().appendTo($naviWrapper);
+$naviInnerWrapper.keydown(function(e){
+    if (e.keyCode == 27){
+        // Escape, hide it
+        hideSearchPanel();
+    }
+}).mouseleave(hideSearchPanel);
+
+
+
+
+
 var $quickSearch = $('<input type="text" placeholder="Quick Search">');
-$quickSearch.hide().appendTo($navi)
+$quickSearch.appendTo($naviInnerWrapper)
 .click(function(){
     $(this).select();
     return false;// Stop event propagation
@@ -64,23 +87,55 @@ $quickSearch.hide().appendTo($navi)
         // enter, call DICT search
         var key = $quickSearch.val();
         if (key) D.doQuery(key);
-    } else if (e.keyCode == 27){
-        // Escape, hide it
-        hideSearchPanel();
     }
-}).blur(hideSearchPanel);
+});
+
+
+
+
+
+
+
+
+var $changeMode = $('<div>' 
+                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">Inner</label>'
+                //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
+                + '<input type="radio" name="dictmode" value="popup"><label for="popup">PopUp</label>'
+                + '</div>');
+$changeMode.appendTo($naviInnerWrapper);
+$('input', $changeMode).change(function(){
+    D.winMode = $(this).val();
+    console.log(D.LC, '[dict.ui.navi.js] Dict mode changed to ', D.winMode);
+    // Todo: close other mode status
+    if (D.winMode === 'inner') {
+        if (D.popupWin) {
+            D.popupWin.close();
+        }
+    } else if (D.winMode === 'popup'){
+        $.closeWindow(D.DICT_ID);
+    }
+    // Redo last search
+    D.doLastQuery();
+})
+
+
+
+
+
+
 
 function showSearchPanel(){
     if (!D.DICT_SERVICE){
         return;
     }
-
-    $quickSearch.val('').show().focus();
+    $naviInnerWrapper.show();
+    $quickSearch.val('').focus();
 }
 
 function hideSearchPanel(){
-    $quickSearch.hide();
+    $naviInnerWrapper.hide();
 }
+
 
 
 })(jQuery);

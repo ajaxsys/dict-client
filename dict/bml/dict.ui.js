@@ -14,6 +14,7 @@ var DICT_ID = '__dict_window_id__',
 var D = $.dict_extend({
     'DICT_ID' : DICT_ID,
     'doQuery' : createOrUpdateWindow,
+    'doLastQuery' : doLastQuery,
 });
 
 var DICT_JID = '#'+DICT_ID,
@@ -61,6 +62,10 @@ createOrUpdateWindow();
 registWindowResizeEvent(window);
 
 ///////////////////// private func //////////////////////
+function doLastQuery() {
+    console.log(D.LC, '[dict.ui.js] Do last search by text:', _lastSearchWord);
+    createOrUpdateWindow(_lastSearchWord);
+}
 /* TODO support tooltip in iframe 1-2 (load css in all frames)
 function loadCSSwithAllFrames(parentDocument, parentWindow) {
     D.loadResource($, static_host()+'/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
@@ -168,15 +173,15 @@ function createOrUpdateWindow(text, $obj) {
     if (!text) {
         text = "";
     }
-    // Get From local storage
+    // TODO:Get From local storage
     var mode = D.winMode;
 
     if (mode === 'inner')
         createOrUpdateInnerWindow(text, $obj);
     if (mode === 'popup')
         createOrUpdatePopupWindow(text, $obj);
-    if (mode === 'iframe')
-        createOrUpdateIFrameWindow(text, $obj);
+    //if (mode === 'iframe')
+    //    createOrUpdateIFrameWindow(text, $obj);
 }
 
 function createOrUpdatePopupWindow(text, $obj) {
@@ -194,9 +199,9 @@ function createOrUpdatePopupWindow(text, $obj) {
 }
 
 //Open windows to center of screen
-var win;
 function open_win(url,windowname,width,height) {
-	console.log(url,windowname,width,height);
+    var win = D.popupWin;
+    console.log(url,windowname,width,height);
     if (win && win.location) {
         console.log(D.LC, '[dict.ui.js] open in existing popup windows: ', url);
         win.location.href = url;
@@ -228,6 +233,7 @@ function open_win(url,windowname,width,height) {
         features+=", height="+height;
     }
     win = window.open(url,windowname,features);
+    D.popupWin = win;
     // Regist events
     $(window).on('unload', function() { win.close(); });
     // TODO: Disabled because security on CROSS site
@@ -236,7 +242,12 @@ function open_win(url,windowname,width,height) {
 
 
 function createOrUpdateIFrameWindow(text, $obj) {
+    var $wrapper = $('<div/>');
+    $wrapper.css('margin-right', $(DICT_JID).width());
 
+    $('body').children().not(".__navi_div__, " + DICT_JID).wrapAll($wrapper);
+    console.log(D.LC, '[dict.ui.js] Wrap all elements.');
+    createOrUpdateInnerWindow(text, $obj);
 }
 
 function createOrUpdateInnerWindow(text, $obj) {
@@ -330,7 +341,7 @@ function createNewWindow(title){
         },
         'onResizeEnd': setWindowSizeToCookie,
         'onWindowClose': function(){
-            _lastSearchWord='';
+            //_lastSearchWord='';
         },
         'closeWithHide': true, // Better performace
         //minimizeButton: false,// TO Fix

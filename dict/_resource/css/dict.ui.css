@@ -1,3 +1,4 @@
 .__navi_div__{border-radius:3px;background-color:rgba(255,255,255,0.5);cursor:pointer;width:auto}
+.__navi_inner_wrapper__{background-color:rgba(222,222,222,0.5);border-radius:3px}
 .__navi_on__{background:transparent url('default/sprites.png') no-repeat -78px -26px; width: 20px; height:20px;}
 .__navi_off__{background:transparent url('default/sprites.png') no-repeat -78px -2px; width: 20px; height:20px;}
