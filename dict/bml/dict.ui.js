@@ -89,7 +89,7 @@ function loadCSSwithAllFrames(parentDocument, parentWindow) {
 
 function getSelection(e, win){
     win = win || window;
-    $target = $(e.target);
+    var $target = $(e.target);
 
     console.log(D.LC, '[dict.ui.js] start it');
     if ($(DICT_JID).find($target).length === 0) {
