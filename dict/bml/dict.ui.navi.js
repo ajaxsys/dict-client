@@ -98,7 +98,7 @@ $quickSearch.appendTo($naviInnerWrapper)
 
 
 var $changeMode = $('<div>' 
-                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">Inner</label>'
+                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">PopIn</label>'
                 //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
                 + '<input type="radio" name="dictmode" value="popup"><label for="popup">PopUp</label>'
                 + '</div>');
@@ -119,6 +119,10 @@ $('input', $changeMode).change(function(){
 })
 
 
+
+// TODO enable/disable getTextFromMouse
+
+// TODO enable/disable while selected word contains "-" and numbers
 
 
 
