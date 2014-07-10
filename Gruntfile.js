@@ -91,6 +91,7 @@ module.exports = function(grunt) {
           'dict/_cmn/dict.util.share.js',
           // main
           'dict/bml/dict.ui.js',
+          'dict/bml/dict.ui.selection.js',
           'dict/bml/dict.ui.navi.js',
           'dict/bml/dict.ui.end.js',
         ],
