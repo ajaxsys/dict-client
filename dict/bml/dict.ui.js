@@ -19,56 +19,21 @@ var D = $.dict_extend({
     'doLastQuery' : doLastQuery,
 });
 
+// If load failed on some pages. [issue 20140425]
+if (!D.loaded){
+    return;
+}
+
 var PROXY_DEV_URI = '/build/proxy.html##key#?IFRAME&DEV_MODE',
     PROXY_RLS_URI =  '/dict/proxy.html##key#?IFRAME',
     // D.DEV_MODE defined in loader.js
     DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI,
     DICT_ISFIXED = "position_is_fixed";
 
-var _thisIP;
-
-console.log(D.LC+=10000, '[dict.ui.js] Loading ui resource...');
-
-//loadCSSwithAllFrames(document, window);// TODO support tooltip in iframe 1-1(load css in all frames)
-D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
-
-// Fix page that dont contains body tags! [@issue 20140425]
-// like: http://help.eclipse.org/
-if ($('body').length === 0) {
-    var $body=$("<body>"); 
-    $body.css("padding","0px").css("margin","0px");
-    $("html>*").not( "head" ).wrap($body);
-    //alert("Please wait page reload");
-    console.log(D.LC+=10000, '[dict.ui.js] [ERROR] Missing `body` tag. Please reload DICT again later...');
-    D.loaded = false;  // Stop All other script
-
-    var $frames = $('iframe, frame'), countFrameLoaded=0;
-
-    $frames.load(function(){
-        countFrameLoaded++;
-        if ($frames.length === countFrameLoaded) {
-            console.log('Reloaded!!!!!!!!!!!!');
-        }
-    });
-    return;            // Stop this script
-}
-
-
 createOrUpdateWindow();
-
 registWindowResizeEvent(window);
 
 ///////////////////// private func //////////////////////
-function doLastQuery() {
-    console.log(D.LC, '[dict.ui.js] Do last search by text:', D._lastSearchWord);
-    createOrUpdateWindow(D._lastSearchWord);
-}
-
-function registWindowResizeEvent(win) {
-    D.delayWindowEvent(win, 'resize', function() {
-        resetPositionWhenOverflow($(DICT_JID));
-    });
-}
 
 function createOrUpdateWindow(text, $obj) {
     if (!text) {
@@ -79,11 +44,54 @@ function createOrUpdateWindow(text, $obj) {
 
     if (mode === 'inner')
         createOrUpdateInnerWindow(text, $obj);
-    if (mode === 'popup')
+    else if (mode === 'popup')
         createOrUpdatePopupWindow(text, $obj);
-    //if (mode === 'iframe')
-    //    createOrUpdateIFrameWindow(text, $obj);
+    else if (mode === 'iframe')
+        createOrUpdateIFrameWindow(text, $obj);
 }
+
+function createOrUpdateInnerWindow(text, $obj) {
+
+    /* Window move to selected word.
+    var offset = $obj.position(),
+        textWidthHeight = getTextWH(text,$obj),
+        left = offset.left + textWidthHeight.width,
+        top  = offset.top  + textWidthHeight.height;
+    */
+    var $dict = $(DICT_JID);
+    
+    if ($dict.length === 0) {
+        $dict = createNewWindow(text);
+        // Fixed & Hide this win when first created
+        if ($dict){
+            $dict.css('position','fixed');
+        }
+        /* If window move to selected word
+         $(DICT_JID).data(DICT_ISFIXED, true);*/
+    } else {
+        /* If window move to selected word
+        console.log(D.LC, '[dict.ui.js] ', $dict.data(DICT_ISFIXED));
+        if ($dict.data(DICT_ISFIXED) != true){
+            $.moveWindow(DICT_ID, left, top);
+        }*/
+        // Update
+        $.updateWindowTitle(DICT_ID, text);
+    }
+    // Toggle it
+    if (text && !$dict.is(':visible') ) {
+        $dict.fadeIn(function(){
+            resetPositionWhenOverflow($dict);
+        });// Show it when window reopen or first search
+    }else if (!text){
+        $dict.hide(); // Hide it when init(pre-load)
+    }
+
+    var frameURL = D.static_host() + DICT_URL;
+    // Update iframe, need encodeURI for cross encoding of page.
+    $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
+                '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;" class="window-content-iframe"></iframe>');
+}
+
 
 function createOrUpdatePopupWindow(text, $obj) {
     if (!text) {
@@ -91,12 +99,21 @@ function createOrUpdatePopupWindow(text, $obj) {
     }
 
     var winSize = getWindowSizeFromCookie(),
-        frameURL = static_host() + DICT_URL;
+        frameURL = D.static_host() + DICT_URL;
 
     frameURL = frameURL.replace('#key#',encodeURIComponent(text));
 
     // Default : 400 * 600
     open_win(frameURL, 'Dict!', winSize.width, winSize.height < 600 ? 600 : winSize.height);
+}
+
+function createOrUpdateIFrameWindow(text, $obj) {
+    var $wrapper = $('<div/>');
+    $wrapper.css('margin-right', $(DICT_JID).width());
+
+    $('body').children().not(".__navi_div__, " + DICT_JID).wrapAll($wrapper);
+    console.log(D.LC, '[dict.ui.js] Wrap all elements.');
+    createOrUpdateInnerWindow(text, $obj);
 }
 
 //Open windows to center of screen
@@ -139,77 +156,6 @@ function open_win(url,windowname,width,height) {
     $(window).on('unload', function() { win.close(); });
     // TODO: Disabled because security on CROSS site
     $(win).resize(function(){ setWindowSizeToCookie( $(win) ); });
-}
-
-
-function createOrUpdateIFrameWindow(text, $obj) {
-    var $wrapper = $('<div/>');
-    $wrapper.css('margin-right', $(DICT_JID).width());
-
-    $('body').children().not(".__navi_div__, " + DICT_JID).wrapAll($wrapper);
-    console.log(D.LC, '[dict.ui.js] Wrap all elements.');
-    createOrUpdateInnerWindow(text, $obj);
-}
-
-function createOrUpdateInnerWindow(text, $obj) {
-
-    /* Window move to selected word.
-    var offset = $obj.position(),
-        textWidthHeight = getTextWH(text,$obj),
-        left = offset.left + textWidthHeight.width,
-        top  = offset.top  + textWidthHeight.height;
-    */
-    var $dict = $(DICT_JID);
-    
-    if ($dict.length === 0) {
-        $dict = createNewWindow(text);
-        // Fixed & Hide this win when first created
-        if ($dict){
-            $dict.css('position','fixed');
-        }
-        /* If window move to selected word
-         $(DICT_JID).data(DICT_ISFIXED, true);*/
-    } else {
-        /* If window move to selected word
-        console.log(D.LC, '[dict.ui.js] ', $dict.data(DICT_ISFIXED));
-        if ($dict.data(DICT_ISFIXED) != true){
-            $.moveWindow(DICT_ID, left, top);
-        }*/
-        // Update
-        $.updateWindowTitle(DICT_ID, text);
-    }
-    // Toggle it
-    if (text && !$dict.is(':visible') ) {
-        $dict.fadeIn(function(){
-            resetPositionWhenOverflow($dict);
-        });// Show it when window reopen or first search
-    }else if (!text){
-        $dict.hide(); // Hide it when init(pre-load)
-    }
-
-    var frameURL = static_host() + DICT_URL;
-    // Update iframe, need encodeURI for cross encoding of page.
-    $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
-                '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;" class="window-content-iframe"></iframe>');
-}
-
-// quirks mode support. DO NOT use $(window).height()/width()
-function getBrowserSize(){
-    var w = 0;var h = 0;
-    //IE
-    if(!window.innerWidth){
-        if(document.documentElement.clientWidth !== 0){
-            //strict mode
-            w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
-        } else{
-            //quirks mode
-            w = document.body.clientWidth;h = document.body.clientHeight;
-        }
-    } else {
-        //w3c
-        w = window.innerWidth;h = window.innerHeight;
-    }
-    return {width:w,height:h};
 }
 
 function createNewWindow(title){
@@ -273,6 +219,24 @@ function resetPositionWhenOverflow($win){
     }
 }
 
+// quirks mode support. DO NOT use $(window).height()/width()
+function getBrowserSize(){
+    var w = 0;var h = 0;
+    //IE
+    if(!window.innerWidth){
+        if(document.documentElement.clientWidth !== 0){
+            //strict mode
+            w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
+        } else{
+            //quirks mode
+            w = document.body.clientWidth;h = document.body.clientHeight;
+        }
+    } else {
+        //w3c
+        w = window.innerWidth;h = window.innerHeight;
+    }
+    return {width:w,height:h};
+}
 
 function setWindowSizeToCookie($win){
     $win = $win || $(DICT_JID);
@@ -288,43 +252,17 @@ function getWindowSizeFromCookie(){
     return opt.ui;
 }
 
-// Get static resource like `iframe/css` URL
-function static_host(){
-    var dev_ip = 'http://127.0.0.1:8443',
-        rls_ip = D.PROTOCAL + '//dict-admin.appspot.com';
 
-    // Static IP
-    // First time only
-    if (_thisIP)
-        return _thisIP;
-
-    // 1 DEV_MODE/ST_MODE setting in loader.js
-    if (D.DEV_MODE || D.ST_MODE){
-        // 2 Intranet test(http only, e.g: http://fc-pc/  ): No `.` before first `/` in hostname
-        var intrRegxp = /^http(|s):(\/\/[^\/\.]+?)\/.*$/;
-        var matcher = intrRegxp.exec(window.location.href);
-        if ( matcher ){
-            var ip = matcher[2];
-            console.log(D.LC, '[dict.ui.js] Use intranet ip:', ip);
-            _thisIP = ip;
-            // Run a ajax connection test, if NOT work, use dev_ip
-            // host + /dict/dict_ui.css
-            $.ajax({url: 'http:'+ip+'/dict/dict_ui.css', type:'HEAD', async:false, error:function(){
-                _thisIP = ip = dev_ip;
-            }});
-            return ip;
-        }
-
-        // 3 test as a bookmarklet in other sites(http only)
-        console.log(D.LC, '[dict.ui.js] Using develop IP. ',dev_ip);
-        _thisIP = dev_ip;
-        return dev_ip;
-    }
-
-    // Product mode
-    console.log(D.LC, '[dict.ui.js] Using release host:', rls_ip);
-    _thisIP = rls_ip;
-    return rls_ip;
+function doLastQuery() {
+    console.log(D.LC, '[dict.ui.js] Do last search by text:', D._lastSearchWord);
+    createOrUpdateWindow(D._lastSearchWord);
 }
+
+function registWindowResizeEvent(win) {
+    D.delayWindowEvent(win, 'resize', function() {
+        resetPositionWhenOverflow($(DICT_JID));
+    });
+}
+
 
 })(jQuery);
