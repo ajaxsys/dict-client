@@ -92,6 +92,7 @@ module.exports = function(grunt) {
           // main
           'dict/bml/dict.ui.js',
           'dict/bml/dict.ui.selection.js',
+          'dict/bml/dict.ui.plaintext.js',
           'dict/bml/dict.ui.navi.js',
           'dict/bml/dict.ui.end.js',
         ],
