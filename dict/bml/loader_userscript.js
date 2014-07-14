@@ -1,5 +1,17 @@
 /**
- * For http://userscripts.org/scripts/show/293217
+ * From http://userscripts.org/scripts/show/293217:
+
+// ==UserScript==
+// @name        Dict
+// @namespace   dict-admin.appspot.com
+// @description Dict a second screen service
+// @require     https://dict-admin.appspot.com/dict/dict_userscript.js
+// @include     http://*
+// @include     https://*
+// @grant       none
+// @version     1
+// ==/UserScript==
+
  */
 
 
