@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name       SecondScreen
 // @namespace  https://dict-admin.appspot.com
-// @version    0.4.2
+// @version    0.4.4
 // @description  DICT： a second screen for your browser.
 // @match      http://*/*
 // @match      https://*/*
+// @require    https://dict-admin.appspot.com/dict/dict_userscript.js?v=0.4.4
 // @copyright  2014+, fcr403@gmail.com
 // ==/UserScript==
 
