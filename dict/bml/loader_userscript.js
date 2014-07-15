@@ -110,7 +110,7 @@ setTimeout(function(){
  */
 void((function(w){
     var D=w.__DICT__;
-    D.DEV_MODE=true;
+    D.DEV_MODE=false;
     if (!D.loaded) {
         var ui=document.createElement('script');
         ui.setAttribute('src','https://dict-admin.appspot.com/dict/dict_ui.js?_'+new Date().getTime());
