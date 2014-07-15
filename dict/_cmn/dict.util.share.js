@@ -1,4 +1,5 @@
 /*
+ * dict.util.share.js
  * Share with bookmarklet. No jQuery
  */
 void((function(win,doc){
