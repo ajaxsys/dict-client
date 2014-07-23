@@ -24,36 +24,44 @@ function loadResourceToGlobalVar(url,varName){
 
 // =================== After DOM ready ===================
 $(function(){
-    var BML_PREFIX = 'javascript:';
+    var BML_PREFIX = 'javascript:',
+        PROD_HOST = 'https://dict-admin.appspot.com',
+        DEV_HOST = 'http://localhost:8443';
+
     waitUntil("window.__G_BML__", afterDevelopVersionLoaded);
     waitUntil("window.__G_BML_MIN__", afterProductVersionLoaded);
 
     // Minimized version and released version
     function afterProductVersionLoaded(){
-        var dev = BML_PREFIX + __G_BML_MIN__;
+
+        var prod = BML_PREFIX + __G_BML_MIN__;
         // Origin:  loader.js
         // Old url: http://localhost:8443/build/dict_ui.js
-        var st   = dev.replace('DEV_MODE','ST_MODE')
-                      .replace('/build/','/dict/');
-        var prod = dev.replace('DEV_MODE','RLS_MODE')
-                      .replace('/build/','/dict/') // Minified
-                      .replace('http://localhost:8443','https://dict-admin.appspot.com');
+        var dev = prod2Dev(prod);
 
         // Refer to min version.
-        $('#bookmarkletST').attr('href',st); 
-        $('#bookmarkletRls').attr('href',prod);
+        $('#bookmarkletRls').attr('href',prod); 
+        $('#bookmarklet').attr('href',dev);
+    }
+
+
+    function prod2Dev(prod){
+        return prod.replace('PROD_MODE','DEV_MODE')
+            .replace('/dict/','/build/') // Minified
+            .replace(PROD_HOST, DEV_HOST);
     }
 
     function afterDevelopVersionLoaded(){
         var $editor = $('#jsEditor');
-        $editor.val(__G_BML__);
+        var BML_DEV = prod2Dev(__G_BML__);
+        $editor.val(BML_DEV);
         $editor.change(updateDevelopLink);
 
         // Enable by default
-        updateDevelopLink(toOneLine(__G_BML__));
+        updateDevelopLink(toOneLine(BML_DEV));
         console.log("Default enable dict on this page in 3 seconds.");
         setTimeout(function(){
-            eval(__G_BML__);
+            eval(BML_DEV);
         },3000);
     }
 

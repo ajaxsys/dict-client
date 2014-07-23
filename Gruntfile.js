@@ -68,7 +68,8 @@ module.exports = function(grunt) {
         dest: 'target/build/<%= pkg.name %>_bookmarklet.js'
       },
       dict_userscript: {
-        src: ['dict/bml/loader_userscript.js'],
+        src: ['dict/bml/loader_userscript.js', 
+              "<%= concat.dict_bookmarklet.src %>" ],
         dest: 'target/dict/<%= pkg.name %>_userscript.js'
       },
       // Dict UI (Also is a loader for proxy.js)
