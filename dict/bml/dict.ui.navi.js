@@ -104,9 +104,9 @@ $quickSearch.appendTo($naviInnerWrapper)
 // Pop-IN or Pop-UP
 /////////////////////////////////////////////////
 var $changeMode = $('<div style="color:gray;">' 
-                + '<input type="radio" name="dictmode" value="inner" id="__navi_inner__" checked><label for="__navi_inner__">POP-IN</label> '
+                + '<label style="display:inline;" for="__navi_inner__"><input type="radio" name="dictmode" value="inner" id="__navi_inner__" checked> POP-IN</label> '
                 //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
-                + '<input type="radio" name="dictmode" value="popup" id="__navi_popup__"><label for="__navi_popup__">POP-UP</label>'
+                + '<label style="display:inline;" for="__navi_popup__"><input type="radio" name="dictmode" value="popup" id="__navi_popup__"> POP-UP</label>'
                 + '</div>');
 $changeMode.appendTo($naviInnerWrapper);
 $('input', $changeMode).change(function(){

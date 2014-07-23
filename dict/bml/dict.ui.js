@@ -67,7 +67,7 @@ function createOrUpdateInnerWindow(text, $obj) {
     */
     var $dict = $(DICT_JID);
     // Check last search
-    if (text == lastInnerWord){
+    if (text && text == lastInnerWord){
         $dict.show();
         return;
     }
