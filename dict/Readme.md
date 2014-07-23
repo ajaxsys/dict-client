@@ -1,10 +1,19 @@
-_cmn
+
+- _cmn/
+
     common js
-_resources
+    
+- _resources/
+
     image, css, etc
-bml
+    
+- bml/
+
     bookmarklet inject to target page
-pxy
+    
+- pxy/
+
     proxy for loading remote url results
+    
 
 
