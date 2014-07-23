@@ -73,9 +73,9 @@ $naviInnerWrapper.keydown(function(e){
 }).mouseleave(hideSearchPanel);
 
 
-
-
-
+/////////////////////////////////////////////////
+// Quick Search
+/////////////////////////////////////////////////
 var $quickSearch = $('<input type="text" placeholder="Quick Search">');
 $quickSearch.appendTo($naviInnerWrapper)
 .click(function(){
@@ -97,10 +97,13 @@ $quickSearch.appendTo($naviInnerWrapper)
 
 
 
+/////////////////////////////////////////////////
+// Pop-IN or Pop-UP
+/////////////////////////////////////////////////
 var $changeMode = $('<div>' 
-                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">PopIn</label>'
+                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">Pop-IN</label> '
                 //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
-                + '<input type="radio" name="dictmode" value="popup"><label for="popup">PopUp</label>'
+                + '<input type="radio" name="dictmode" value="popup"><label for="popup">Pop-UP</label>'
                 + '</div>');
 $changeMode.appendTo($naviInnerWrapper);
 $('input', $changeMode).change(function(){

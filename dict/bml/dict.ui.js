@@ -38,6 +38,8 @@ registWindowResizeEvent(window);
 function createOrUpdateWindow(text, $obj) {
     if (!text) {
         text = "";
+    } else {
+        D._lastSearchWord = text; // Only valid text set to last search
     }
     // TODO:Get From local storage
     var mode = D.winMode;
@@ -120,9 +122,10 @@ function createOrUpdateIFrameWindow(text, $obj) {
 function open_win(url,windowname,width,height) {
     var win = D.popupWin;
     console.log(url,windowname,width,height);
-    if (win && win.location) {
+    if (win && win.closed===false) {
         console.log(D.LC, '[dict.ui.js] open in existing popup windows: ', url);
         win.location.href = url;
+        win.focus();
         return;
     }
 

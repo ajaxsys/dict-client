@@ -52,7 +52,7 @@ function getSelection(e, win){
             // Fix bugs: when dblclick tag like `<i>..</i>`, it returns html code.
             text = $.trim($($.parseHTML(text)).text());
             if (text && text != D._lastSearchWord && isWord(text) ){
-                    D._lastSearchWord = text;
+                    // D._lastSearchWord = text; // move to dict.ui.js
                     D.LC++;// For logger
                     D.doQuery(text, $target);
             }
