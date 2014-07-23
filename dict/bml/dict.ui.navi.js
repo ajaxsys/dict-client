@@ -112,7 +112,11 @@ $('input', $changeMode).change(function(){
     // Todo: close other mode status
     if (D.winMode === 'inner') {
         if (D.popupWin) {
-            D.popupWin.close();
+            try{
+                D.popupWin.close();
+            }catch(e){
+                console.log(e);
+            }
         }
     } else if (D.winMode === 'popup'){
         $.closeWindow(D.DICT_ID);

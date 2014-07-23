@@ -17,7 +17,6 @@ var D = $.dict_extend({
     'DICT_JID' : DICT_JID,
     'doQuery' : createOrUpdateWindow,
     'doLastQuery' : doLastQuery,
-    '_lastSearchWord' : null,
 });
 
 // If load failed on some pages. [issue 20140425]
@@ -35,23 +34,28 @@ createOrUpdateWindow();
 registWindowResizeEvent(window);
 
 ///////////////////// private func //////////////////////
-
+var _lastSearchWord, lastInnerWord, lastPopupWord, lastIframeWord;
 function createOrUpdateWindow(text, $obj) {
-    if (!text) {
-        text = "";
-    }
     // TODO:Get From local storage
     var mode = D.winMode;
 
-    if (mode === 'inner')
+    if (mode === 'inner'){
+        text = text || lastInnerWord || "";
         createOrUpdateInnerWindow(text, $obj);
-    else if (mode === 'popup')
+        lastInnerWord = text;
+    }
+    else if (mode === 'popup'){
+        text = text || lastPopupWord || "";
         createOrUpdatePopupWindow(text, $obj);
-    else if (mode === 'iframe')
+        lastPopupWord = text;
+    }
+    else if (mode === 'iframe'){
+        text = text || lastIframeWord || "";
         createOrUpdateIFrameWindow(text, $obj);
-    
-    // Only valid text set to last search
-    D._lastSearchWord = text; 
+        lastIframeWord = text;
+    }
+
+    _lastSearchWord = text;
 }
 
 function createOrUpdateInnerWindow(text, $obj) {
@@ -63,7 +67,7 @@ function createOrUpdateInnerWindow(text, $obj) {
     */
     var $dict = $(DICT_JID);
     // Check last search
-    if (text == D._lastSearchWord){
+    if (text == lastInnerWord){
         $dict.show();
         return;
     }
@@ -107,7 +111,7 @@ function createOrUpdatePopupWindow(text, $obj) {
     }
     // Check last search
     var win = D.popupWin
-    if (text == D._lastSearchWord && win && win.closed===false){
+    if (text == lastPopupWord && win && win.closed===false){
         win.focus();
         return;
     }
@@ -122,8 +126,14 @@ function createOrUpdatePopupWindow(text, $obj) {
 }
 
 function createOrUpdateIFrameWindow(text, $obj) {
-    var $wrapper = $('<div/>');
-    $wrapper.css('margin-right', $(DICT_JID).width());
+    var $wrapper = $('<div/>'),
+        $dict = $(DICT_JID);
+    $wrapper.css('margin-right', $dict.width());
+    // Check last search
+    if (text == lastIframeWord){
+        $dict.show();
+        return;
+    }
 
     $('body').children().not(".__navi_div__, " + DICT_JID).wrapAll($wrapper);
     console.log(D.LC, '[dict.ui.js] Wrap all elements.');
@@ -133,7 +143,6 @@ function createOrUpdateIFrameWindow(text, $obj) {
 //Open windows to center of screen
 function open_win(url,windowname,width,height) {
     var win = D.popupWin;
-    console.log(url,windowname,width,height);
     if (win && win.closed===false) {
         console.log(D.LC, '[dict.ui.js] open in existing popup windows: ', url);
         win.location.href = url;
@@ -269,8 +278,8 @@ function getWindowSizeFromCookie(){
 
 
 function doLastQuery() {
-    console.log(D.LC, '[dict.ui.js] Do last search by text:', D._lastSearchWord);
-    createOrUpdateWindow(D._lastSearchWord);
+    console.log(D.LC, '[dict.ui.js] Do last search by text:', _lastSearchWord);
+    createOrUpdateWindow(_lastSearchWord);
 }
 
 function registWindowResizeEvent(win) {
