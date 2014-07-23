@@ -10,9 +10,12 @@
 //     initNavi(); 
 // });
 // for test
+var NAVI_ID = '__navi_div__',
+    NAVI_JID = '#' + NAVI_ID;
 var D = $.dict_extend({
     'initNavi' : initNavi,
     'DICT_SERVICE': true, // ON/OFF switch
+    'NAVI_JID' : NAVI_JID,
 });
 
 // If load failed on some pages. [issue 20140425]
@@ -20,7 +23,7 @@ if (!D.loaded){
     return;
 }
 
-var $naviWrapper = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__">');
+var $naviWrapper = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="'+NAVI_ID+'" id="'+NAVI_ID+'">');
 
 var $navi = $('<div>');
 //var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');

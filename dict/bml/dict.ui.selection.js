@@ -43,7 +43,8 @@ function getSelection(e, win){
     var $target = $(e.target);
 
     console.log(D.LC, '[dict.ui.selection.js] start it');
-    if ($(D.DICT_JID).find($target).length === 0) {
+    // Selection should escape navi & dict div
+    if ($(D.DICT_JID).add(D.NAVI_JID).find($target).length === 0) {
         // Not element of dict window
         if (D.DICT_SERVICE){
             var text = $target.is(':input')? $target.selection('get',{},win) : $.selection('html',win);
