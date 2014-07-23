@@ -6,9 +6,6 @@
  **************************************************/
 (function($){
 var D = $.dict_extend();
-//var D = $.dict_extend({
-//	_lastSearchWord : null
-//});
 
 registTextSelectionEvent(document, window);
 
@@ -52,9 +49,7 @@ function getSelection(e, win){
             var text = $target.is(':input')? $target.selection('get',{},win) : $.selection('html',win);
             // Fix bugs: when dblclick tag like `<i>..</i>`, it returns html code.
             text = $.trim($($.parseHTML(text)).text());
-            //if (text && text != D._lastSearchWord && isWord(text) ){
-            if (text && isWord(text) ){          // Always search it (Because don't known if window is open or closed)
-                    // D._lastSearchWord = text; // move to dict.ui.js
+            if (text && isWord(text) ){  // No ajuse if equals last search word. Always search it (Because don't known if window is open or closed)
                     D.LC++;// For logger
                     D.doQuery(text, $target);
             }

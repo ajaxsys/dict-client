@@ -39,8 +39,6 @@ registWindowResizeEvent(window);
 function createOrUpdateWindow(text, $obj) {
     if (!text) {
         text = "";
-    } else {
-        D._lastSearchWord = text; // Only valid text set to last search
     }
     // TODO:Get From local storage
     var mode = D.winMode;
@@ -51,10 +49,12 @@ function createOrUpdateWindow(text, $obj) {
         createOrUpdatePopupWindow(text, $obj);
     else if (mode === 'iframe')
         createOrUpdateIFrameWindow(text, $obj);
+    
+    // Only valid text set to last search
+    D._lastSearchWord = text; 
 }
 
 function createOrUpdateInnerWindow(text, $obj) {
-
     /* Window move to selected word.
     var offset = $obj.position(),
         textWidthHeight = getTextWH(text,$obj),
@@ -62,6 +62,11 @@ function createOrUpdateInnerWindow(text, $obj) {
         top  = offset.top  + textWidthHeight.height;
     */
     var $dict = $(DICT_JID);
+    // Check last search
+    if (text == D._lastSearchWord){
+        $dict.show();
+        return;
+    }
     
     if ($dict.length === 0) {
         $dict = createNewWindow(text);
@@ -98,6 +103,12 @@ function createOrUpdateInnerWindow(text, $obj) {
 
 function createOrUpdatePopupWindow(text, $obj) {
     if (!text) {
+        return;
+    }
+    // Check last search
+    var win = D.popupWin
+    if (text == D._lastSearchWord && win && win.closed===false){
+        win.focus();
         return;
     }
 
