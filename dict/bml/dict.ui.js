@@ -17,6 +17,7 @@ var D = $.dict_extend({
     'DICT_JID' : DICT_JID,
     'doQuery' : createOrUpdateWindow,
     'doLastQuery' : doLastQuery,
+    '_lastSearchWord' : null,
 });
 
 // If load failed on some pages. [issue 20140425]

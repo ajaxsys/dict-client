@@ -76,7 +76,7 @@ $naviInnerWrapper.keydown(function(e){
 /////////////////////////////////////////////////
 // Quick Search
 /////////////////////////////////////////////////
-var $quickSearch = $('<input type="text" placeholder="Quick Search">');
+var $quickSearch = $('<input type="text" placeholder="Quick Search" style="border:1px; padding:4px;">');
 $quickSearch.appendTo($naviInnerWrapper)
 .click(function(){
     $(this).select();
@@ -100,10 +100,10 @@ $quickSearch.appendTo($naviInnerWrapper)
 /////////////////////////////////////////////////
 // Pop-IN or Pop-UP
 /////////////////////////////////////////////////
-var $changeMode = $('<div>' 
-                + '<input type="radio" name="dictmode" value="inner" checked><label for="inner">Pop-IN</label> '
+var $changeMode = $('<div style="color:gray;">' 
+                + '<input type="radio" name="dictmode" value="inner" id="__navi_inner__" checked><label for="__navi_inner__">POP-IN</label> '
                 //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
-                + '<input type="radio" name="dictmode" value="popup"><label for="popup">Pop-UP</label>'
+                + '<input type="radio" name="dictmode" value="popup" id="__navi_popup__"><label for="__navi_popup__">POP-UP</label>'
                 + '</div>');
 $changeMode.appendTo($naviInnerWrapper);
 $('input', $changeMode).change(function(){
