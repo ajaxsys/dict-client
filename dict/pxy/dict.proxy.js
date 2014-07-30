@@ -205,7 +205,7 @@ function getSelectedMenu(key){
 
 function registAbout(){
     $('#__dict_about__').click(function(){
-        D.MODAL_DIALOG.title('About Dict!').body($('#__dict_about_content__')).show();
+        D.MODAL_DIALOG.title('About Mini-Browser!').body($('#__dict_about_content__')).show();
         return false;
     });
 }

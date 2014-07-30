@@ -109,6 +109,7 @@ module.exports = function(grunt) {
           'lib/json2.js',
           'lib/jstorage.js',
           'lib/jquery.jsonp.js',
+          'lib/jquery.highlight.js',
           'lib/bootstrap/js/bootstrap.js',
           // share
           'dict/_cmn/conf.js',
