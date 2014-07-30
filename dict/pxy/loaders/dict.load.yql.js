@@ -64,7 +64,9 @@ function queryDict(word, type, url){
               data.src = '<!--' + url + '-->'; // Append url/key to src for guest host from it.
               data.src += json.query.results.resources.content;
            } catch(e){
-              console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs.');
+              console.log(D.LC, '[loaders/dict.load.yql.js] YQL load ERRORs. Re-direct to results from search engine');
+              // Show google again while YQL NG in some case, e.g: https://query.yahooapis.com/v1/public/yql?q=use%20%27http://dict-admin.appspot.com/lib/y.xml%27%20as%20html.src;select%20*%20from%20html.src%20where%20url=%27http%3A%2F%2Fejje.weblio.jp%2Fsmall%2Fcontent%2F%25E5%259C%25A8%25E4%25BD%258F%27&format=json&callback=DICT_jsonp&_1406681440403=
+              D.loadQuery(word, 'google');
               return;
            }
            data.key = url; // YQL only need url as the key
