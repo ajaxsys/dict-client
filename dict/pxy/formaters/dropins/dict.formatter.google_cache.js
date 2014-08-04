@@ -31,6 +31,11 @@ function customizePage($target){
     $('div:first', $target).remove();
     $('a', $target).attr('target', '_blank');
 
+    // common remove 
+    var $headAndFoot = $('#header, #footer, header, footer, .header, .footer', $target);
+    console.log($.dict_extend().LC, '[dict.formatter.google_cache.js] Removed headers or footers:', $headAndFoot.length);
+    $headAndFoot.remove();
+
     var searchWord = $('#__search__').val();
     $target.highlight(searchWord);
     return $target;

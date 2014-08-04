@@ -63,8 +63,7 @@ function getContent(json){
     var google_results = json.results,
         word = json.word,
         $resultList = $('<div>'),
-        $lnk_ext = $('<a target="_blank" class="external">'),
-        $lnk_self = $('<a target="_self" class="internal">');
+        $lnk_ext = $('<a target="_blank" class="external">');
     for (var i in google_results) {
         // 0) plugin detect
         var r = google_results[i],
@@ -83,9 +82,9 @@ function getContent(json){
         if (r.cacheUrl) {
             // var lnkType = $lnk.attr('__dict_type__');
             // $cacheLink.attr('__dict_type__', lnkType ? lnkType : 'google_cache');
-            $cacheLink = $lnk_self.clone();
-            $cacheLink.html(' Text ').attr('href',r.cacheUrl + textOnly)
-                      .attr('__dict_type__', 'google_cache')
+            $cacheLink = D.createLinkForLoader( word, 'google_cache' );
+            $cacheLink.html('Text')
+                      .attr('href',r.cacheUrl + textOnly)
                       .attr('title', 'Text only version');
         }
 
@@ -104,7 +103,7 @@ function getContent(json){
                    .append( plugin ?  $lnk_ext.clone().attr('href',url).html(' ')  : '' ); // Add External mark
 
         // Combine all above
-        $resultList.append(  $('<div>').append($lnk).append($cacheLink).append($content).append($url).append('<hr />')  );
+        $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );
     }
 
     if (searchStartPosition<MAX_POSITION && google_results.length == SEARCH_SIZE){
