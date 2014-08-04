@@ -56,7 +56,7 @@ function isSkipFrame(){
         
         console.log("0----------",window.top, window.location.href, size.width, size.height);
         // Top page, not skip == enable
-        if (window == window.top){
+        if (window == window.top && window.location.href.indexOf('dict-admin.appspot.com/dict/proxy.html') < 0 ){
             console.log("1----------Top page",window.top, window.location.href, size.width, size.height);
             return false;
         }
