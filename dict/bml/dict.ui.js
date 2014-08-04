@@ -24,8 +24,8 @@ if (!D.loaded){
     return;
 }
 
-var PROXY_DEV_URI = '/build/proxy.html##key#?IFRAME&DEV_MODE',
-    PROXY_RLS_URI =  '/dict/proxy.html##key#?IFRAME',
+var PROXY_DEV_URI = '/build/proxy.html##key#?DEV_MODE',
+    PROXY_RLS_URI =  '/dict/proxy.html##key#?',
     // D.DEV_MODE defined in loader.js
     DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI,
     DICT_ISFIXED = "position_is_fixed";

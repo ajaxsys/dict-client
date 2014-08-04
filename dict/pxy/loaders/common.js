@@ -52,12 +52,6 @@ function completeDefine(){
 function allCompleteAction(word, type) {
     processComplete();
     setTimeout(function(){
-        //$searchBox.val(word);
-
-/*        if (D.PXY_IFRAME_MODE)
-          $searchBox.focus().select();
-        else
-          $('#__go_top__').focus();    // Stop focus becase user can not copy the word       */
         if ($searchBox.is(":focus"))
             $('#__go_top__').focus();
 

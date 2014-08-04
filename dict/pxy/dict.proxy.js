@@ -10,7 +10,6 @@
 var url=window.location.href,
     D = $.dict_extend({
         // Check mode only once
-        PXY_IFRAME_MODE: ( url.indexOf('IFRAME') > -1 ),
         PXY_DEV_MODE : ( url.indexOf('DEV_MODE') > -1 ), // UI `DEV_MODE` is set in loader.js
         getSelectedLang: getSelectedLang,
         getSelectedType: getSelectedType,
