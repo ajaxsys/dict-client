@@ -3,6 +3,7 @@
 
 // =================== Before DOM ready ===================
 (function(){
+'use strict';
 
 // Develop Version
 loadResourceToGlobalVar('/build/dict_bookmarklet.js','__G_BML__');
@@ -24,6 +25,7 @@ function loadResourceToGlobalVar(url,varName){
 
 // =================== After DOM ready ===================
 $(function(){
+    'use strict';
     var BML_PREFIX = 'javascript:',
         PROD_HOST = 'https://dict-admin.appspot.com',
         DEV_HOST = 'http://localhost:8443';
@@ -67,7 +69,8 @@ $(function(){
 
     // Wait until condition var `==` true
     function waitUntil(condition, callback) {
-        eval(' var result = (' + condition +')' );
+        var result;
+        eval(' result = (' + condition +')' );
         //console.log('result = ' + result);
         if (result) {
             callback();

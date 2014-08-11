@@ -5,6 +5,7 @@
  **************************************************/
 
 (function($){
+'use strict';
 // for test & hook
 var D = $.dict_extend({
   'lb_host' : getLoadBalanceHost,

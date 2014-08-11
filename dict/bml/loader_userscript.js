@@ -24,6 +24,7 @@ if(window != window.top) {
 if(isSkipFrame()) return;
 
 function getBrowserSize(){
+    'use strict';
     var w = 0, h = 0;
     try{
         //IE
@@ -51,6 +52,7 @@ function getBrowserSize(){
 }
 
 function isSkipFrame(){
+    'use strict';
     try {
         var size = getBrowserSize();
         

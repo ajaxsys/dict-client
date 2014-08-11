@@ -118,6 +118,7 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
     //$lang.attr("data-toggle","modal").attr("data-target","#myModal");
     $lang
         .attr("href",href)
+        .attr("origin-text", $lang.text())
         .mouseover(function(){
             loadLanguageLinkByAjax($(this), option);
             
@@ -128,8 +129,9 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
                 D.MODAL_DIALOG.show();
             } else {
                 // First load or next load
+                $thisLnk.text("Loading..."); 
                 console.log(D.LC, '[dict.formatter.wiki.js] Lang is first load');
-                loadLanguageLinkByAjax($(this), option); // Tab device no mouseover.
+                loadLanguageLinkByAjax($thisLnk, option); // Tab device no mouseover.
                 isShowDefault = true;
             } 
             return false;
@@ -163,6 +165,8 @@ function loadLanguageLinkByAjax($thisLnk, option){
         if (isShowDefault) {
             D.MODAL_DIALOG.show();
         }
+
+        $thisLnk.text($thisLnk.attr("origin-text"));
     });
 }
 
