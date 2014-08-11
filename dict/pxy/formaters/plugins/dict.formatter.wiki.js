@@ -2,7 +2,7 @@
  * dict.formatter.wiki_jp.js
  **************************************************/
 ;(function($){
-
+'use strict';
 var D = $.dict_extend();
 
 // A plugin name starts with `auto_` will call `Auto Mode` first.

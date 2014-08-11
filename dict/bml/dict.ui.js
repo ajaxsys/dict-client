@@ -7,7 +7,7 @@
  * - Bind get text event to page
  **************************************************/
 (function($){
-
+'use strict';
 // for test & hook
 var DICT_ID = '__dict_window_id__',
     DICT_JID = '#'+DICT_ID,

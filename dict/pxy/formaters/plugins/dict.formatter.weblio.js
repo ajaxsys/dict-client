@@ -4,7 +4,7 @@
  * Weblio for SmartPhone.(Access from SP, mainly hit from google result)
  **************************************************/
 ;(function($){
-
+'use strict';
 /////////// Main Entry. /////////////
 DICT_PLUGINS.auto_weblio = {
     'autoKey'   : 'site:ejje.weblio.jp', // a key will append to search result when `Auto Mode`

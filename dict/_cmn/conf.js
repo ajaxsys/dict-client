@@ -3,6 +3,7 @@
  * depend: jQuery etc. in lib folder
  */
 (function($){
+'use strict';
 /*jshint -W020 */
 console = window.console || {'log':function(){}};
 

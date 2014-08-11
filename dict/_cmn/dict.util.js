@@ -7,7 +7,7 @@
  * depend: dict.util.sharebml.js
  **************************************************/
 (function($){
-
+'use strict';
 // for test & hook
 window.__DICT__ = window.__DICT__ || {};
 var D=$.dict_extend({

@@ -5,6 +5,7 @@
  * - Bind selection event to page
  **************************************************/
 (function($){
+'use strict';
 var D = $.dict_extend();
 
 registTextSelectionEvent(document, window);

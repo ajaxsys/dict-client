@@ -4,7 +4,7 @@
  * Init ui navi icon on page
  **************************************************/
 (function($){
-
+'use strict';
 // NOTICE: As a bookmarklet, Dict always load when dom ready!!
 // $(function(){
 //     initNavi(); 

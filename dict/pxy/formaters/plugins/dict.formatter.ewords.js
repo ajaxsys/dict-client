@@ -2,7 +2,7 @@
  * dict.formatter.ewords.js
  **************************************************/
 ;(function($){
-
+'use strict';
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from google is much better.

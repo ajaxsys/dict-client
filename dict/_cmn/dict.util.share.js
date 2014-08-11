@@ -3,7 +3,7 @@
  * Share with bookmarklet. No jQuery
  */
 void((function(win,doc){
-
+'use strict';
 function get1stTag() {
     var result;
     for (var i = 0; i < arguments.length; i++) {

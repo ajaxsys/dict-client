@@ -5,7 +5,7 @@
  * - Bind get text event to page
  **************************************************/
 (function($){
-
+'use strict';
 var D = $.dict_extend();
 
 registWebElementToTextEvent(document);

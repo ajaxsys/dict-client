@@ -5,7 +5,7 @@
  **************************************************/
 
 ;(function($){
-
+'use strict';
 var D=$.dict_extend();
 $.dict_extend({
     'queryDictByYQL': queryDict, // will override dict.load.gae.js

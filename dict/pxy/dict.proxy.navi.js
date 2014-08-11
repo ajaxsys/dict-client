@@ -2,7 +2,7 @@
  * dict.proxy.navi.js
  **************************************************/
 ;(function($){
-
+'use strict';
 // Regist to other js for calling
 var D = $.dict_extend();
 
@@ -11,13 +11,13 @@ D = $.dict_extend({
     'naviCallback' : D.loadQuery, // Should regist from other js files
 });
 
-var $goBack,$goForward;
+var $goBack,$goForward,$goTop;
 
 // Regist to Navi bar
 $(function(){
     $goBack = $('#__go_back__');
     $goForward = $('#__go_forward__');
-
+    $goTop = $('#__go_top__');
     registHistoryNavi();
 });
 
@@ -30,8 +30,14 @@ function registHistoryNavi(){
 
     $goBack.click(naviQBack);
     $goForward.click(naviQForword);
+    $goTop.click(goTop);
     disableBtn($goBack);
     disableBtn($goForward);
+}
+
+function goTop(){
+    $('html,body').animate({scrollTop: 0},'fast');
+    return false;
 }
 
 // NaviQ plugin

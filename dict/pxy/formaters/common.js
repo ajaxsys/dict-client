@@ -9,6 +9,7 @@
  **************************************************/
 
 ;(function($){
+'use strict';
 // Regist common methods
 var D=$.dict_extend({
     'preFormat': preformatCommonPage,

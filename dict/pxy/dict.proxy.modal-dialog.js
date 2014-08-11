@@ -2,7 +2,7 @@
  * dict.proxy.navi.js
  **************************************************/
 ;(function($){
-
+'use strict';
 var MD = function(){
     this._dialog = $("#__title_only_modal__");
     this.$title = $('.modal-title', this._dialog);

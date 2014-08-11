@@ -4,7 +4,7 @@
  * Dict UI start check
  **************************************************/
 (function($){
-
+'use strict';
 var D = $.dict_extend({
     'static_host' : static_host
 });

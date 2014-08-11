@@ -4,6 +4,7 @@
  * Check UI status after initialized 
  **************************************************/
 (function($){
+'use strict';
 var D=$.dict_extend();
 
 // Check if loaded [@issue 20140425]

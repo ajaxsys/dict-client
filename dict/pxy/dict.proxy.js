@@ -5,7 +5,7 @@
  **************************************************/
 
 ;(function($){
-
+'use strict';
 // All common util is regist at __DICT__
 var url=window.location.href,
     D = $.dict_extend({

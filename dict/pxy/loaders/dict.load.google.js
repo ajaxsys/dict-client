@@ -5,7 +5,7 @@
  **************************************************/
 
 (function($){
-
+'use strict';
 var D=$.dict_extend({
     'queryGoogle': queryGoogle,
     'queryGoogleMore': queryGoogleMoreResults,

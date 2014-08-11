@@ -4,7 +4,7 @@
  * Google formatter. 
  **************************************************/
 ;(function($){
-
+'use strict';
 /////////// Main Entry. /////////////
 var D=$.dict_extend();
 DICT_PLUGINS.google = {

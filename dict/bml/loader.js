@@ -2,6 +2,7 @@
  * loader.js (Depend on dict.util.share.js)
  */
 void((function(w,d){
+    'use strict';
     var D=w.__DICT__;
     D.PROD_MODE=true;
     if (!D.loaded) {

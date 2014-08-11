@@ -6,7 +6,7 @@
  **************************************************/
 ;(function($){
 // Regist plguins
-
+'use strict';
 window.DICT_PLUGINS = window.DICT_PLUGINS || {};
 
 // Global method for JSONP (NO need global in jsonp plugin)

@@ -7,7 +7,7 @@
  **************************************************/
 
 ;(function($){
-
+'use strict';
 /////////// Main Entry. /////////////
 var D=$.dict_extend({
     'detectExistedPluginByPrefix':detectExistedPluginByPrefix,
