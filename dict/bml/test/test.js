@@ -3,6 +3,7 @@
 
 // =================== Before DOM ready ===================
 (function(){
+/* global $ */
 'use strict';
 
 // Develop Version

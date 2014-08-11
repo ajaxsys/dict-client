@@ -56,7 +56,7 @@ function doQuery(query, type, url, isPushToHistory){
 
 function callFetchURLLoader(word, type, url){
     // Change URL
-    url = D.changeToMobileUrl(url, DICT_PLUGINS[type]);
+    url = D.changeToMobileUrl(url, D.DICT_PLUGINS[type]);
     url = D.addHttpProtocal(url);
 
     D.queryDictByYQL(word, type, url);// Load by URL directly
@@ -71,7 +71,7 @@ function callGoogleLoader(word, type){
     }
 
     // If auto key exist use Auto Mode with addtion key
-    var plugin = window.DICT_PLUGINS[type];
+    var plugin = D.DICT_PLUGINS[type];
     if (plugin && plugin.autoKey){
         console.log(D.LC, '[dict.loader.js] Redirect search type: ',type, '--->auto');
         type = 'auto';

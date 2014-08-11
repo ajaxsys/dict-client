@@ -7,7 +7,7 @@
 'use strict';
 /////////// Main Entry. /////////////
 var D=$.dict_extend();
-DICT_PLUGINS.google = {
+D.DICT_PLUGINS.google = {
 	'format': formatGoogle,
 };
 

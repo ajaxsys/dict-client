@@ -3,14 +3,15 @@
  **************************************************/
 ;(function($){
 'use strict';
+var D= $.dict_extend();
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from google is much better.
-DICT_PLUGINS.auto_kotobank = {
+D.DICT_PLUGINS.auto_kotobank = {
     'autoKey'   : 'site:kotobank.jp', // a key will append to search result when `Auto Mode`
     'nextLoader': 'kotobank',  // same as defined bellow.
 }
-var option = DICT_PLUGINS.kotobank = {
+var option = D.DICT_PLUGINS.kotobank = {
     'type' : 'kotobank',
     'host' : '//kotobank.jp',
     'mobile_host' : '//m.kotobank.jp',

@@ -5,12 +5,13 @@
  **************************************************/
 ;(function($){
 'use strict';
+var D= $.dict_extend();
 /////////// Main Entry. /////////////
-DICT_PLUGINS.auto_weblio = {
+D.DICT_PLUGINS.auto_weblio = {
     'autoKey'   : 'site:ejje.weblio.jp', // a key will append to search result when `Auto Mode`
     'nextLoader': 'weblio',  // same as defined bellow.
 }
-var option = DICT_PLUGINS.weblio = {
+var option = D.DICT_PLUGINS.weblio = {
     'type' : 'weblio',
     'host' : '//ejje.weblio.jp',
     'mobile_host' : '//ejje.weblio.jp/small',

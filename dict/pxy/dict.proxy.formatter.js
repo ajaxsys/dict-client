@@ -7,7 +7,8 @@
 ;(function($){
 // Regist plguins
 'use strict';
-window.DICT_PLUGINS = window.DICT_PLUGINS || {};
+var D= $.dict_extend();
+D.DICT_PLUGINS = D.DICT_PLUGINS || {};
 
 // Global method for JSONP (NO need global in jsonp plugin)
 // Expect json format of data: {"type":"__", "word","__", "src","__"}
@@ -24,7 +25,7 @@ window.DICT_format = function(data, type){
 
 function formatDict(src, dict_type){
     // Regist formatter before use
-    var formatter = DICT_PLUGINS[dict_type];
+    var formatter = D.DICT_PLUGINS[dict_type];
     if (!formatter) {
         console.log($.dict_extend().LC, '[dict.formatter.js] [WARN] NOT supported formatter!');
         return "";

@@ -8,11 +8,11 @@ var D = $.dict_extend();
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from wiki is SoSlow&NotGood -vs- from google.
-DICT_PLUGINS.auto_wiki = {
+D.DICT_PLUGINS.auto_wiki = {
     'autoKey'   : 'site:wikipedia.org',    // a key will append to search key when `Auto Mode`
     'nextLoader': 'wiki', // same as defined bellow.
 }
-var optionWikipedia = DICT_PLUGINS.wiki = {
+var optionWikipedia = D.DICT_PLUGINS.wiki = {
     'type' : 'wiki',
     'host': /(\/\/[a-z]+)(\.wikipedia\.org)/,
     'mobile_host': /(\/\/[a-z]+)(\.m\.wikipedia\.org)/,                //  `//jp.wiki`...--> `//jp.m.wiki`...
@@ -28,11 +28,11 @@ var optionWikipedia = DICT_PLUGINS.wiki = {
 
 
 
-DICT_PLUGINS.auto_wiktionary = {
+D.DICT_PLUGINS.auto_wiktionary = {
     'autoKey'   : 'site:wiktionary.org',    // a key will append to search key when `Auto Mode`
     'nextLoader': 'wiktionary', // same as defined bellow.
 }
-var optionWiktionary = DICT_PLUGINS.wiktionary = {
+var optionWiktionary = D.DICT_PLUGINS.wiktionary = {
     'type' : 'wiktionary',
     'host': /(\/\/[a-z]+)(\.wiktionary\.org)/,
     'mobile_host': /(\/\/[a-z]+)(\.m\.wiktionary\.org)/,                //  `//jp.wiki`...--> `//jp.m.wiki`...
@@ -51,11 +51,11 @@ function formatWiktionary(src){
 
 
 
-DICT_PLUGINS.auto_wikibooks = {
+D.DICT_PLUGINS.auto_wikibooks = {
     'autoKey'   : 'site:wikibooks.org',    // a key will append to search key when `Auto Mode`
     'nextLoader': 'wikibooks', // same as defined bellow.
 }
-var optionWikibooks = DICT_PLUGINS.wikibooks = {
+var optionWikibooks = D.DICT_PLUGINS.wikibooks = {
     'type' : 'wikibooks',
     'host': /(\/\/[a-z]+)(\.wikibooks\.org)/,
     'mobile_host': /(\/\/[a-z]+)(\.m\.wikibooks\.org)/,                //  `//jp.wiki`...--> `//jp.m.wiki`...

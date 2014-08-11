@@ -50,7 +50,7 @@ function setOptionToCookie(opt) {
 
 // Load resource and append to DOM
 function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readystate){
-    if (!__DICT__.appendTag) {
+    if (!window.__DICT__.appendTag) {
         alert('Need dict.util.sharebml.js');
         return;
     }
@@ -84,7 +84,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
       }
     };
     
-    __DICT__.appendTag(tag);
+    window.__DICT__.appendTag(tag);
 }
 
 

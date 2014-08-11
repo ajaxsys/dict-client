@@ -16,6 +16,6 @@
   "strict"   : true,
 
   "undef": true, // check undefined variables(global leak)
-  "predef": [ "$", "jQuery", "__DICT__", "DICT_PLUGINS" ]
+  "predef": [ "jQuery" ]
 
 }

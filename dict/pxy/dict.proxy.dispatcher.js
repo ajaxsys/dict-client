@@ -15,7 +15,7 @@ var D=$.dict_extend({
 var option = {
     'format': formatFirstGoogleThenUseOtherFormatterIfExisted,
 };
-DICT_PLUGINS.auto = option;
+D.DICT_PLUGINS.auto = option;
 
 // JSON sample
 // {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
@@ -43,12 +43,12 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
         return;
     }
     // No valid plugin, show google by default.
-    return DICT_PLUGINS.google.format(json);
+    return D.DICT_PLUGINS.google.format(json);
 }
 
 function detectExistedPluginByPrefixWithPluginOrder(results){
-    for (var pluginType in window.DICT_PLUGINS) {
-        var thisPrefix = window.DICT_PLUGINS[pluginType].prefix;
+    for (var pluginType in D.DICT_PLUGINS) {
+        var thisPrefix = D.DICT_PLUGINS[pluginType].prefix;
         if (!thisPrefix)
             continue;
         var prefixes = [].concat(thisPrefix);// Support multi prefix. string --> []
@@ -78,8 +78,8 @@ function detectExistedPluginByPrefixWithPluginOrder(results){
 function detectExistedPluginByPrefix(url){ 
     //var url = aResult.unescapedUrl;                  //  URL outside *2
     if (url) {
-        for (var pluginType in window.DICT_PLUGINS) {
-            var thisPrefix = window.DICT_PLUGINS[pluginType].prefix;
+        for (var pluginType in D.DICT_PLUGINS) {
+            var thisPrefix = D.DICT_PLUGINS[pluginType].prefix;
             if (!thisPrefix)
                 continue;
             var prefixes = [].concat(thisPrefix);// Support multi prefix. string --> []

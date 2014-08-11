@@ -3,14 +3,15 @@
  **************************************************/
 ;(function($){
 'use strict';
+var D= $.dict_extend();
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from google is much better.
-DICT_PLUGINS.auto_ewords = {
+D.DICT_PLUGINS.auto_ewords = {
     'autoKey'   : 'site:e-words.jp', // a key will append to search result when `Auto Mode`
     'nextLoader': 'ewords',  // same as defined bellow.
 }
-var option = DICT_PLUGINS.ewords = {
+var option = D.DICT_PLUGINS.ewords = {
     'type' : 'ewords',
     'host' : '//e-words.jp/w',
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL

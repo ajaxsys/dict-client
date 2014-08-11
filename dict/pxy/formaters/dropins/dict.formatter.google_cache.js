@@ -3,10 +3,11 @@
  **************************************************/
 ;(function($){
 'use strict';
+var D= $.dict_extend();
 // A plugin name starts with `auto_` will call `Auto Mode` first.
 // Then when prefix match prefix defined in NON `auto` version, NON `auto` version will be fired
 // Why do this: search result from google is much better.
-var option = DICT_PLUGINS.google_cache = {
+var option = D.DICT_PLUGINS.google_cache = {
     'type' : 'google_cache',
     'host' : 'http://www.google.com/search?q=cache', // http://dictionary.goo.ne.jp/leaf/...
     'prefix': [    /^http:\/\/www\.google\.com\/search\?q=cache.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
