@@ -48,7 +48,7 @@ function queryDict(word, type){
       },
       'url': url,
       'data': params,
-      'success': function(json, textStatus, xOptions) {
+      'success': function(json) {
   
          // add to cache
          D.setCache('GAE_CACHE', json);

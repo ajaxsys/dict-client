@@ -125,7 +125,7 @@ function registScrollBottomEvent(){
 
 function reloadWhenDictOptionChanged($dropdown){
     var $opt_lnks = $('a',$dropdown);
-    $opt_lnks.click(function(e){
+    $opt_lnks.click(function(){
         var $this_opt = $(this).parent();
         if ($this_opt.hasClass('active') || $this_opt.hasClass('disabled')) {
             // No changed

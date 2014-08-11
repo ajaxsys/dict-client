@@ -12,15 +12,16 @@
 var D=$.dict_extend({
     'detectExistedPluginByPrefix':detectExistedPluginByPrefix,
 });
-var option = DICT_PLUGINS.auto = {
+var option = {
     'format': formatFirstGoogleThenUseOtherFormatterIfExisted,
 };
+DICT_PLUGINS.auto = option;
 
 // JSON sample
 // {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
 function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
     console.log(D.LC, '[dict.formatter.auto.js] Auto Mode start...');
-    var i,plugin;
+    var plugin;
     // Use other plugins if matched in google search result
     plugin = detectExistedPluginByPrefixWithPluginOrder( json.results );// Need unescapedUrl
 

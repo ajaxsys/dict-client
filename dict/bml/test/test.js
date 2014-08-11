@@ -36,7 +36,7 @@ $(function(){
     // Minimized version and released version
     function afterProductVersionLoaded(){
 
-        var prod = BML_PREFIX + __G_BML_MIN__;
+        var prod = window.BML_PREFIX + window.__G_BML_MIN__;
         // Origin:  loader.js
         // Old url: http://localhost:8443/build/dict_ui.js
         var dev = prod2Dev(prod);
@@ -55,7 +55,7 @@ $(function(){
 
     function afterDevelopVersionLoaded(){
         var $editor = $('#jsEditor');
-        var BML_DEV = prod2Dev(__G_BML__);
+        var BML_DEV = prod2Dev(window.__G_BML__);
         $editor.val(BML_DEV);
         $editor.change(updateDevelopLink);
 

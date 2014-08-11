@@ -58,7 +58,7 @@ function queryDict(word, type, url){
       },
       'url': yql,
       'data': params,
-      'success': function(json, textStatus, xOptions) {
+      'success': function(json) {
            var data = {};
            data.key = url; // YQL only need url as the key
            // Fro formatter
@@ -116,7 +116,7 @@ function queryByYQL(url, callback) {
   }
   ajaxDirect=$.jsonp({
       'url': yql,
-      'success': function(json, textStatus, xOptions) {
+      'success': function(json) {
            var data = {};
            try {
                data.src = json.query.results.resources.content;

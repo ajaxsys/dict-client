@@ -29,7 +29,7 @@ $.dict_extend({
 });
 
 // TODO: User settings: From cookie or logined user.
-var settings = {};
+//var settings = {};
 
 
 })(jQuery);

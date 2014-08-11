@@ -14,7 +14,7 @@ var D=$.dict_extend({
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
 var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=";
-var SEARCH_SIZE = 8, DEFALUT_NEXT_LOADER='weblio';
+var SEARCH_SIZE = 8;
 
 /*
  * Loading more search result
@@ -35,7 +35,7 @@ function queryGoogleMoreResults(searchStartPosition){
             data.type=type; // always google
 
             console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load more success! Call formatter. searchStartPosition=', searchStartPosition);
-            var result = window.DICT_format(data);
+            window.DICT_format(data);
         },
         'beforeSend': doNothing,
         'complete': doNothing,
@@ -116,7 +116,7 @@ function queryGoogle(word, type, opt){
           D.setCache('GOOGLE_CACHE',data);
   
           console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load success! Call formatter.');
-          var result = window.DICT_format(data);
+          window.DICT_format(data);
       },
       'complete': function(e,t,x){
           if (D.isSearchRedirect) {

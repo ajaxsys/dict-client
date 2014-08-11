@@ -26,15 +26,16 @@ if (!D.loaded){
 
 var PROXY_DEV_URI = '/build/proxy.html##key#?DEV_MODE',
     PROXY_RLS_URI =  '/dict/proxy.html##key#?',
+    // DICT_ISFIXED = "position_is_fixed",
     // D.DEV_MODE defined in loader.js
-    DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI,
-    DICT_ISFIXED = "position_is_fixed";
+    DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI;
 
 createOrUpdateWindow();
 registWindowResizeEvent(window);
 
 ///////////////////// private func //////////////////////
 var _lastSearchWord, lastInnerWord, lastPopupWord, lastIframeWord;
+
 function createOrUpdateWindow(text, $obj) {
     // TODO:Get From local storage
     var mode = D.winMode;
@@ -46,7 +47,7 @@ function createOrUpdateWindow(text, $obj) {
     }
     else if (mode === 'popup'){
         text = text || lastPopupWord || "";
-        createOrUpdatePopupWindow(text, $obj);
+        createOrUpdatePopupWindow(text);
         lastPopupWord = text;
     }
     else if (mode === 'iframe'){
@@ -59,12 +60,14 @@ function createOrUpdateWindow(text, $obj) {
 }
 
 function createOrUpdateInnerWindow(text, $obj) {
-    /* Window move to selected word.
-    var offset = $obj.position(),
-        textWidthHeight = getTextWH(text,$obj),
-        left = offset.left + textWidthHeight.width,
-        top  = offset.top  + textWidthHeight.height;
-    */
+    if ($obj){
+        /* TODO: Window move to selected word.
+        var offset = $obj.position(),
+            textWidthHeight = getTextWH(text,$obj),
+            left = offset.left + textWidthHeight.width,
+            top  = offset.top  + textWidthHeight.height;
+        */
+    }
     var $dict = $(DICT_JID);
     // Check last search
     if (text && text == lastInnerWord){
@@ -105,7 +108,7 @@ function createOrUpdateInnerWindow(text, $obj) {
 }
 
 
-function createOrUpdatePopupWindow(text, $obj) {
+function createOrUpdatePopupWindow(text) {
     if (!text) {
         return;
     }
