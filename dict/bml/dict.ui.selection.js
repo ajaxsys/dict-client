@@ -43,6 +43,11 @@ function getSelection(e, win){
     var $target = $(e.target);
 
     console.log(D.LC, '[dict.ui.selection.js] start it');
+    // Disable dict start when click some clickable elements on page
+    if ($target.is('select') || $target.is('button') || $target.is('a') ){
+        console.log(D.LC, '[dict.ui.selection.js] Stop selection of tag:', $target.prop('tagName'));
+        return;
+    }
     // Selection should escape navi & dict div
     if ($(D.DICT_JID).add(D.NAVI_JID).find($target).length === 0) {
         // Not element of dict window
