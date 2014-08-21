@@ -101,6 +101,13 @@ function createOrUpdateInnerWindow(text, $obj) {
         $dict.hide(); // Hide it when init(pre-load)
     }
 
+    // Parent window stop scroll while scrolling in iframe
+    $dict.mouseenter(function(){
+        $(window).disablescroll();
+    }).mouseleave(function(){
+        $(window).disablescroll('undo');
+    });
+
     var frameURL = D.static_host() + DICT_URL;
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+

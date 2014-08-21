@@ -82,6 +82,7 @@ module.exports = function(grunt) {
           'lib/jstorage.js',
 
           'lib/jquery.selection.js',
+          'lib/jquery.disablescroll.js',
           'lib/jquery.hoverIntent.js',
           'lib/jquery.plaintext.js',
           'lib/tooltip/jquery.tipsy.js',
