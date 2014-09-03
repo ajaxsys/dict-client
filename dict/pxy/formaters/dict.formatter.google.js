@@ -83,8 +83,10 @@ function getContent(json){
             // var lnkType = $lnk.attr('__dict_type__');
             // $cacheLink.attr('__dict_type__', lnkType ? lnkType : 'google_cache');
             $cacheLink = D.createLinkForLoader( word, 'google_cache' );
+            // Google redirect it from 2014/08
+            var cacheUrlRedirect = r.cacheUrl.replace('http://www.google.com/', 'http://webcache.googleusercontent.com/');
             $cacheLink.html('Text')
-                      .attr('href',r.cacheUrl + textOnly)
+                      .attr('href', cacheUrlRedirect + textOnly)
                       .attr('title', 'Text only version');
         }
 
@@ -100,7 +102,7 @@ function getContent(json){
         var url = (r.url.length>40)? (r.url.substring(0,40)+'...')  :  r.url,
             $url = $('<div>').css('color','#006621')
                    .append(    url   )
-                   .append( plugin ?  $lnk_ext.clone().attr('href',url).html(' ')  : '' ); // Add External mark
+                   .append( plugin ?  $lnk_ext.clone().attr('href', r.url).html(' ')  : '' ); // Add External mark
 
         // Combine all above
         $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );

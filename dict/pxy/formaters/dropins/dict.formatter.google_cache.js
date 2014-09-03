@@ -38,7 +38,7 @@ function customizePage($target){
     $headAndFoot.remove();
 
     var searchWord = $('#__search__').val();
-    $target.highlight(searchWord);
+    $target.highlight(searchWord.split(/[ \t　]+/));
     return $target;
 }
 

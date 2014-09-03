@@ -68,6 +68,27 @@ asyncTest( "asynchronous test: Test YQL API with JSONP.", function() {
   });
 });
 
+asyncTest( "asynchronous test: Test google cache via YQL API with JSONP.", function() {
+  expect( 4 );
+  
+  $.jsonp({
+    //'url': 'https://query.yahooapis.com/v1/public/yql?q=use%20%27http://dict-admin.appspot.com/lib/y.xml%27%20as%20html.src;select%20*%20from%20html.src%20where%20url=%27http%3A%2F%2Fja.m.wikipedia.org%2Fwiki%2FLinux%27&format=json&callback=DICT_jsonp&_1401954340991=',
+    'url' : 'https://query.yahooapis.com/v1/public/yql',
+    'data':{
+      'q' : "use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url= 'http://webcache.googleusercontent.com/search?q=cache:b9ACYI4dQIoJ:ja.wikipedia.org&strip=1'",
+      'format': 'json',
+      'callback': 'DICT_jsonp',
+    },
+    'success': function(json, textStatus, xOptions) {
+      ok(typeof json.query.results.resources === 'object', 'Response data must be a object');
+      ok(json.query.results.resources.status === '200', '200 http status response');
+      ok(json.query.results.resources.url === 'http://webcache.googleusercontent.com/search?q=cache:b9ACYI4dQIoJ:ja.wikipedia.org&strip=1', 'URL is same with request');
+      
+      ok(json.query.results.resources.content.indexOf('</html')>=0, 'The document must be a html with end tag');
+      start();
+    }
+  });
+});
 
   </script>
 </body>
