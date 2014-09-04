@@ -1,6 +1,8 @@
 #dict-client
 ================================
 
+[![Build Status](https://travis-ci.org/ajaxsys/dict-client.svg?branch=master)](https://travis-ci.org/ajaxsys/dict-client)
+
 ##DEMO
 
 http://dict-admin.appspot.com/
