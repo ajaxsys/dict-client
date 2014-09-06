@@ -124,6 +124,7 @@ module.exports = function(grunt) {
           //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
+          'dict/pxy/loaders/dict.load.xiaod.js',
 
           // formatter
           'dict/pxy/dict.proxy.formatter.js',
