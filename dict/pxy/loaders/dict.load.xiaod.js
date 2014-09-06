@@ -36,7 +36,9 @@ function queryDict(word, type){
     //use "http://goo.gl/tUzHPI" as html.src;select * from html.src where url="http://ja.wikipedia.org/wiki/Yahoo!"
     //-->
     //http://query.yahooapis.com/v1/public/yql?q=use%20%22http%3A%2F%2Fgoo.gl%2FtUzHPI%22%20as%20html.src%3B%0A%20%20%20%20%20%20select%20*%20from%20html.src%20where%20%0A%20%20%20%20%20%20%20%20url%3D%22http%3A%2F%2Fja.wikipedia.org%2Fwiki%2FYahoo!%E2%80%8E%22%20&format=json&callback=
+    function  isHttpsProtocal(){
 
+    }
     // TODO isHttpsProtocal
     var isHttps = isHttpsProtocal()
     if (isHttps){
@@ -56,7 +58,7 @@ function queryDict(word, type){
           'type': type,
       },
       'url': url,
-      'callback': isHttps : 'DICT_jsonp' : 'HJ.fun.jsonCallBack',
+      'callback': isHttps ? 'DICT_jsonp' : 'HJ.fun.jsonCallBack',
       'data': params,
       'success': function(json) {
 
@@ -91,7 +93,7 @@ function queryDict(word, type){
     $('#__debugAjax__').attr('href', url);
 }
 
-function DO_NOTHING(){}
+//function DO_NOTHING(){}
 
 // END OF AMD
 })(jQuery);
