@@ -210,8 +210,9 @@ Stack.prototype.get = function(i) {
 // Queue (FIFO)
 //
 
-function Queue() {
+function Queue(max) {
 	this.__a = [];
+    this.max_length = max;
 }
 
 Queue.prototype.enqueue = function(o) {

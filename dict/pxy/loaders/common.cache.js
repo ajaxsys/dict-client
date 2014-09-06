@@ -10,12 +10,11 @@ var D = $.dict_extend();
 $.dict_extend({
     'getCache': getCache,
     'setCache': setCache,
-    'MAX_HIST': 30, // Cache of search result
-    // Add cache here
+    // Add cache here, Datatype defined in _cmn/dict.util.js
     _cache: {
-        'GAE_CACHE': new D.Queue(), // Datatype defined in _cmn/dict.util.js
-        'GOOGLE_CACHE': new D.Queue(),
-        'YQL_CACHE': new D.Queue(),
+        'GAE_CACHE': new D.Queue(10), 
+        'GOOGLE_CACHE': new D.Queue(99),
+        'YQL_CACHE': new D.Queue(50),
     }
 });
 
@@ -40,7 +39,7 @@ function setCache(cacheName, json){
       // next page mode not save cache
       // add to cache
       var cache = D._cache[cacheName]
-      if (cache.size() >= D.MAX_HIST){
+      if (cache.size() >= cache.max_length){
           console.log(D.LC, '[loaders/common.cache.js] Dequeue cache:', json.key);
           cache.dequeue();
       }

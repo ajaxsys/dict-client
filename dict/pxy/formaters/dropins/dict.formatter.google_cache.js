@@ -18,14 +18,14 @@ var option = D.DICT_PLUGINS.google_cache = {
 
 // JSON sample
 function formatCommon(src) {
-    console.log($.dict_extend().LC, '[dict.formatter.google_cache.js] format start...');
-    return $.dict_extend().preFormat(option, src, customizePage);
+    console.log(D.LC, '[dict.formatter.google_cache.js] format start...');
+    return D.preFormat(option, src, customizePage);
 }
 
 
 // Customize for this page
 function customizePage($target){
-    console.log($.dict_extend().LC, '[dict.formatter.google_cache.js] Customize format start...');
+    console.log(D.LC, '[dict.formatter.google_cache.js] Customize format start...');
 
     //Remove text from google;
     //$('base', $target).next().empty().text('Google Cache');
@@ -34,7 +34,7 @@ function customizePage($target){
 
     // common remove 
     var $headAndFoot = $('#header, #footer, header, footer, .header, .footer', $target);
-    console.log($.dict_extend().LC, '[dict.formatter.google_cache.js] Removed headers or footers:', $headAndFoot.length);
+    console.log(D.LC, '[dict.formatter.google_cache.js] Removed headers or footers:', $headAndFoot.length);
     $headAndFoot.remove();
 
     var searchWord = $('#__search__').val();

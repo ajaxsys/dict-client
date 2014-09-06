@@ -23,8 +23,8 @@ var option = D.DICT_PLUGINS.kotobank = {
 
 // JSON sample
 function formatKotobank(src) {
-    console.log($.dict_extend().LC, '[dict.formatter.kotobank.js] format start...');
-    return $.dict_extend().preFormat(option, src, customizePage);
+    console.log(D.LC, '[dict.formatter.kotobank.js] format start...');
+    return D.preFormat(option, src, customizePage);
 }
 
 

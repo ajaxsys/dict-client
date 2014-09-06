@@ -43,7 +43,11 @@ function doQuery(query, type, url, isPushToHistory){
         }
 
         $searchBox.val(word);
-        if (url){
+
+        if (doUseNativeJSONP(word, type)){
+            // Some site use special api
+            return;
+        }else if(url){
             console.log(D.LC, '[dict.loader.js] Using directly mode:', url);
             callFetchURLLoader(word, type, url);
         }else{
@@ -52,6 +56,14 @@ function doQuery(query, type, url, isPushToHistory){
     } else {
         console.log(D.LC, '[dict.loader.js] NG search:', query, type, word);
     }
+}
+
+function doUseNativeJSONP(word, type){
+    if ('xiaod'.equals(type)){
+        D.queryDictByXiaod(word);
+        return true;
+    }
+    return false;
 }
 
 function callFetchURLLoader(word, type, url){

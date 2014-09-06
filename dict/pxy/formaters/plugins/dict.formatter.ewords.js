@@ -23,8 +23,8 @@ var option = D.DICT_PLUGINS.ewords = {
 
 // JSON sample
 function formatEWords(src) {
-    console.log($.dict_extend().LC, '[dict.formatter.ewords.js] format start...');
-    return $.dict_extend().preFormat(option, src, customizePage);
+    console.log(D.LC, '[dict.formatter.ewords.js] format start...');
+    return D.preFormat(option, src, customizePage);
 }
 
 
