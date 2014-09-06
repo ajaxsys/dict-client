@@ -59,7 +59,7 @@ function doQuery(query, type, url, isPushToHistory){
 }
 
 function doUseNativeJSONP(word, type){
-    if ('xiaod'.equals(type)){
+    if ('xiaod'===type){
         D.queryDictByXiaod(word);
         return true;
     }

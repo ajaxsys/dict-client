@@ -77,18 +77,7 @@ function getContent(json){
             $lnk = $lnk_ext.clone();
         }
 
-        var textOnly = "&strip=1";
-        var $cacheLink = '';
-        if (r.cacheUrl) {
-            // var lnkType = $lnk.attr('__dict_type__');
-            // $cacheLink.attr('__dict_type__', lnkType ? lnkType : 'google_cache');
-            $cacheLink = D.createLinkForLoader( word, 'google_cache' );
-            // Google redirect it from 2014/08
-            var cacheUrlRedirect = r.cacheUrl.replace('http://www.google.com/', 'http://webcache.googleusercontent.com/');
-            $cacheLink.html('Text')
-                      .attr('href', cacheUrlRedirect + textOnly)
-                      .attr('title', 'Text only version');
-        }
+        var $cacheLink = createCacheLink(word, r.cacheUrl);
 
         // 1) title link
         $lnk.attr('href',r.unescapedUrl).html(r.title)
@@ -99,10 +88,10 @@ function getContent(json){
         $content.html(r.content.replace(/<script|script>/g,''));
 
         // 3) url
-        var url = (r.url.length>40)? (r.url.substring(0,40)+'...')  :  r.url,
+        var url = (r.unescapedUrl.length>40)? (r.unescapedUrl.substring(0,40)+'...')  :  r.unescapedUrl,
             $url = $('<div>').css('color','#006621')
                    .append(    url   )
-                   .append( plugin ?  $lnk_ext.clone().attr('href', r.url).html(' ')  : '' ); // Add External mark
+                   .append( plugin ?  $lnk_ext.clone().attr('href', r.unescapedUrl).html(' ')  : '' ); // Add External mark
 
         // Combine all above
         $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );
@@ -114,6 +103,22 @@ function getContent(json){
         $('hr:last', $resultList).replaceWith(nextFlg);
     }
     return $resultList;
+}
+
+function createCacheLink(word, cacheUrl){
+    var textOnly = "&strip=1";
+    var $cacheLink = '';
+    if (cacheUrl) {
+        // var lnkType = $lnk.attr('__dict_type__');
+        // $cacheLink.attr('__dict_type__', lnkType ? lnkType : 'google_cache');
+        $cacheLink = D.createLinkForLoader( word, 'google_cache' );
+        // Google redirect it from 2014/08
+        var cacheUrlRedirect = cacheUrl.replace('http://www.google.com/', 'http://webcache.googleusercontent.com/');
+        $cacheLink.html('Text')
+                  .attr('href', cacheUrlRedirect + textOnly)
+                  .attr('title', 'Text only version');
+    }
+    return $cacheLink
 }
 
 function registOnceOnScrollBottomForNextPage(){
