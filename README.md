@@ -1,5 +1,6 @@
-#dict-client
-================================
+#Mini-browser - for better web & pdf reading
+[![Build Status](https://travis-ci.org/ajaxsys/dict-client.svg?branch=master)](https://travis-ci.org/ajaxsys/dict-client)
+
 
 ##DEMO
 

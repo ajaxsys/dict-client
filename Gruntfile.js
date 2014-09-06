@@ -439,7 +439,7 @@ module.exports = function(grunt) {
 
   // Test task.
   // var testSubtasks = ['jshint', 'qunit', 'validate-docs'];
-  var testSubtasks = ['jshint'];
+  var testSubtasks = ['dist'];
 
   grunt.registerTask('test', testSubtasks);
 
