@@ -15,7 +15,7 @@ var option = D.DICT_PLUGINS.iciba = {
     'type' : 'iciba',
     'host' : '//www.iciba.com/',
     'mobile_host' : '//wap.iciba.com/cword/', // http://www.iciba.com/default/ --> http://wap.iciba.com/cword/default/
-    'prefix': [ /^http:\/\/www\.iciba\.com\/([^\/]+)/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'prefix': [ /^http:\/\/www\.iciba\.com\/([^\/]+)/ , /^http:\/\/wap\.iciba\.com\/cword\/([^\/]+)/ ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatIciba,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
