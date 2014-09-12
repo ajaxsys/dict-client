@@ -27,8 +27,11 @@ $(function(){
     $searchBox = $('#__search__');
     $menuBtn=$('#__dict_collapse_btn__');
 
-    updateOptionMenu(D.getOptionFromCookie().dict.dict_lang, $langs);
-    updateOptionMenu(D.getOptionFromCookie().dict.dict_type, $types);
+    var dictOption = D.getOptionFromCookie().dict;
+    D.lang = dictOption.dict_lang || D.lang;
+    D.type = dictOption.dict_type || D.type;
+    updateOptionMenu(D.lang, $langs);
+    updateOptionMenu(D.type, $types);
     reloadWhenDictOptionChanged($langs);
     reloadWhenDictOptionChanged($types);
 
@@ -148,7 +151,8 @@ function reloadWhenDictOptionChanged($dropdown){
 
             // Reload dict
             D.lang = D.getSelectedLang();
-            D.loadQueryWithHistory($searchBox.val(), D.getSelectedType());
+            D.type = D.getSelectedType();
+            D.loadQueryWithHistory($searchBox.val(), D.type);
         }
         // Hide menu
         if ($menuBtn.is(':visible'))// [Fix, add check hidden] Bugs that can NOT go back to smartphone menu in FF

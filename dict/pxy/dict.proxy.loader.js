@@ -77,8 +77,8 @@ function callFetchURLLoader(word, type, url){
 function addDictKeyword(word){
     switch (D.lang) {
         case 'jp' : return word + ' 意味'
-        case 'us' : return word + ' definition'
-        case 'zh-CN' : return word + ' 什么意思'
+        case 'us' : return word + ' meaning'
+        case 'zh-CN' : return word + ' 含义'
     }
 }
 
