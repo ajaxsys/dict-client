@@ -45,6 +45,14 @@ function queryGoogleMoreResults(searchStartPosition){
 }
 function doNothing(){}
 
+function getAutoKeyByLang(){
+    switch (D.lang) {
+        case 'jp' : return ' 意味';
+        case 'us' : return ' meaning';
+        case 'zh-CN' : return ' 含义';
+    }
+}
+
 /*
  * Loading 1st search result
  */
@@ -53,9 +61,21 @@ function queryGoogle(word, type, opt){
     console.log(D.LC, '[loaders/dict.load.google.js] Last search:' + oldword);
     oldword = word;// backup
 
+    var newAutoKey = null;
+    if (type.startsWith('google_')){
+        // Other google modes: simply by addition keywords
+        switch (type) {
+            case 'google_dict':
+                newAutoKey = getAutoKeyByLang();
+                console.log(D.LC, '[dict.load.google.js] Added new auto search key to google search: ', newAutoKey);
+                break;
+        }
+        type = 'google'; // Use same formatter as google
+    }
+
     // Option
     var defaultOpt = {
-      'autoKey': null,
+      'autoKey': newAutoKey,
       'nextLoader': null,
     };
     var option = $.extend({},defaultOpt, opt);

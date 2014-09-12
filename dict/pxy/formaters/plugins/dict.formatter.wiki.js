@@ -19,7 +19,7 @@ var optionWikipedia = D.DICT_PLUGINS.wiki = {
     'changeToMobileUrl' : function(url) {return url.replace(this.host, "$1.m$2")},
     'prefix': [   /^[htps:]*\/\/[a-z]+\.(|m\.)wikipedia\.org\/wiki\/([^:\/]+)$/  ], // URL from google ([^:\/]+) keeps strick for wikipedia
     'format': formatWiki,
-    'removeTags': ['iframe','noscript','script'],
+    'removeTags': ['title','meta','iframe','noscript','script'],
     'isCleanLinks': true, // Some link from wikipedia to wiki books.
 };
 

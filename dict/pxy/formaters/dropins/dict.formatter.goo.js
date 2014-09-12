@@ -16,7 +16,7 @@ var option = D.DICT_PLUGINS.goo = {
     'host' : 'http://dictionary.goo.ne.jp', // http://dictionary.goo.ne.jp/leaf/...
     'prefix': [    /^http:\/\/dictionary\.goo\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatGoo,
-    'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
+    'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
 };
 

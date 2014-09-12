@@ -17,7 +17,7 @@ var option = D.DICT_PLUGINS.ewords = {
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
     'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,
-    'removeTags': ['iframe','noscript','script','link','form','style','nobr'],
+    'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr'],
     'isCleanLinks': true,
 };
 

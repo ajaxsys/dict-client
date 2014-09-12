@@ -17,7 +17,7 @@ var option = D.DICT_PLUGINS.weblio = {
     'mobile_host' : '//ejje.weblio.jp/small',
 	'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
 	'format': formatWeblioForSmartPhoneLayout,
-    'removeTags': ['iframe','noscript','script','img']
+    'removeTags': ['title','meta','iframe','noscript','script','img']
 };
 
 function formatWeblioForSmartPhoneLayout(src) {

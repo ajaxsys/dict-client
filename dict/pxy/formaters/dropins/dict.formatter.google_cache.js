@@ -12,7 +12,7 @@ var option = D.DICT_PLUGINS.google_cache = {
     'host' : 'http://www.google.com/search?q=cache', // http://dictionary.goo.ne.jp/leaf/...
     'prefix': [    /^http:\/\/www\.google\.com\/search\?q=cache.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatCommon,
-    'removeTags': ['iframe','noscript','script','link','form','style','nobr','img'],
+    'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': false,
 };
 
@@ -38,6 +38,9 @@ function customizePage($target){
     $headAndFoot.remove();
 
     var searchWord = $('#__search__').val();
+
+    $('.highlight', $target).removeClass('highlight');
+    
     $target.highlight(searchWord.split(/[ \t　]+/));
 
     // Set move to point

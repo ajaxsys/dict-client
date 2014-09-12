@@ -74,30 +74,12 @@ function callFetchURLLoader(word, type, url){
     D.queryDictByYQL(word, type, url);// Load by URL directly
 }
 
-function addDictKeyword(word){
-    switch (D.lang) {
-        case 'jp' : return word + ' 意味'
-        case 'us' : return word + ' meaning'
-        case 'zh-CN' : return word + ' 含义'
-    }
-}
-
 // Loader will auto call formatter.
 function callGoogleLoader(word, type){
     if (!type){
         type = 'auto';
     } else if (!type.startsWith('auto') && !type.startsWith('google')) {
         type = 'auto_' + type;
-    } else if (type.startsWith('google')){
-        // Other google modes: simply by addition keywords
-        switch (type) {
-            case 'google_dict':
-                var newWord = addDictKeyword(word);
-                console.log(D.LC, '[dict.loader.js] Redirect search key: ',word , '--->', newWord);
-                word = newWord;
-                break;
-        }
-        type = 'google';
     }
 
     // If auto key exist use Auto Mode with addtion key
