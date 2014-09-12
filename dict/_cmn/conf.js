@@ -26,6 +26,7 @@ $.dict_extend({
     PROTOCAL : ("https:" === window.location.protocol)? "https:" : "http:",
     lang: 'jp', // Default language
     type: 'google',
+    MOVE_POINT_ID : '__move_to_me__',
     winMode: 'inner', // inner, iframe, popup
 });
 

@@ -58,7 +58,13 @@ function allCompleteAction(word, type) {
         $result.css({opacity:"1.0"});
         // Keep page 
         //$('html,body').animate({scrollTop: $result.offset().top-10},'fast');
-        $('html,body').animate({scrollTop: 0},'fast');
+        var $mvPoint = $('#' + D.MOVE_POINT_ID), mvPxTop = 0;
+
+        if ($mvPoint.length > 0)
+          mvPxTop = $mvPoint.offset().top
+
+        $('html,body').animate({scrollTop: mvPxTop},'fast');
+
     },300);
     console.log(D.LC, '[loaders/common.js] ============Complete Query. [key=',word,'& type=', type, ']=============' );
 }

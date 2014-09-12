@@ -39,6 +39,10 @@ function customizePage($target){
 
     var searchWord = $('#__search__').val();
     $target.highlight(searchWord.split(/[ \t　]+/));
+
+    // Set move to point
+    $('.highlight:first', $target).attr('id', D.MOVE_POINT_ID);
+
     return $target;
 }
 
