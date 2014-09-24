@@ -72,6 +72,7 @@ function createOrUpdateInnerWindow(text, $obj) {
     // Check last search
     if (text && text == lastInnerWord){
         $dict.show();
+        resetPositionWhenOverflow($dict);
         return;
     }
     
@@ -92,15 +93,15 @@ function createOrUpdateInnerWindow(text, $obj) {
         // Update
         $.updateWindowTitle(DICT_ID, text);
     }
-    // Toggle it
-    if (text && !$dict.is(':visible') ) {
+
+    if (!text){
+        $dict.hide(); // Hide it when init(pre-load)
+    } else if (text && !$dict.is(':visible') ) {
         $dict.fadeIn(function(){
             resetPositionWhenOverflow($dict);
         });// Show it when window reopen or first search
-    }else if (!text){
-        $dict.hide(); // Hide it when init(pre-load)
     }
-
+    
     // Parent window stop scroll while scrolling in iframe
     $dict.mouseenter(function(){
         $(window).disablescroll();
@@ -249,7 +250,7 @@ function resetPositionWhenOverflow($win){
             height= isHOver?(MAX_H-MARGIN_TOP):H-MARGIN_TOP ;
         if (width<0) width=0;
         if (height<0) height=0;
-            $.moveWindow(DICT_ID,width,height);
+        $.moveWindow(DICT_ID,width,height);
     }
 }
 
