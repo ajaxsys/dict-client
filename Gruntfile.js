@@ -291,7 +291,8 @@ module.exports = function(grunt) {
       img: {
         files: [].concat(copyToMulti('lib/jwe/default/',  '*_mid.gif', CONST.dest_css))
                  .concat(copyToMulti('dict/_resource/sprite/','*.png', CONST.dest_css))
-          .concat(copyToMulti('dict/_resource/img/',          ['*.*'], CONST.dest_css))
+                 .concat(copyToMulti('dict/_resource/img/',   ['*.*'], CONST.dest_css))
+                 .concat(copyToMulti('dict/_resource/',       '*.ico', CONST.dest))
       }
     },
 
