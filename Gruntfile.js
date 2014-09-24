@@ -344,6 +344,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      options: {
+        livereload: true
+      },
       script: {
         files: ['dict/**/*.js',
                 'lib/**/*',
