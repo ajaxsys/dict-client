@@ -169,9 +169,19 @@ function setSubWindMode(subMode){
     }
 }
 
-// TODO enable/disable getTextFromMouse
+
+
+
 
 // TODO enable/disable while selected word contains "-" and numbers
+var $flgEnableNumSelection = $('<label style="display:inline;" for="__navi_flg_num_sel__"><input type="checkbox" id="__navi_flg_num_sel__" checked> Disable number search </label>');
+
+$flgEnableNumSelection.appendTo($naviInnerWrapper);
+$('input', $flgEnableNumSelection).change(function(){
+    D.disableNumSelection = this.checked;
+});
+
+
 
 
 

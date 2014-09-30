@@ -69,7 +69,7 @@ function getSelection(e, win){
 
 // Without any symbol
 // 。、，（）「」￥！ // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/   ;
+var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/   ;
 function isWord(text){
     // Selected words in one line
     if (!text) return false;
@@ -86,8 +86,8 @@ function isSimpleWord(t){
     if (t.length===1 && t.charCodeAt(0)<256){
         return true;
     }
-    // Contain number is simple word
-    if (t.search(/[0-9]/)>-1){
+    // Contain number is simple word '0~9' & '-'
+    if (D.disableNumSelection && t.search(/[0-9\-]/)>-1){
         return true;
     }
     // More...
