@@ -195,7 +195,7 @@ function open_win(url,windowname,width,height) {
 
 function createNewWindow(title){
     var winSize = getWindowSizeFromCookie(),
-        brsSize = getBrowserSize(),
+        brsSize = D.getBrowserSize(),
         left = brsSize.width-winSize.width,
         top = brsSize.height-winSize.height-DICT_ADD_HIGHT;
 
@@ -239,7 +239,7 @@ function resetPositionWhenOverflow($win){
         MARGIN_TOP =$win.height()+DICT_ADD_HIGHT;
     var W=$win.position().left+MARGIN_LEFT,
         H=$win.position().top+MARGIN_TOP,
-        brsSize = getBrowserSize(),
+        brsSize = D.getBrowserSize(),
         MAX_W=brsSize.width,
         MAX_H=brsSize.height,
         isWOver = (W > MAX_W) ,
@@ -254,25 +254,6 @@ function resetPositionWhenOverflow($win){
     }
 }
 
-// quirks mode support. DO NOT use $(window).height()/width()
-function getBrowserSize(){
-    var w = 0;var h = 0;
-    //IE
-    if(!window.innerWidth){
-        if(document.documentElement.clientWidth !== 0){
-            //strict mode
-            w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
-        } else{
-            //quirks mode
-            w = document.body.clientWidth;h = document.body.clientHeight;
-        }
-    } else {
-        //w3c
-        w = window.innerWidth;h = window.innerHeight;
-    }
-    return {width:w,height:h};
-}
-
 function setWindowSizeToCookie($win){
     $win = $win || $(DICT_JID);
     var opt = D.getOptionFromCookie();
@@ -283,8 +264,7 @@ function setWindowSizeToCookie($win){
 }
 
 function getWindowSizeFromCookie(){
-    var opt= D.getOptionFromCookie();
-    return opt.ui;
+    return D.getOptionFromCookie().ui;
 }
 
 

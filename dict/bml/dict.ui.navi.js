@@ -103,15 +103,22 @@ $quickSearch.appendTo($naviInnerWrapper)
 /////////////////////////////////////////////////
 // Pop-IN or Pop-UP
 /////////////////////////////////////////////////
-var $changeMode = $('<div style="color:gray;">' 
-                + '<label style="display:inline;" for="__navi_inner__"><input type="radio" name="dictmode" value="inner" id="__navi_inner__" checked> POP-IN</label> '
-                //+ '<input type="radio" name="dictmode" value="iframe"><label for="iframe">IFrame</label>'
-                + '<label style="display:inline;" for="__navi_popup__"><input type="radio" name="dictmode" value="popup" id="__navi_popup__"> POP-UP</label>'
+var $changeMode = $('<div style="color:gray;text-align:left;">' 
+                // Popup
+                + '<label style="display:inline;" for="__navi_popup__"><input type="radio" name="dictmode" mode="popup" id="__navi_popup__"> POP UP </label>'
+                // Inner
+                + '<label style="display:inline;" for="__navi_inner__"><input type="radio" name="dictmode" mode="inner" id="__navi_inner__" checked> POP IN </label> <br />'
+                + '<label style="display:inline;" for="__navi_left__" ><input type="radio" name="dictmode" mode="inner" id="__navi_left__" > GO LEFT </label>'
+                + '<label style="display:inline;" for="__navi_right__"><input type="radio" name="dictmode" mode="inner" id="__navi_right__"> GO RIGHT </label>'
                 + '</div>');
 $changeMode.appendTo($naviInnerWrapper);
+
+var prevMode='inner'; //Default mode
 $('input', $changeMode).change(function(){
-    D.winMode = $(this).val();
+    D.winMode = $(this).attr('mode');
     console.log(D.LC, '[dict.ui.navi.js] Dict mode changed to ', D.winMode);
+    resetWinMode();
+
     // Todo: close other mode status
     if (D.winMode === 'inner') {
         if (D.popupWin) {
@@ -121,14 +128,46 @@ $('input', $changeMode).change(function(){
                 console.log(e);
             }
         }
+
+        var subInnerMode = $(this).attr('id');
+        setSubWindMode(subInnerMode);
+
     } else if (D.winMode === 'popup'){
         $.closeWindow(D.DICT_ID);
     }
     // Redo last search
-    D.doLastQuery();
+    if (prevMode!==D.winMode){
+        prevMode = D.winMode;
+        D.doLastQuery();
+    }
+    
 })
 
-
+var $targetPage = $('body');
+var originMarginLeft = parseInt($targetPage.css('margin-left'),10);
+var originMarginRight = parseInt($targetPage.css('margin-right'),10);
+console.log(D.LC, '[dict.ui.navi.js] originMarginLeft:', originMarginLeft, ' originMarginRight:', originMarginRight);
+function resetWinMode(){
+    // Reset by default(inner mode)
+    $targetPage.css('margin-left', originMarginLeft).css('margin-right', originMarginRight);
+}
+function setSubWindMode(subMode){
+    var $dictWin=$(D.DICT_JID),
+        dictWidth = $dictWin.width(),
+        browserSize = D.getBrowserSize();
+    
+    if (subMode==='__navi_left__'){
+        $targetPage.css('margin-left', originMarginLeft + dictWidth);
+        // Move to left
+        $.moveWindow(D.DICT_ID, 0, 22);
+        $.resizeWindow(D.DICT_ID, dictWidth, browserSize.height-62);
+    } else if (subMode==='__navi_right__'){
+        $targetPage.css('margin-right', originMarginRight + dictWidth);
+        // Move to right
+        $.moveWindow(D.DICT_ID, browserSize.width - dictWidth, 0);
+        $.resizeWindow(D.DICT_ID, dictWidth, browserSize.height-40);
+    }
+}
 
 // TODO enable/disable getTextFromMouse
 
