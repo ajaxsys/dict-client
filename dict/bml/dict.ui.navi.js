@@ -79,7 +79,7 @@ $naviInnerWrapper.keydown(function(e){
 /////////////////////////////////////////////////
 // Quick Search
 /////////////////////////////////////////////////
-var $quickSearch = $('<input type="text" placeholder="Quick Search" style="border:1px; padding:4px;">');
+var $quickSearch = $('<input type="text" placeholder="Quick Search" style="border:1px; padding:4px; width:95%;">');
 $quickSearch.appendTo($naviInnerWrapper)
 .click(function(){
     $(this).select();
@@ -103,12 +103,12 @@ $quickSearch.appendTo($naviInnerWrapper)
 /////////////////////////////////////////////////
 // Pop-IN or Pop-UP
 /////////////////////////////////////////////////
-var $changeMode = $('<div style="color:gray;text-align:left;">' 
+var $changeMode = $('<div style="color:gray;">' 
                 // Popup
-                + '<label style="display:inline;" for="__navi_popup__"><input type="radio" name="dictmode" mode="popup" id="__navi_popup__"> POP UP </label>'
+                + '<label style="display:inline;" for="__navi_inner__"><input type="radio" name="dictmode" mode="inner" id="__navi_inner__" checked> POP IN </label>'
+                + '<label style="display:inline;" for="__navi_left__" ><input type="radio" name="dictmode" mode="inner" id="__navi_left__" > GO LEFT </label> <br />'
                 // Inner
-                + '<label style="display:inline;" for="__navi_inner__"><input type="radio" name="dictmode" mode="inner" id="__navi_inner__" checked> POP IN </label> <br />'
-                + '<label style="display:inline;" for="__navi_left__" ><input type="radio" name="dictmode" mode="inner" id="__navi_left__" > GO LEFT </label>'
+                + '<label style="display:inline;" for="__navi_popup__"><input type="radio" name="dictmode" mode="popup" id="__navi_popup__"> POP UP </label>'
                 + '<label style="display:inline;" for="__navi_right__"><input type="radio" name="dictmode" mode="inner" id="__navi_right__"> GO RIGHT </label>'
                 + '</div>');
 $changeMode.appendTo($naviInnerWrapper);
