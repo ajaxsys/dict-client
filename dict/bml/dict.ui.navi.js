@@ -25,7 +25,10 @@ if (!D.loaded){
 
 var $naviWrapper = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="'+NAVI_ID+'" id="'+NAVI_ID+'">');
 
-var $navi = $('<div>');
+var $navi = $('<div>'), 
+    NAVI_ON_ICON_ID='__navi_on_id__',
+    NAVI_ON_ICON_JID='#'+NAVI_ON_ICON_ID,
+    CLASS_EXPAND = '__navi_exp__';
 //var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>');
 initNavi(); 
 
@@ -35,8 +38,8 @@ function initNavi(){
     //var on='☂',off='☄',
     var ttlOn='ON',ttlOff='OFF',
         classOn='__navi_on__',classOff='__navi_off__',
-        $imgOn = $('<div>').addClass(classOn).attr('title',ttlOn),
-        $imgOff = $('<div>').addClass(classOff).attr('title',ttlOff).hide();
+        $imgOn = $('<div id="'+NAVI_ON_ICON_ID+'">').addClass(classOn).attr('title',ttlOn),
+        $imgOff = $('<div id="__navi_off_id__">').addClass(classOff).attr('title',ttlOff).hide();
 
         $navi.append($imgOn).append($imgOff).appendTo($naviWrapper);// Prepend: lost to other max z-index.
     // Waiting dom compute css , see SO: get-actual-value-specified-in-css-using-jquery
@@ -193,10 +196,13 @@ function showSearchPanel(){
     }
     $naviInnerWrapper.show();
     $quickSearch.val('').focus();
+    $(NAVI_ON_ICON_JID).addClass(CLASS_EXPAND);
+
 }
 
 function hideSearchPanel(){
     $naviInnerWrapper.hide();
+    $(NAVI_ON_ICON_JID).removeClass(CLASS_EXPAND);
 }
 
 

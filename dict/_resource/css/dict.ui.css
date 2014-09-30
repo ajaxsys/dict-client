@@ -1,5 +1,6 @@
 .__navi_div__{border-radius:3px;background-color:rgba(255,255,255,0.5);cursor:pointer;width:auto}
 .__navi_inner_wrapper__{background-color:rgba(222,222,222,0.8);border-radius:3px;padding:5px;text-align:left;font-size:10pt;font-family:monospace,Arial,sans-serif}
 .__navi_inner_wrapper__ input{vertical-align:baseline}
-.__navi_on__{background:transparent url('default/sprites.png') no-repeat -78px -26px; width: 20px; height:20px;}
-.__navi_off__{background:transparent url('default/sprites.png') no-repeat -78px -2px; width: 20px; height:20px;}
+.__navi_on__{background:transparent url('default/sprites.png') no-repeat -2px -62px; width: 20px; height:20px;}
+.__navi_off__{background:transparent url('default/sprites.png') no-repeat -78px -26px; width: 20px; height:20px;}
+.__navi_exp__{background:transparent url('default/sprites.png') no-repeat -78px -2px; width: 20px; height:20px;}
