@@ -176,15 +176,24 @@ function setSubWindMode(subMode){
 
 
 
-// TODO enable/disable while selected word contains "-" and numbers
-var $flgEnableNumSelection = $('<label style="display:inline;" for="__navi_flg_num_sel__"><input type="checkbox" id="__navi_flg_num_sel__" checked> Disable number search </label>');
+
+
+// Set max select word; default:3 words; min:1 word;
+var $numOfMaxSelectWord = $('<div><hr>Max selection words:<input type="text" value="3" style="border:1px;width:30px;"></div>');
+$numOfMaxSelectWord.appendTo($naviInnerWrapper);
+$('input', $numOfMaxSelectWord).change(function(){
+    var v = parseInt(this.value, 10);
+    D.WORD_MAX_COUNT = v > 0 ? v : 3;
+});
+
+
+// Enable/disable while selected word contains "-" and numbers
+var $flgEnableNumSelection = $('<div><hr><label style="display:inline;" for="__navi_flg_num_sel__"><input type="checkbox" id="__navi_flg_num_sel__" checked> Disable number search </label></div>');
 
 $flgEnableNumSelection.appendTo($naviInnerWrapper);
 $('input', $flgEnableNumSelection).change(function(){
     D.disableNumSelection = this.checked;
 });
-
-
 
 
 
