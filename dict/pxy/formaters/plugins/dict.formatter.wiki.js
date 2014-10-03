@@ -19,8 +19,9 @@ var optionWikipedia = D.DICT_PLUGINS.wiki = {
     'changeToMobileUrl' : function(url) {return url.replace(this.host, "$1.m$2")},
     'prefix': [   /^[htps:]*\/\/[a-z]+\.(|m\.)wikipedia\.org\/wiki\/([^:\/]+)$/  ], // URL from google ([^:\/]+) keeps strick for wikipedia
     'format': formatWiki,
-    'removeTags': ['title','meta','iframe','noscript','script'],
+    'removeTags': ['title','meta','iframe','noscript','script','link'],
     'isCleanLinks': true, // Some link from wikipedia to wiki books.
+    'inject_resources': ['dropins/wiki.css'],
 };
 
 
@@ -39,8 +40,9 @@ var optionWiktionary = D.DICT_PLUGINS.wiktionary = {
     'changeToMobileUrl' : function(url) {return url.replace(this.host, "$1.m$2")},
     'prefix': [   /^[htps:]*\/\/[a-z]+\.(|m\.)wiktionary\.org\/wiki\/.*$/  ], // URL Displayed in google search result  & self page
     'format': formatWiktionary,
-    'removeTags': ['iframe','noscript','script'],
+    'removeTags': ['title','meta','iframe','noscript','script','link'],
     'isCleanLinks': true, // cause there is MIX links(wikipedia/wiktionary/wikibooks...) on same page
+    'inject_resources': ['dropins/wiki.css'],
 };
 
 function formatWiktionary(src){
@@ -62,7 +64,8 @@ var optionWikibooks = D.DICT_PLUGINS.wikibooks = {
     'changeToMobileUrl' : function(url) {return url.replace(this.host, "$1.m$2")},
     'prefix': [   /^[htps:]*\/\/[a-z]+\.(|m\.)wikibooks\.org\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
     'format': formatWikibooks,
-    'removeTags': ['iframe','noscript','script'],
+    'removeTags': ['title','meta','iframe','noscript','script','link'],
+    'inject_resources': ['dropins/wiki.css'],
     'isCleanLinks': true,
 };
 

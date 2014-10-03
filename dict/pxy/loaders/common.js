@@ -11,10 +11,12 @@ $(function(){
 
 var D=$.dict_extend({
     complete: allCompleteAction,
+    preloadResources: preloadResources,
 });
 
 
 var $result = $('#__explain_wrapper_appender__'),
+    $resource = $('#__explain_resource_appender__'),
     $searchBox = $('#__search__');
 
 var options = {
@@ -42,6 +44,32 @@ var options = {
       // SEE: https://github.com/jaubourg/jquery-jsonp/blob/master/doc/API.md#callback---string-_jqjsp
       'callback': 'DICT_jsonp', // callback=DICT_jsonp // Not exist in global win// will auto created in global
 }
+
+var lastType;
+function preloadResources(type){
+  if (lastType===type){
+    return;
+  }
+  // init
+  lastType = type;
+  $resource.empty();
+  // preload resources
+  var pluginInfo = D.DICT_PLUGINS[type];
+  if (pluginInfo && pluginInfo.inject_resources){
+    var rscs = [].concat(pluginInfo.inject_resources);
+    for (var i=0; i<rscs.length;i++){
+      var rscUrl = rscs[i];
+      // CSS
+      if (rscUrl.endsWith('.css')) {
+        var $targetCss = $('<link rel="stylesheet" type="text/css">').attr('href', rscUrl);
+        console.log("Preload css :" + rscUrl);
+        $resource.append($targetCss);
+      }
+      // Other resources, TODO
+    }
+  }
+}
+
 
 function completeDefine(){
     console.log(D.LC, '[loaders/common.js] Expend time:', ($.now()-this.dict._startTime) );

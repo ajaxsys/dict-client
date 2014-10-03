@@ -29,6 +29,7 @@ $.dict_extend({
     MOVE_POINT_ID : '__move_to_me__',
     winMode: 'inner', // inner, iframe, popup
     disableNumSelection: true,
+    CSS_CACHE: {},
 });
 
 // TODO: User settings: From cookie or logined user.

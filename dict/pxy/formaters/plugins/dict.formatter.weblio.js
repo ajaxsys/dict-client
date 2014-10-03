@@ -15,9 +15,10 @@ var option = D.DICT_PLUGINS.weblio = {
     'type' : 'weblio',
     'host' : '//ejje.weblio.jp',
     'mobile_host' : '//ejje.weblio.jp/small',
-	'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
-	'format': formatWeblioForSmartPhoneLayout,
-    'removeTags': ['title','meta','iframe','noscript','script','img']
+    'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
+    'format': formatWeblioForSmartPhoneLayout,
+    'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
+    'inject_resources': ['dropins/weblio.css'],
 };
 
 function formatWeblioForSmartPhoneLayout(src) {

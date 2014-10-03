@@ -140,7 +140,7 @@ function jQueryStripTags(src, removeTags){
 
 function stripTags(src, removeTags) {
     var div = document.createElement('div');
-    div.innerHTML = src;
+    div.innerHTML = src.replace(/<!--.*?-->/g, ''); // remove comment
     for (var i in removeTags){
         var tag = removeTags[i];
         var tags = div.getElementsByTagName(tag);
