@@ -26,7 +26,7 @@ http.createServer(function(req, res) {
   var stats;
 
   try {
-    console.log(new Date() + " - " + filename);
+    console.log(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + " - " + filename);
     stats = fs.lstatSync(filename); // throws if path doesn't exist
   } catch (e) {
     res.writeHead(404, {'Content-Type': 'text/plain'});
@@ -41,8 +41,14 @@ http.createServer(function(req, res) {
     var mimeType = mimeTypes[path.extname(filename).split(".")[1]];
     res.writeHead(200, {'Content-Type': mimeType} );
 
-    var fileStream = fs.createReadStream(filename);
-    fileStream.pipe(res);
+    var readStream = fs.createReadStream(filename);
+    readStream.on('error', function (err) { 
+      res.end(err);
+    });
+    readStream.on('open', function () {
+      // This just pipes the read stream to the response object (which goes to the client)
+      readStream.pipe(res);
+    });
   } else if (stats.isDirectory()) {
     // path exists, is a directory
     res.writeHead(200, {'Content-Type': 'text/html'});

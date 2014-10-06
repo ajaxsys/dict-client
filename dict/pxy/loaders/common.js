@@ -12,11 +12,12 @@ $(function(){
 var D=$.dict_extend({
     complete: allCompleteAction,
     preloadResources: preloadResources,
+    applyPreloadResources: applyPreloadResources,
 });
 
 
 var $result = $('#__explain_wrapper_appender__'),
-    $resource = $('#__explain_resource_appender__'),
+    $resourceDIV = $('#__explain_resource_appender__'),
     $searchBox = $('#__search__');
 
 var options = {
@@ -45,14 +46,14 @@ var options = {
       'callback': 'DICT_jsonp', // callback=DICT_jsonp // Not exist in global win// will auto created in global
 }
 
-var lastType;
+var lastType, $resourceCache = $('<div>');
 function preloadResources(type){
   if (lastType===type){
     return;
   }
   // init
   lastType = type;
-  $resource.empty();
+  $resourceCache = $('<div>');
   // preload resources
   var pluginInfo = D.DICT_PLUGINS[type];
   if (pluginInfo && pluginInfo.inject_resources){
@@ -61,13 +62,24 @@ function preloadResources(type){
       var rscUrl = rscs[i];
       // CSS
       if (rscUrl.endsWith('.css')) {
+        console.log(D.LC, "[loaders/common.js] Preload Resources :" + rscUrl);
+        new Image().src = rscUrl;
+
         var $targetCss = $('<link rel="stylesheet" type="text/css">').attr('href', rscUrl);
-        console.log("Preload css :" + rscUrl);
-        $resource.append($targetCss);
+        $resourceCache.append($targetCss);
       }
       // Other resources, TODO
     }
   }
+}
+
+// Split preload & apply: Because apply CSS will change layout of other pages
+function applyPreloadResources(){
+  if ($resourceDIV.html()===$resourceCache.html()){
+    return;
+  }
+  console.log(D.LC, '[loaders/common.js] Apply Preload Resources:', $resourceCache.html() );
+  $resourceDIV.html($resourceCache.html());
 }
 
 

@@ -18,7 +18,11 @@ window.DICT_format = function(data, type){
     var $explain = formatDict(data.src, type);
     if ($explain) {
         var $result = $('#__explain_wrapper_appender__');
-        $result.empty().append($explain);
+        D.applyPreloadResources(type);
+        //$result.empty().append($explain);
+        setTimeout(function(){
+            $result.empty().append($explain);
+        },0);
     }
     return data;
 }

@@ -85,7 +85,7 @@ function queryDict(word, type, url){
 
            // add to cache
            D.setCache('YQL_CACHE', data);
-          
+           
            console.log(D.LC, '[loaders/dict.load.yql.js] Dict JSONP load Success! Call formatter.');
            window.DICT_format(data);
   
@@ -136,9 +136,9 @@ function queryByYQL(url, callback) {
            callback(data);
   
       },
-      beforeSend : DO_NOTHING,
-      complete: DO_NOTHING,
-      error: DO_NOTHING,
+      'beforeSend' : DO_NOTHING,
+      'complete': DO_NOTHING,
+      'error': DO_NOTHING,
     });
 
 }

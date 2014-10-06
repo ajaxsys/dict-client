@@ -53,7 +53,7 @@ $(function(){
     registRetry();
     registScrollBottomEvent();
     registClearBtn();
-    registPageLinkCliecked();
+    registPageLinkClicked();
     registDebug();
     registAbout();
 });
@@ -74,7 +74,7 @@ function registClearBtn() {
   
 }
 
-function registPageLinkCliecked(){
+function registPageLinkClicked(){
     $('#__explain_wrapper__').on('click', 'a[__dict_type__]', function(){
         var $lnk = $(this);
         D.loadQueryWithHistory($lnk.attr('__dict_word__'), $lnk.attr('__dict_type__'), $lnk.attr('href'));
