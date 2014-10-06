@@ -30,19 +30,12 @@ function formatEWords(src) {
 
 // Customize for this page
 function customizePage($target){//,#left-navigation
-    // Customize page
-    var $dataTable = $("table:eq(0)",$target);
-    // Disable original width
-    $('table',$dataTable).addBack().attr('width','100%');
-    // Remove navi bar
-    $('td[width=120]:last',$dataTable).remove();
-    // Remove no use tag
-    $('div,form',$dataTable).remove();
-    // Remvoe bunya
-    $('#side>ul:eq(0)',$dataTable).remove();
 
-    $target.empty().append($dataTable);
-    //$(".header,#footer,.printfooter,#page-actions,.mw-search-pager-bottom,#mw-mf-page-left,[id$='navigation'],#jump-to-nav,#search",$target).remove();
+    var $content = $('table:eq(0) table:eq(0)', $target);
+    $('[width]', $content).andSelf().removeAttr('width');
+    $('div', $content).remove();
+    // use return for replacing $target with $content
+    return $content;
 }
 
 
