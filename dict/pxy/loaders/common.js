@@ -48,6 +48,9 @@ var options = {
 
 var lastType, $targetResources = $('<div>'), resourcesCache = {};
 function preloadResources(type){
+  if (type.contains('auto_')){
+    type = type.replace('auto_','');
+  }
   if (lastType===type){
     return;
   }
