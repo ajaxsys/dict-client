@@ -121,7 +121,7 @@ function createLinkForLoader(word, type, $lnk){
     }
     $lnk.attr('__dict_word__', word)
         .attr('__dict_type__', type)
-        .attr('target', '_self')
+        .attr('target', '_self');
     return $lnk;
 }
 
