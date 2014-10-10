@@ -13,8 +13,9 @@ $.dict_extend({
 });
 
 var ajax, ajaxDirect,
-    //YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
-    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=select * from htmlstring where url='#URL#' and xpath='//body'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
+    // stringhtml
+    //YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=select * from htmlstring where url='#URL#' and xpath='//body'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 
 function queryDict(word, type, url){
     // URL already get from google
@@ -70,8 +71,8 @@ function queryDict(word, type, url){
 
            try {
               data.src = '<!--' + url + '-->'; // Append url/key to src for guest host from it.
-              //var content = json.query.results.resources.content;
-              var content = json.query.results.result;
+              var content = json.query.results.resources.content;
+              //var content = json.query.results.result; // stringhtml
               data.src += content;
               if (!content){
                 throw 'YQL return null results';
