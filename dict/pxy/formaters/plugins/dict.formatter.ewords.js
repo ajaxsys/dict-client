@@ -33,7 +33,9 @@ function customizePage($target){//,#left-navigation
 
     var $content = $('table:eq(0) table:eq(0)', $target);
     $('[width]', $content).andSelf().removeAttr('width');
-    $('div, .adsbygoogle', $content).remove();
+    $('.adsbygoogle', $content).remove();
+    $('#linkunit>div', $content).nextAll().remove();
+    
     // use return for replacing $target with $content
     return $content;
 }

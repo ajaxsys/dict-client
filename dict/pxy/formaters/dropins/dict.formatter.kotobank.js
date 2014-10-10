@@ -13,11 +13,12 @@ D.DICT_PLUGINS.auto_kotobank = {
 }
 var option = D.DICT_PLUGINS.kotobank = {
     'type' : 'kotobank',
-    'host' : '//kotobank.jp',
-    'mobile_host' : '//m.kotobank.jp',
-    'prefix': [ /^http:\/\/kotobank\.jp\/word\/([^\/]+)$/   ,  /^\/word\/([^\/]+)$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'host' : 'http://kotobank.jp',
+    //'mobile_host' : 'http://m.kotobank.jp', // now it use responsive design
+    'prefix': [ /^http(|s):\/\/kotobank\.jp\/word\/([^\/]+)$/   ,  /^\/word\/([^\/]+)$/  ] , 
     'format': formatKotobank,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
+    'isLoadFromGoogleCache': true, // TODO: (YQL loads https failed? so use google cache )
     'isCleanLinks': true,
 };
 
@@ -28,12 +29,19 @@ function formatKotobank(src) {
 }
 
 
-// Customize for this page
+// Customize for this page 
 function customizePage($t){
-    $("#footer_link, #get_app, #bookmark, #contents>div:first, .ad_source_c", $t).remove();
-    $("#relatedKeyword",$t).nextAll().remove();
-    $(".word_copy",$t).prev().andSelf().remove();
-    $('#logo', $t).replaceWith('<span>KotoBank</span>');
+    // $("#footer_link, #get_app, #bookmark, #contents>div:first, .ad_source_c", $t).remove();
+    // $("#relatedKeyword",$t).nextAll().remove();
+    // $(".word_copy",$t).prev().andSelf().remove();
+    // $('#logo', $t).replaceWith('<span>KotoBank</span>');
+
+    //Remove text from google;
+    $('div:first', $t).remove();
+
+    $('#toplogo,#hdY,#hdMenu,#searchArea,#topicPath,.anchorwrap', $t).remove();
+    $('#hdNav').nextAll().remove();
+    return $t;
 }
 
 

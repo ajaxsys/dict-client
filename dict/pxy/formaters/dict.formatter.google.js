@@ -77,11 +77,21 @@ function getContent(json){
             $lnk = $lnk_ext.clone();
         }
 
-        var $cacheLink = createCacheLink(word, r.cacheUrl);
+        var isCacheLnkEnable = true, $cacheLink = '';
 
         // 1) title link
-        $lnk.attr('href',r.unescapedUrl).html(r.title)
-            .css('color','blue').css('fontSize','medium');
+        $lnk.html(r.title).css('color','blue').css('fontSize','medium');
+
+        if (plugin && plugin.isLoadFromGoogleCache && r.cacheUrl){
+            isCacheLnkEnable = false;
+            $lnk.attr('href', patchGoogleCacheURL(r.cacheUrl)); // Some site not support YQL, so we load it from google cache
+        } else {
+            $lnk.attr('href', r.unescapedUrl);
+        }
+
+        if (isCacheLnkEnable){
+            $cacheLink = createCacheLink(word, r.cacheUrl);
+        }
 
         // 2) content text
         var $content = $('<div>');
@@ -113,12 +123,16 @@ function createCacheLink(word, cacheUrl){
         // $cacheLink.attr('__dict_type__', lnkType ? lnkType : 'google_cache');
         $cacheLink = D.createLinkForLoader( word, 'google_cache' );
         // Google redirect it from 2014/08
-        var cacheUrlRedirect = cacheUrl.replace('http://www.google.com/', 'http://webcache.googleusercontent.com/');
+        var cacheUrlRedirect = patchGoogleCacheURL(cacheUrl);
         $cacheLink.html('Text')
                   .attr('href', cacheUrlRedirect + textOnly)
                   .attr('title', 'Text only version');
     }
     return $cacheLink
+}
+
+function patchGoogleCacheURL(cacheUrl){
+    return cacheUrl.replace('http://www.google.com/', 'http://webcache.googleusercontent.com/');
 }
 
 function registOnceOnScrollBottomForNextPage(){

@@ -27,9 +27,9 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
 
     if (plugin) {
         var word = json.word,
-            newWord = plugin.wordFromURL,// Get new word from url. But not all url contains word!! *1
+            newWord = plugin.ext.wordFromURL,// Get new word from url. But not all url contains word!! *1
             type = plugin.type,
-            url  = plugin.unescapedUrl;// used by YQL 
+            url  =  (plugin.isLoadFromGoogleCache && plugin.ext.cacheUrl) ? plugin.ext.cacheUrl : plugin.ext.unescapedUrl;// used by YQL 
         // Check if use new word, only new word contains word, then use it. *1
         if (  newWord && newWord.toLowerCase().indexOf(word.toLowerCase())>=0   ){
             word = newWord;
@@ -48,7 +48,8 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
 
 function detectExistedPluginByPrefixWithPluginOrder(results){
     for (var pluginType in D.DICT_PLUGINS) {
-        var thisPrefix = D.DICT_PLUGINS[pluginType].prefix;
+        var typeOption = D.DICT_PLUGINS[pluginType];
+        var thisPrefix = typeOption.prefix;
         if (!thisPrefix)
             continue;
         var prefixes = [].concat(thisPrefix);// Support multi prefix. string --> []
@@ -61,11 +62,12 @@ function detectExistedPluginByPrefixWithPluginOrder(results){
                     var prefixRegexp = prefixes[j];
                     var matcher = url.match(  prefixRegexp  );
                     if ( matcher && matcher.index===0){ //  && matcher[1] : NOT all url contains word!! *1
-                        return {
-                                  'type': pluginType,
-                                  'wordFromURL': matcher[1], // undefined if UN-match. *1
-                                  'unescapedUrl' : url
-                               };
+                        typeOption.ext = {
+                            'wordFromURL': matcher[1], // undefined if UN-match. *1
+                            'unescapedUrl' : url,
+                            'cacheUrl' : results[k].cacheUrl,
+                        }
+                        return typeOption;
                     }
                 }
             }
@@ -79,7 +81,8 @@ function detectExistedPluginByPrefix(url){
     //var url = aResult.unescapedUrl;                  //  URL outside *2
     if (url) {
         for (var pluginType in D.DICT_PLUGINS) {
-            var thisPrefix = D.DICT_PLUGINS[pluginType].prefix;
+            var typeOption = D.DICT_PLUGINS[pluginType];
+            var thisPrefix = typeOption.prefix;
             if (!thisPrefix)
                 continue;
             var prefixes = [].concat(thisPrefix);// Support multi prefix. string --> []
@@ -88,11 +91,11 @@ function detectExistedPluginByPrefix(url){
                 var prefixRegexp = prefixes[j];
                 var matcher = url.match(  prefixRegexp  );
                 if ( matcher && matcher.index===0){ //  && matcher[1] : NOT all url contains word!! *1
-                    return {
-                              'type': pluginType,
-                              'wordFromURL': matcher[1], // undefined if UN-match. *1
-                              'url' : url
-                           };
+                    typeOption.ext = {
+                        'wordFromURL': matcher[1], // undefined if UN-match. *1
+                        'url' : url
+                    };
+                    return typeOption;
                 }
             }
         }
