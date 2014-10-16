@@ -62,16 +62,38 @@ $(function(){
 
 function registClearBtn() {
  
-  function tog(v){return v?'addClass':'removeClass';} 
-  
-  $(document).on('input click', 'input.__clearable__', function(){
-    $(this)[tog(this.value)]('__clearable_x__');
-  }).on('mousemove', 'input.__clearable_x__', function( e ){
-    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]('__clearable_onX__');
-  }).on('click', 'input.__clearable_onX__', function(){
-    $(this).removeClass('__clearable_x__ __clearable_onX__').val('');
+  var ICON_WIDTH = 38,  //px
+      X = '__clearable__',
+      X_ON_MOUSE = '__clearable_onX__';
+
+  function toggle(flg){
+    if (flg || $searchBox.val()){
+      $searchBox.addClass(X);
+    } else {
+      $searchBox.removeClass(X_ON_MOUSE).removeClass(X);
+    }
+  }
+  // init
+  toggle(true);
+
+  $searchBox.on('mousemove', function( e ){
+    if ($(this).val()){
+      if (this.offsetWidth-ICON_WIDTH < e.clientX-this.getBoundingClientRect().left){
+        $(this).addClass(X_ON_MOUSE);
+      } else {
+        $(this).removeClass(X_ON_MOUSE);
+      }
+    }
+  })
+  .on('click', function(){
+    if ($(this).hasClass(X_ON_MOUSE)){
+      $(this).val('');
+      toggle();
+    }
+  })
+  .on('input', function(){
+    toggle();
   });
-  
 }
 
 function registPageLinkClicked(){
