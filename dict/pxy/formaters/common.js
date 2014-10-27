@@ -116,7 +116,7 @@ function cleanLinks($$, src, pluginInfo) { //
 
 
 function createLinkForLoader(word, type, $lnk){
-    if (!$lnk || !($lnk instanceof jQuery) ){
+    if (!$lnk || !($lnk && $lnk.jquery) ){ // instanceof jQuery Not work?
         $lnk = $('<a>');
     }
     $lnk.attr('__dict_word__', word)
