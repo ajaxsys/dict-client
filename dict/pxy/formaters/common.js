@@ -28,7 +28,7 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     if (typeof customizePageFnc === 'function') {
         var result = customizePageFnc($target);
         // Callback can customize a return object
-        if (result && result instanceof jQuery){
+        if (result && result.jquery){ // `instanceof jQuery` Not work while other jQuery object exists(e.g: userscript import another jQuery)
             $target = result;
         }
     }
@@ -116,7 +116,7 @@ function cleanLinks($$, src, pluginInfo) { //
 
 
 function createLinkForLoader(word, type, $lnk){
-    if (!$lnk || !($lnk && $lnk.jquery) ){ // instanceof jQuery Not work?
+    if (!$lnk || !($lnk && $lnk.jquery) ){ // `instanceof jQuery` Not work while other jQuery object exists(e.g: userscript import another jQuery)
         $lnk = $('<a>');
     }
     $lnk.attr('__dict_word__', word)

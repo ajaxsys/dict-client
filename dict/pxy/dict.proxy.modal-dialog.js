@@ -20,7 +20,7 @@ var MD = function(){
         return this;
     };
     this.body = function(obj){
-        if (obj instanceof jQuery){
+        if (obj && obj.jquery){ // `instanceof jQuery` Not work while other jQuery object exists(e.g: userscript import another jQuery)
             this.$body.empty().append(obj);
         } else {
             this.$body.text(obj);
