@@ -48,6 +48,7 @@ http.createServer(function(req, res) {
     readStream.on('open', function () {
       // This just pipes the read stream to the response object (which goes to the client)
       readStream.pipe(res);
+      res.end();
     });
   } else if (stats.isDirectory()) {
     // path exists, is a directory

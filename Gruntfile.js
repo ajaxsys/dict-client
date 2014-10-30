@@ -256,18 +256,18 @@ module.exports = function(grunt) {
       },
     },
 
-    // Start a default static web server(Need build)
+    /* Start a default static web server(Need build)
     connect: {
       // grunt connect:server:keepalive
       server: {
         options: {
-          protocol : 'https',
+          protocol : 'http',
           port : 8443,
           keepalive: true,
           base: './target'
         }
       },
-    },
+    },*/
 
     // Copy static resources
     copy: {
@@ -356,7 +356,7 @@ module.exports = function(grunt) {
                 'lib/**/*',
                 'Gruntfile.js'
         ],
-        tasks: ['jshint','dist']
+        tasks: ['jshint','dist-dev']
       },
       css_sprite: {
         files : [
@@ -430,7 +430,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-stylus');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  //grunt.loadNpmTasks('grunt-contrib-connect');
 
   grunt.loadNpmTasks('grunt-sprite-packer');
   grunt.loadNpmTasks("grunt-remove-logging");
@@ -452,7 +452,8 @@ module.exports = function(grunt) {
   grunt.registerTask('test', testSubtasks);
 
   // JS build task.
-  grunt.registerTask('dist-js', ['jshint','removelogging','uglify']);
+  grunt.registerTask('dist-js',     ['jshint','removelogging','uglify']);
+  grunt.registerTask('dist-js-dev', ['jshint']);
 
   // CSS build task.
   grunt.registerTask('dist-css', ['cssmin']); // 'sprite' should manually because it depends imagick
@@ -465,6 +466,7 @@ module.exports = function(grunt) {
 
   // Full build task.
   grunt.registerTask('dist', ['clean', 'copy','concat', 'dist-css', 'dist-js', 'dist-html']);
+  grunt.registerTask('dist-dev', ['clean', 'copy','concat', 'dist-css', 'dist-js-dev', 'dist-html']);
 
   // Default task.
   grunt.registerTask('default', ['dist']);
