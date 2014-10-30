@@ -17,7 +17,7 @@ var option = D.DICT_PLUGINS.ewords = {
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
     'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,
-    'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr'],
+    'removeTags': ['title','meta','iframe','noscript','script','link','form','nobr'],
     'isCleanLinks': true,
 };
 
@@ -31,10 +31,13 @@ function formatEWords(src) {
 // Customize for this page
 function customizePage($target){//,#left-navigation
 
-    var $content = $('table:eq(0) table:eq(0)', $target);
-    $('[width]', $content).andSelf().removeAttr('width');
+    var $content = $('#pron', $target).parent();
+    $('[width]', $content).andSelf().removeAttr('width').css("width","auto");
     $('.adsbygoogle', $content).remove();
-    $('#linkunit>div', $content).nextAll().remove();
+    //$('#linkunit>div', $content).nextAll().remove();
+    
+    // Enable tooltips
+    $('a', $content).addClass('dict-css-tooltip');
     
     // use return for replacing $target with $content
     return $content;

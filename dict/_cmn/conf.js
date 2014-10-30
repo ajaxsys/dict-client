@@ -30,6 +30,7 @@ $.dict_extend({
     winMode: 'inner', // inner, iframe, popup
     disableNumSelection: true,
     CSS_CACHE: {},
+    DICT_PLUGINS: {},
 });
 
 // TODO: User settings: From cookie or logined user.
