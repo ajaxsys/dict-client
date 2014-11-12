@@ -29,7 +29,7 @@ function registTextSelectionEvent(parentDocument, parentWindow) {
             // Fix browser freeze in safari. Recuive, but delay event registion.
             if (childWindow && childDocument){
                 setTimeout(function(){
-            registTextSelectionEvent(childDocument, childWindow);
+                    registTextSelectionEvent(childDocument, childWindow);
                 }, i * 1000 + 1000 );
             }
 
@@ -54,8 +54,9 @@ function getSelection(e, win){
         // Not element of dict window
         if (D.DICT_SERVICE){
             var text = $target.is(':input')? $target.selection('get',{},win) : $.selection('html',win);
-            // Fix bugs: when dblclick tag like `<i>..</i>`, it returns html code.
-            text = $.trim($($.parseHTML(text)).text());
+            // Fix bugs: when dblclick tag like `<i>..</i>`, it returns html code. 
+            text = $.trim( $($.parseHTML(text)).text() );
+            text = text ? text.replace(/\n/g, '') : null; // Support break line: Character `\n` contains in `<p>..\n..</p>`
             if (text && isWord(text) ){  // No ajuse if equals last search word. Always search it (Because don't known if window is open or closed)
                     D.LC++;// For logger
                     D.doQuery(text, $target);
@@ -109,7 +110,7 @@ function isLongSentence(t){
     }
 
     // max support: `w1 w2 w3`
-    return t.split(spliter).length > D.WORD_MAX_COUNT;
+    return t.split(new RegExp(spliter+'+')).length > D.WORD_MAX_COUNT;
 }
 
 
