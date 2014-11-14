@@ -286,7 +286,7 @@ module.exports = function(grunt) {
       },
       html: {
         files: [{expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'}]
-                .concat(copyToMulti('dict/pxy/',        'proxy.html', CONST.dest    ))
+                .concat(copyToMulti('dict/pxy/',        '*.html', CONST.dest    ))
       },
       css: {
         files: [].concat(copyToMulti('dict/_resource/css/',        'dropins/*', CONST.dest    ))
