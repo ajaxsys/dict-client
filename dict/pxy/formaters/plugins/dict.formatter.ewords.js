@@ -39,6 +39,10 @@ function customizePage($target){//,#left-navigation
     // Enable tooltips
     $('a', $content).addClass('dict-css-tooltip');
     
+    var $delTheGenDate = $("#hr", $target).nextAll();
+    if ( /\/\/[0-9.]+生成/.test( $delTheGenDate.text().replace(/\s|\n/g,'') ) ){
+        $delTheGenDate.remove();
+    }
     // use return for replacing $target with $content
     return $content;
 }
