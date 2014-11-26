@@ -132,24 +132,29 @@ function errorDefine(jqXHR, textStatus, errorThrown) {
 
 var waiting;
 function processStart() {
+  var $progress = $("#__progress__");
   //only add progress bar if added yet.
-  if ($("#__progress__").length === 0) {
-    $("body").append($("<div><dt/><dd/></div>").attr("id", "__progress__"));
-    var percent = (40 + Math.random() * 20) ; // 40 ~ 70%
-    $("#__progress__").width(percent + "%");
-    waiting = setInterval(function(){
-      percent++;
-      $("#__progress__").width(percent + "%");
-    },500);
+  if ($progress.length === 0) {
+    $("body").prepend($("<div><dt/><dd/></div>").attr("id", "__progress__"));
   }
+  var percent = (40 + Math.random() * 20) ; // 40 ~ 70%
+  $progress.show().width(percent + "%");
+  waiting = setInterval(function(){
+    percent++;
+    $progress.width(percent + "%");
+  },500);
+
 }
 
 function processComplete() {
-    //End loading animation
-    clearInterval(waiting);
-    $("#__progress__").width("101%").delay(200).fadeOut(400, function() {
-      $(this).remove();
-    });
+  var $progress = $("#__progress__");
+  //End loading animation
+  clearInterval(waiting);
+  $progress.width("100%").delay(200).fadeOut(400, function() {
+    setTimeout(function(){
+      $progress.width("0");
+    }, 100);
+  });
 }
 
 $.jsonp.setup( options )
