@@ -52,8 +52,6 @@ function queryDict(word, type, url){
       //format: 'json',
     };
 
-    D.preloadResources(type);
-
     // No cache, get & push to cache.
     ajax=$.jsonp({
       'dict':{

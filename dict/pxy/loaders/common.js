@@ -11,13 +11,12 @@ $(function(){
 
 var D=$.dict_extend({
     complete: allCompleteAction,
-    preloadResources: preloadResources,
     applyPreloadResources: applyPreloadResources,
 });
 
 
 var $result = $('#__explain_wrapper_appender__'),
-    $resourceDIV = $('#__explain_resource_appender__'),
+    $appliedResourceDIV = $('#__explain_resource_appender__'),
     $searchBox = $('#__search__');
 
 var options = {
@@ -46,54 +45,46 @@ var options = {
       'callback': 'DICT_jsonp', // callback=DICT_jsonp // Not exist in global win// will auto created in global
 }
 
-var lastType, $targetResources = $('<div>'), resourcesCache = {};
-function preloadResources(type){
+// Load resources from preload.html, then apply it.
+var lastType;
+function applyPreloadResources(type){
   if (type.contains('auto_')){
     type = type.replace('auto_','');
   }
   if (lastType===type){
     return;
   }
+  $appliedResourceDIV.empty(); // Clear all resouces
 
-  // init
-  lastType = type;
-  $targetResources = $('<div>');
-
-  // Load from cache if existed before
-  if (resourcesCache[type]){
-    $targetResources.append(resourcesCache[type]);
-    return;
-  }
-  
-  // preload resources
   var pluginInfo = D.DICT_PLUGINS[type];
   if (pluginInfo && pluginInfo.inject_resources){
     var rscs = [].concat(pluginInfo.inject_resources);
     for (var i=0; i<rscs.length;i++){
-      var rscUrl = rscs[i];
-      // CSS
-      if (rscUrl.endsWith('.css')) {
-        console.log(D.LC, "[loaders/common.js] Preload Resources :" + rscUrl);
-        new Image().src = rscUrl;
-
-        var $targetCss = $('<link rel="stylesheet" type="text/css">').attr('href', rscUrl);
-        $targetResources.append($targetCss);
+      var rscId = rscs[i],
+          $rsc = $(rscId, getPreload());
+      if ($rsc.length>0){
+        $appliedResourceDIV.append($rsc.clone());
+      } else {
+        console.log(D.LC, '[loaders/common.js] Apply Preload Resources Failed:', type, rscId );
       }
-      // Other resources, TODO
     }
-    resourcesCache[type] = $targetResources;
   }
 }
 
-// Split preload & apply: Because apply CSS will change layout of other pages
-function applyPreloadResources(){
-  if ($resourceDIV.html()===$targetResources.html()){
-    return;
+var $preload;
+function getPreload(){
+  if ($preload){
+    return $preload;
   }
-  console.log(D.LC, '[loaders/common.js] Apply Preload Resources:', $targetResources.html() );
-  $resourceDIV.html($targetResources.html());
+  var ifrm = document.getElementById('preload'),
+      ifrmDoc = (ifrm.contentWindow) ? ifrm.contentWindow : 
+                (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+  var $ifrm = $(ifrmDoc.document);
+  if ($ifrm.find('body').html().length > 100) {
+    $preload = $ifrm; // Makesure iframe is loaded.
+  }
+  return $ifrm;
 }
-
 
 function completeDefine(){
     console.log(D.LC, '[loaders/common.js] Expend time:', ($.now()-this.dict._startTime) );

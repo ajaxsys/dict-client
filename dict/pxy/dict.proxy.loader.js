@@ -43,7 +43,6 @@ function doQuery(query, type, url, isPushToHistory){
         }
 
         $searchBox.val(word).trigger('input');
-        D.preloadResources(type);
 
         if (doUseNativeJSONP(word, type)){
             // Some site use special api

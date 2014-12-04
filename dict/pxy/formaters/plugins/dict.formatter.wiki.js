@@ -21,7 +21,7 @@ var optionWikipedia = D.DICT_PLUGINS.wiki = {
     'format': formatWiki,
     'removeTags': ['title','meta','iframe','noscript','script','link'],
     'isCleanLinks': true, // Some link from wikipedia to wiki books.
-    'inject_resources': ['dropins/wiki.css'],
+    'inject_resources': ['#wiki_css'], // Defined in preload.html
 };
 
 

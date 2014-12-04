@@ -18,7 +18,7 @@ var option = D.DICT_PLUGINS.weblio = {
     'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
     'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
-    'inject_resources': ['dropins/weblio.css'],
+    'inject_resources': ['#weblio_css'], // Defined in preload.html
 };
 
 function formatWeblioForSmartPhoneLayout(src) {
