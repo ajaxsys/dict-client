@@ -124,9 +124,9 @@ function createCacheLink(word, cacheUrl){
         $cacheLink = D.createLinkForLoader( word, 'google_cache' );
         // Google redirect it from 2014/08
         var cacheUrlRedirect = patchGoogleCacheURL(cacheUrl);
-        $cacheLink.html('Text')
+        $cacheLink.html('[txt]')
                   .attr('href', cacheUrlRedirect + textOnly)
-                  .attr('title', 'Text only version');
+                  .attr('title', 'Get Text Only Page');
     }
     return $cacheLink
 }
