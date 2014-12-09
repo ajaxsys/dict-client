@@ -130,6 +130,7 @@ function processStart() {
   }
   var percent = (40 + Math.random() * 20) ; // 40 ~ 70%
   $progress.show().width(percent + "%");
+  clearInterval(waiting);
   waiting = setInterval(function(){
     percent++;
     $progress.width(percent + "%");
