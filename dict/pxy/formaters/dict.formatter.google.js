@@ -11,7 +11,7 @@ D.DICT_PLUGINS.google = {
 	'format': formatGoogle,
 };
 
-var SEARCH_SIZE = 8, searchStartPosition = 0, MAX_POSITION=40;
+var searchStartPosition = 0;
 
 
 // JSON sample
@@ -107,7 +107,7 @@ function getContent(json){
         $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );
     }
 
-    if (searchStartPosition<MAX_POSITION && google_results.length == SEARCH_SIZE){
+    if (searchStartPosition<D.MAX_POSITION && google_results.length == D.SEARCH_SIZE){
         var nextFlg = '<div class="__toBeReplace__" style="text-align:center">loading...</div>';
         $('.__toBeReplace__').replaceWith('<hr />');
         $('hr:last', $resultList).replaceWith(nextFlg);
@@ -138,8 +138,8 @@ function patchGoogleCacheURL(cacheUrl){
 function registOnceOnScrollBottomForNextPage(){
     console.log(D.LC, '[dict.formatter.google.js] Regist event on scroll to bottom page.');
     // Next search index
-    searchStartPosition+=SEARCH_SIZE;
-    if (searchStartPosition>=MAX_POSITION){
+    searchStartPosition+=D.SEARCH_SIZE;
+    if (searchStartPosition>=D.MAX_POSITION){
         console.log(D.LC, '[loaders/formatter.google.js] Reach MAX search results. SearchStartPosition:',searchStartPosition);
         $('.__toBeReplace__').replaceWith('<hr />');
         return; // Stop Regist! Google seams return only max ~60.
