@@ -68,6 +68,7 @@ function getAutoKeyByLang(){
     switch (D.lang) {
         case 'jp' : return ' 意味';
         case 'us' : return ' meaning';
+        case 'cn' : 
         case 'zh-CN' : return ' 含义';
     }
 }
