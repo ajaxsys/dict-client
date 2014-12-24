@@ -6,16 +6,17 @@
 
 (function($){
 'use strict';
-var D=$.dict_extend({
+var D=$.dict_extend();
+D=$.dict_extend({
     'queryGoogle': queryGoogle,
     'queryGoogleMore': queryGoogleMoreResults,
-    'SEARCH_SIZE' : 10,
-    'MAX_POSITION': 20
+    'SEARCH_SIZE' : D.GOOGLE_API_NEW_MODE ? 10 : 8,
+    'MAX_POSITION': D.GOOGLE_API_NEW_MODE ? 20 : 40,
 });
 
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
-// var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl="; // Deprecated
+var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=';
 
 // ?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY
 // &rsz=filtered_cse
@@ -33,7 +34,8 @@ var ajax, oldword;
 // &gs_l=partner.12...0.0.1.9218.0.0.0.0.0.0.0.0..0.0.gsnos%2Cn%3D13...0.0jj1..1ac..25.partner..6.0.0.ZDfqFNMyL4M
 // &callback=google.search.Search.apiary1045
 // &nocache=1418887005296
-var GOOGLE_SEARCH_API = "https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&cx=016502465458590467219:emohpvgyzyw&gl=";
+var GOOGLE_SEARCH_API_NEW = 'https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&cx=016502465458590467219:emohpvgyzyw&gl=';
+var GOOGLE_SEARCH_API = D.GOOGLE_API_NEW_MODE ? GOOGLE_SEARCH_API_NEW : GOOGLE_SEARCH_API_OLD;
 
 /*
  * Loading more search result
@@ -46,7 +48,7 @@ function queryGoogleMoreResults(searchStartPosition){
         'data': {'q':word,'rsz':D.SEARCH_SIZE,'start':searchStartPosition},
         'url': GOOGLE_SEARCH_API + D.lang,
         'success': function(r){
-            var json=r;
+            var json= D.GOOGLE_API_NEW_MODE ? r : r.responseData;
             json.isNextMode=true;// google next mode.
             var data = {};
             data.src = json;
@@ -132,6 +134,11 @@ function queryGoogle(word, type, opt){
       'data': {'q':searchKey,'rsz':D.SEARCH_SIZE,'start':0},
       'url': GOOGLE_SEARCH_API + D.lang,
       'success': function(googleResultJsonArray){
+          if (D.GOOGLE_API_NEW_MODE === false){
+            console.log(D.LC, '[loaders/dict.load.google.js] Use google old api mode.');
+            googleResultJsonArray = googleResultJsonArray.responseData; // Adapter
+          }
+
           if (!googleResultJsonArray || !googleResultJsonArray.results){
             // Error
             console.log("Google result NG");

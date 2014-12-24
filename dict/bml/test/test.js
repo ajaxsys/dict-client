@@ -37,7 +37,7 @@ $(function(){
     // Minimized version and released version
     function afterProductVersionLoaded(){
 
-        var prod = window.BML_PREFIX + window.__G_BML_MIN__;
+        var prod = BML_PREFIX + window.__G_BML_MIN__;
         // Origin:  loader.js
         // Old url: http://localhost:8443/build/dict_ui.js
         var dev = prod2Dev(prod);
