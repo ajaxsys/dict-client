@@ -31,7 +31,13 @@ function formatEWords(src) {
 // Customize for this page
 function customizePage($target){//,#left-navigation
 
-    var $content = $('#pron', $target).parent();
+    var $sideBar = $('td#side', $target);
+    var $content = $sideBar.parent().parent().parent();
+
+    var $styles = $('style', $target);
+    $content.append($styles); // add tooltips
+    //$sideBar.prependTo($sideBar.parent()); // Move side bar to left side
+
     $('[width]', $content).andSelf().removeAttr('width').css("width","auto");
     $('.adsbygoogle', $content).remove();
     //$('#linkunit>div', $content).nextAll().remove();
