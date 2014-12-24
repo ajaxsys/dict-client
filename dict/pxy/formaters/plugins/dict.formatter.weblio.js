@@ -55,4 +55,34 @@ function customizePageSmall($target){
 }
 
 
+
+
+
+
+
+var optionPC = D.DICT_PLUGINS.weblio_pc = {
+    'type' : 'weblio_pc',
+    'host' : '//www.weblio.jp',
+    'prefix': [   /^http:\/\/www\.weblio\.jp\/content\/([^\/]+)/ , /^http:\/\/www\.weblio\.jp\/.*\/content\/([^\/]+)/ ], 
+    'format': formatWeblioForPCLayout,
+    'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
+    'inject_resources': ['#weblio_css'], // Defined in preload.html
+};
+
+function formatWeblioForPCLayout(src){
+    console.log(D.LC, '[dict.formatter.weblio.js] format pc layout start...');
+    return D.preFormat(optionPC, src, function($target){
+        var $cont = $('#cont', $target);
+        $('.mainLeftAdWrp', $cont).nextAll().remove();
+        //$('.pbarT', $cont).prevAll().andSelf().remove();
+        
+        $('a', $cont).filter(function() { 
+            var href = $(this).attr('href');
+            return href && href.indexOf('http://www.weblio.jp/redirect?') === 0; 
+        }).remove();
+        return $cont;
+    });
+}
+
+
 })(jQuery);
