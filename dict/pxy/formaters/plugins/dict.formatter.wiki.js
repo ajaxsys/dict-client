@@ -42,7 +42,7 @@ var optionWiktionary = D.DICT_PLUGINS.wiktionary = {
     'format': formatWiktionary,
     'removeTags': ['title','meta','iframe','noscript','script','link'],
     'isCleanLinks': true, // cause there is MIX links(wikipedia/wiktionary/wikibooks...) on same page
-    'inject_resources': ['dropins/wiki.css'],
+    'inject_resources': ['#wiki_css'],
 };
 
 function formatWiktionary(src){
@@ -65,7 +65,7 @@ var optionWikibooks = D.DICT_PLUGINS.wikibooks = {
     'prefix': [   /^[htps:]*\/\/[a-z]+\.(|m\.)wikibooks\.org\/wiki\/.*$/   ], // URL Displayed in google search result  & self page
     'format': formatWikibooks,
     'removeTags': ['title','meta','iframe','noscript','script','link'],
-    'inject_resources': ['dropins/wiki.css'],
+    'inject_resources': ['#wiki_css'],
     'isCleanLinks': true,
 };
 

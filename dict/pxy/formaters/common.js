@@ -28,7 +28,7 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     if (typeof customizePageFnc === 'function') {
         var result = customizePageFnc($target);
         // Callback can customize a return object
-        if (result && result.jquery){ // `instanceof jQuery` Not work while other jQuery object exists(e.g: userscript import another jQuery)
+        if (result && result.jquery && isFormaterWorks(result)){ // `instanceof jQuery` Not work while other jQuery object exists(e.g: userscript import another jQuery)
             $target = result;
         }
     }
@@ -42,6 +42,15 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
     removeForbiddenTag($target);
 
     return $target;
+}
+
+function isFormaterWorks($result) {
+    if ($.trim(  $result.text()   ).length > D.MIN_CHAR_COUNT_PER_PAGE ) {
+        return true;
+    } else {
+        console.log(D.LC, '[formatter/common.js] Not good formatter, using original html src');
+        return false;
+    }
 }
 
 function removeForbiddenTag($$) {

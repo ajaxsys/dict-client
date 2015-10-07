@@ -18,7 +18,7 @@ Clone `dict-client` to local
 
 ###Run simple http server
     cd tool
-    node run-server-js
+    run-server-js
 
 Then you can visit URL:
  http://localhost:8443/build/test/test.html

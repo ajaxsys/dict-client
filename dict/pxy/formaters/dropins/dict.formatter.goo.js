@@ -29,9 +29,8 @@ function formatGoo(src) {
 
 // Customize for this page
 function customizePage($target){
-    var $tmp = $('#main' ,$target); 
-    $('.dicSwitcher, .ejdicMode, .sbm, .jndicMode, #tabArea' ,$tmp).remove();
-    $('#spoLine' ,$tmp).nextAll().remove();
+    var $tmp = $('.contents-wrap-b' ,$target); 
+    
     return $tmp;// Keep id = main only. If no return , $target will be content.
 }
 
