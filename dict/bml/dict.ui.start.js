@@ -26,7 +26,7 @@ D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
 ///////////////////// private func //////////////////////
 
 function appendBodyTagToPage(){
-    var $body=$("<body>"); 
+    var $body=$("<body>");
     $body.css("padding","0px").css("margin","0px");
     $("html>*").not( "head" ).wrap($body);
     //alert("Please wait page reload");
@@ -47,7 +47,7 @@ function appendBodyTagToPage(){
 var _thisIP;
 function static_host(){
     var dev_ip = 'http://127.0.0.1:8443',
-        rls_ip = D.PROTOCAL + '//dict-admin.appspot.com';
+        rls_ip = D.PROTOCAL + '//ajaxsys.github.io/dict-client';
 
     // Static IP
     // First time only
@@ -66,10 +66,10 @@ function static_host(){
             // Run a ajax connection test, if NOT work, use dev_ip
             // host + /dict/dict_ui.css
             $.ajax({
-                url: 'http:'+ip+'/dict/dict_ui.css', 
+                url: 'http:'+ip+'/dict/dict_ui.css',
                 type:'HEAD',
                 cache : false,
-                async:false, 
+                async:false,
                 error:function(){
                     _thisIP = ip = dev_ip;
                 }

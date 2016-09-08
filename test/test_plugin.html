@@ -9,7 +9,7 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="qunit/qunit.js"></script>
-  
+
   <!--Dependency-->
   <script src="../lib/jquery.js"></script>
   <script src="../lib/jquery.jsonp.js"></script>
@@ -21,14 +21,14 @@
 
   <!--Plugin-->
   <script src="../dict/pxy/formaters/plugins/dict.formatter.ewords.js"></script>
-  
+
   <script>
 var options = {
-'callback': 'DICT_jsonp', 
+'callback': 'DICT_jsonp',
 };
 $.jsonp.setup( options );
 
-  
+
 module('plugin');
 
 
@@ -38,29 +38,29 @@ asyncTest( "Test ewords.", function() {
       targetUrl = decodeURIComponent(originUrl);
 
   $.jsonp({
-  	'url' : 'https://query.yahooapis.com/v1/public/yql',
-  	'data':{
-  		'q' : "use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url= '"+targetUrl+"'",
-  		'format': 'json',
-  		'callback': 'DICT_jsonp',
-  	},
-  	'success': function(json, textStatus, xOptions) {
-    	ok(typeof json.query.results.resources === 'object', 'Response data must be a object');
-    	ok(json.query.results.resources.status === '200', '200 http status response');
-    	ok(json.query.results.resources.url === originUrl, 'URL is same with request');
+      'url' : 'https://query.yahooapis.com/v1/public/yql',
+      'data':{
+          'q' : "use 'http://ajaxsys.github.io/dict-client/target/lib/y.xml' as html.src;select * from html.src where url= '"+targetUrl+"'",
+          'format': 'json',
+          'callback': 'DICT_jsonp',
+      },
+      'success': function(json, textStatus, xOptions) {
+        ok(typeof json.query.results.resources === 'object', 'Response data must be a object');
+        ok(json.query.results.resources.status === '200', '200 http status response');
+        ok(json.query.results.resources.url === originUrl, 'URL is same with request');
 
-    	var htmlSrc = json.query.results.resources.content;
-    	ok(htmlSrc.indexOf('</html')>=0, 'The document must be a html with end tag');
-		ok($(htmlSrc).find("#pron").text()=="ジャバ", 'Must have a Japanese `JAVA` title.');
+        var htmlSrc = json.query.results.resources.content;
+        ok(htmlSrc.indexOf('</html')>=0, 'The document must be a html with end tag');
+        ok($(htmlSrc).find("#pron").text()=="ジャバ", 'Must have a Japanese `JAVA` title.');
 
-		var D= $.dict_extend();
-		var $formatResult = D.DICT_PLUGINS.ewords.format(htmlSrc);
-		//ok($formatResult.css('width')==='auto', 'width is formatted to AUTO');
-		ok($formatResult.text().indexOf('関連用語')>1, 'Must contains right panel');
+        var D= $.dict_extend();
+        var $formatResult = D.DICT_PLUGINS.ewords.format(htmlSrc);
+        //ok($formatResult.css('width')==='auto', 'width is formatted to AUTO');
+        ok($formatResult.text().indexOf('関連用語')>1, 'Must contains right panel');
 
 
-    	start();
-  	}
+        start();
+      }
   });
 });
 

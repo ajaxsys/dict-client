@@ -24,7 +24,7 @@ w.__DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        var url = 'http://dict-admin.appspot.com';
+        var url = 'http://ajaxsys.github.io/dict-client/target/';
         alert('Sorry, Not support for your browser. More details, visit: '+url);
         window.open(url);
     }

@@ -4,7 +4,7 @@
 
 ##DEMO
 
-http://dict-admin.appspot.com/
+http://ajaxsys.github.io/dict-client/dict_en.html
 
 ##Run local:
 
@@ -21,4 +21,4 @@ Clone `dict-client` to local
     run-server-js
 
 Then you can visit URL:
- http://localhost:8443/build/test/test.html
+ http://localhost:8443/target/build/test/test.html

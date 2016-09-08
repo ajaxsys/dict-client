@@ -13,7 +13,7 @@ $.dict_extend({
 
 var ajax,
     XD_URL = "http://dict.hjenglish.com/services/huaci/jp_web_ajax.ashx?type=cj&w=",
-    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
+    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://ajaxsys.github.io/dict-client/target/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
 
 function queryDict(word, type){
 
@@ -24,7 +24,7 @@ function queryDict(word, type){
     var url = XD_URL + word;
 
     // Check cache, YQL use url as the key
-    var cache=D.getCache('YQL_CACHE', url); 
+    var cache=D.getCache('YQL_CACHE', url);
     if (cache) {
         console.log(D.LC, '[loaders/dict.load.xiaod.js] Load from dict jsonp cache(url/type/word/lang)', url, type, word, D.lang);
         // foramt start
@@ -45,7 +45,7 @@ function queryDict(word, type){
       // Use YQL proxy for https support
       console.log(D.LC, '[loaders/dict.load.xiaod.js] Using https mode proxy by YQL', url, type, word, D.lang);
       url = YQL_URL.replace('#URL#', encodeURIComponent(url));
-    } 
+    }
 
     console.log(D.LC, '[loaders/dict.load.xiaod.js] JSONP load(via YQL): ', url);
     var params = {
@@ -85,7 +85,7 @@ function queryDict(word, type){
 
         console.log(D.LC, '[loaders/dict.load.xiaod.js] Dict JSONP load Success! Call formatter.');
         window.DICT_format(data);
-  
+
       },
     });
 
