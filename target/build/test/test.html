@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset=utf-8>
+    <title>My dict test</title>
+    <script src='/lib/jquery.js'></script>
+    <script src='./test.js'></script>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</head>
+<body>
+
+<h2>My dict test page (With live reload)- <a href='./no_js.html'>No Script page</a></h2>
+
+<div style='float:left;width:150px'>
+
+    <select id='select_dict'>
+        <option value='en2jp'>英和</option>
+        <option value='en2cn'>英中</option>
+    </select>
+
+    <p>Hello</p>
+    <p>World</p>
+    <p>java</p>
+    <p>linux</p>
+    <p>undefined</p>
+    <p>ネットワーク</p>
+    <p> <strong>ネット</strong> <i>ワーク</i></p>
+    <p>ｾｷｭﾘﾃｨ　情報</p>
+    <p>break
+    line </p>
+    <p>broadcast address</p>
+    <p>javascript weblio</p>
+    <p>tel 080-123</p>
+    <p><hr /></p>
+    <p>Alt/Title:<img src='/lib/jwe/default/icons/maximize.gif' alt='max alt' title='max title'></p>
+    <p>Only Title:<img src='/lib/jwe/default/icons/minimize.gif' title='min title'></p>
+    <p><a href="#">Img in link <img src='/lib/jwe/default/icons/close.gif' title='close title' /></a></p>
+    <p><a href="#">Img in a link, yes <img src='/lib/jwe/default/icons/close.gif' title='close title' /> in a link, a large area </a></p>
+</div>
+
+
+<div style='float:left;width:550px'>
+    Drag these links to bookmark bar:
+    <ul>
+        <li><a id='bookmarklet' href="#">Develop version</a><br> - Load local resources (Default page action after 3 seconds)</li>
+        <li><a id='bookmarkletRls' href="#">Product version</a><br> - Load remote resources (Need re-run `grunt` command before any js changes)</li>
+    </ul>
+    links to bookmark bar.
+    <p>Debug `Develop` link by edit textarea bellow:</p>
+    <textarea id='jsEditor' style='width:98%;height:500px;'></textarea>
+</div>
+
+<div style='float:left;width:220px'>
+    <input type="text" value="some text java" />
+    <input type="password" value="some text java" /><br />
+    <input type="file" value="select file" /><br />
+    <input type="button" value="type button" />
+    <button>tag button</button><br />
+
+    <iframe src='no_js.html' width=200px height=500px></iframe>
+</div>
+
+</body>
+</html>

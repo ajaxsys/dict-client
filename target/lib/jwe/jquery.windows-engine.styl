@@ -1,0 +1,144 @@
+#__dict_window_id__{
+
+	.modal-background
+	{
+		position:fixed;
+		left:0;
+		top:0;
+		width:100%;
+		height:100%;
+		background-color:#777;
+		-moz-opacity:0.50; 
+		/* filter:alpha(opacity=50); */
+		opacity:0.50;
+	}
+
+	
+	/* same level with #__dict_window_id__ NOTICE: no space between `&.`  */
+	&.window-container {
+		width:350px;
+		position:absolute;
+		left:350;
+		top:200;
+		font-size:13px;
+		font-family:verdana;
+		padding:0px;
+		margin:0px;
+	}
+	&.window-shaddow {
+		box-shadow:0px 45px 30px 0px #C9C9C9;
+		-webkit-box-shadow:0px 45px 30px 0px #C9C9C9;
+		-moz-box-shadow:0px 45px 30px 0px #C9C9C9;
+	}
+	&.window-prevent-img-blurry
+	{
+		image-rendering: optimizeSpeed;             /*                     */
+		image-rendering: -moz-crisp-edges;          /* Firefox             */
+		image-rendering: -o-crisp-edges;            /* Opera               */
+		image-rendering: -webkit-optimize-contrast; /* Chrome (and Safari) */
+		image-rendering: optimize-contrast;         /* CSS3 Proposed       */
+		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                */
+	}
+
+
+	.window-titleBar
+	{
+		width:auto;
+		height:23px;
+		margin:0 9px 0 9px;
+		text-align:center;
+		position: static;
+	}
+	
+	.window-titleBar-content
+	{
+		height:23px;
+		text-align:center;
+		padding-top:3px;
+		background: url(default/top_mid.gif) repeat-x #eee /* transparent */
+		cursor: move;
+		color: black;
+		font: 1em serif;
+	}
+	
+	.window-titleBar-leftCorner
+	{
+		background: sprite(top_left);	/*top_left #E4E4E4 */ 
+		position: absolute;
+		left: 0px;
+		top: 0px;
+	}
+	
+	.window-titleBar-rightCorner
+	{
+		background: sprite(top_right); /*top_right #E4E4E4*/
+		position: absolute;
+		right: 0px;
+		top: 0px;
+	}
+	
+	.window-minimizeButton
+	{
+		background: sprite(minimize);/*minimize*/
+		position: absolute;
+		left: 35px;
+		top: 5px;
+		cursor: pointer;
+	}
+	
+	.window-maximizeButton
+	{
+		background: sprite(maximize);   /*maximize:	 transparent url(default/sprites.png) no-repeat -29px -0px; width: 14px; height: 14px;*/
+		position: absolute;
+		left: 55px;
+		top: 5px;
+		cursor: pointer;
+	}
+	
+	
+	
+	
+	.window-closeButton
+	{
+		background: sprite(close);	/*close*/
+		position: absolute;
+		left: 15px;
+		top: 5px;
+		cursor: pointer;
+	}
+	
+	
+	.window-content
+	{
+		width:auto;
+		height:100%;
+		background-color:#FFFFFF;
+		font-size:13px;
+		font-family:verdana;
+		color:#000000;
+		border-left:1px solid #AAA;
+		border-right:1px solid #AAA;
+		overflow:auto;
+	}
+	
+	
+	.window-statusBar
+	{
+		width:auto;
+		height: 19px;
+		position: relative;
+		border-left:1px solid #AAA;
+		overflow: hidden;
+		background: transparent url(default/bottom_mid.gif) repeat-x;
+	}
+	
+	.window-resizeIcon
+	{
+		background: sprite(sizer);/*sizer*/
+		position: absolute;
+		right: 0px;
+		bottom: 0px;
+		cursor: se-resize;
+	}
+	
+} /*End:#__dict_window_id__*/

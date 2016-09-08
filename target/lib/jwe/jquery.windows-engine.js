@@ -1,0 +1,500 @@
+/*!
+ *  jQuery Windows Engine Plugin
+ *  @requires jQuery v1.2.6 or greater
+ *  http://hernan.amiune.com/labs
+ *
+ *  Copyright(c)  Hernan Amiune (hernan.amiune.com)
+ *  Licensed under MIT license:
+ *  http://www.opensource.org/licenses/mit-license.php
+ * 
+ *  Version: 1.7
+ */
+ (function (factory) {
+ //   if (typeof define === 'function' && define.amd) {
+ //       // AMD. Register as anonymous module.
+ //       define(['jquery'], factory);
+ //   } else {
+        // Browser globals.
+        factory(jQuery);
+ //   }
+})(function ($) {
+var jQuery = $;
+
+// Common functions
+var MAX_Z_INDEX = 2147483647;
+var resize = function($obj, width, height) {
+    width = parseInt(width);
+    height = parseInt(height);
+    $obj.data("lastWidth", width).data("lastHeight", height);
+    $obj.css("width", width + "px").css("height", height + "px");
+    //if (options.type === "iframe") {
+    var $iframe = $obj.find("iframe");
+    if ($iframe.length === 1){
+        var dw = 3, dh = 2;
+        //if($.browser.msie && $.browser.version < 9.0)dw = dh = 0;
+        if( /msie [1-8]./.test(navigator.userAgent.toLowerCase()) )dw = dh = 0;
+
+        $iframe.css("width", (width-dw) + "px").css("height", (height-dh) + "px");
+        
+        $iframe.each(function(){
+            $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
+            width:this.offsetWidth,height:this.offsetHeight,
+            position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
+            background:"#444"});
+        });
+    }
+}
+
+$.extend({
+
+    newWindow: function(options) {
+
+        var lastMouseX = 0;
+        var lastMouseY = 0;
+
+        var defaults = {
+            id: "",
+            title: "",
+            width: 300,
+            height: 200,
+            posx: 50,
+            posy: 50,
+            content: "",
+            onDragBegin: null,
+            onDragEnd: null,
+            onResizeBegin: null,
+            onResizeEnd: null,
+            onAjaxContentLoaded: null,
+            onWindowClose: null,
+            statusBar: true,
+            minimizeButton: true,
+            maximizeButton: true,
+            closeWithHide: false, // Not remove window from DOM, just hide it
+            closeButton: true,
+            draggable: true,
+            resizeable: true,
+            type: "normal",
+            modal: false
+        };
+
+        var options = $.extend(defaults, options);
+
+        var idAttr = "";
+        if (options.id != "") idAttr = 'id="' + options.id + '"';
+        var $modalBackground = $('<div class="modal-background"></div>');
+        $modalBackground.css("z-index","2147483600");// Bg, smaller
+        var $windowContainer = $('<div ' + idAttr + ' class="window-container window-prevent-img-blurry"></div>');
+        var $titleBar = $('<div class="window-titleBar"></div>');
+        $titleBar.append('<div class="window-titleBar-leftCorner"></div>');
+        var $titleBarContent = $('<div class="window-titleBar-content">' + options.title + '</div>');
+        $titleBar.append($titleBarContent);
+        $titleBar.append('<div class="window-titleBar-rightCorner"></div>');
+        var $windowMinimizeButton = $('<div class="window-minimizeButton"></div>');
+        var $windowMaximizeButton = $('<div class="window-maximizeButton"></div>');
+        var $windowCloseButton = $('<div class="window-closeButton"></div>');
+        var $windowContent = $('<div class="window-content"></div>');
+        var $windowStatusBar = $('<div class="window-statusBar"></div>');
+        var $windowResizeIcon = $('<div class="window-resizeIcon"></div>');
+
+        if (options.minimizeButton) $titleBar.append($windowMinimizeButton);
+        if (options.maximizeButton) $titleBar.append($windowMaximizeButton);
+        if (options.closeButton) $titleBar.append($windowCloseButton);
+        if (options.resizeable) $windowStatusBar.append($windowResizeIcon);
+        $windowContainer.append($titleBar);
+        $windowContent.append(options.content);
+        $windowContainer.append($windowContent);
+        if (options.statusBar) $windowContainer.append($windowStatusBar);
+        
+        if(options.type === "iframe"){
+            $windowContent.css("overflow","hidden");
+        }
+
+        // $.fn.extend({
+        //     getMaxZ : function(){
+        //         return Math.max.apply(null, jQuery(this).map(function(){
+        //             var z = parseInt(jQuery(this).css("z-index").replace('!important',''), 10);
+        //             return isNaN(z) ? 0 : z;
+        //         }));
+        //     }
+        // });
+
+        var jqWindowsEngineZIndex = 1; //$('body *').getMaxZ(), // Max z-index on page
+
+        // var setFocus = function($obj) {
+        //     if(options.modal){
+        //         $obj.css("z-index", MAX_Z_INDEX);
+        //     }
+        //     else{
+        //         $obj.css("z-index", (++jqWindowsEngineZIndex) >= MAX_Z_INDEX ? MAX_Z_INDEX : jqWindowsEngineZIndex );
+        //     }
+        // }
+        var setFocus = function($obj) {
+            $obj.css("z-index", MAX_Z_INDEX);
+        }
+
+        var move = function($obj, x, y) {
+            x = Math.max(0,parseInt(x));
+            y = Math.max(0,parseInt(y));
+            $obj.data("lastX", x).data("lastY", y);
+            x = x + "px";
+            y = y + "px";
+            $obj.css("left", x).css("top", y);
+            
+            if (options.type === "iframe") {
+                $obj.find("iframe").each(function(){
+                    $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
+                    width:this.offsetWidth,height:this.offsetHeight,
+                    position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
+                    background:"#444"});
+                });
+            }
+        }
+        
+        var dragging = function(e, $obj) {
+            if (options.draggable) {
+                e = e ? e : window.event;
+                var newx = parseInt($obj.css("left")) + (e.clientX - lastMouseX);
+                var newy = parseInt($obj.css("top")) + (e.clientY - lastMouseY);
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                move($obj, newx, newy);
+            }
+        };
+        
+        var resizing = function(e, $obj) {
+            e = e ? e : window.event;
+            var w = parseInt($obj.css("width"));
+            var h = parseInt($obj.css("height"));
+            w = w < 100 ? 100 : w;
+            h = h < 50 ? 50 : h;
+            var neww = w + (e.clientX - lastMouseX);
+            var newh = h + (e.clientY - lastMouseY);
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+
+            resize($obj, neww, newh);
+        };
+        
+        //Attach a mousedown event to the window's title bar to allow dragging
+        $titleBarContent.bind('mousedown.jquerywindow', function(e) {
+            var $obj = $(e.target).parent().parent();
+            setFocus($obj);
+            
+            if ($obj.data("state") != "maximized") {
+                
+                if (options.type === "iframe") {
+                    var $tmpDiv = $('<div id="jquery-window-engine-iframe-cover" ></div>');
+                    $obj.find("iframe").each(function(){
+                        $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
+                        width:this.offsetWidth,height:this.offsetHeight,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
+                        background:"#444"});
+                        $('body').append($tmpDiv);
+                    });
+                }
+            
+                e = e ? e : window.event;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                var isFirstDrag=true;
+                if (options.draggable) {
+                    $(document).bind('mousemove.jquerywindow', function(e) {
+                        if (isFirstDrag && options.onDragBegin != null ) {
+                            isFirstDrag = false;
+                            options.onDragBegin();
+                        }
+                        dragging(e, $obj);
+                    });
+                }
+
+                $(document).bind('mouseup.jquerywindow', function(e) {
+                    if (options.type === "iframe") $("#jquery-window-engine-iframe-cover").remove();
+                    if (!isFirstDrag && options.onDragEnd != null){
+                        options.onDragEnd();
+                    }
+                    $(document).unbind('mousemove.jquerywindow');
+                    $(document).unbind('mouseup.jquerywindow');
+                });
+
+            }else if (options.type === "iframe"){
+                $("#jquery-window-engine-iframe-cover").remove();
+            }
+            
+            return false;
+        });
+        
+        //Attach a double click event to the window's title bar to allow maximization
+        $titleBarContent.dblclick(function(e) {
+            var $obj = $(e.target).parent().parent();
+            $obj.find(".window-maximizeButton").click();
+        });
+        
+        //Attach a mousedown event to the window's resize icon to allow resizing
+        $windowResizeIcon.bind('mousedown.jquerywindow', function(e) {
+            var $obj = $(e.target).parent().parent();
+            setFocus($obj);
+            
+            if ($obj.data("state") === "normal") {
+            
+                if (options.type === "iframe") {
+                    var $tmpDiv = $('<div id="jquery-window-engine-iframe-cover" ></div>');
+                    $obj.find("iframe").each(function(){
+                        $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
+                        width:this.offsetWidth,height:this.offsetHeight,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
+                        background:"#444"});
+                        $('body').append($tmpDiv);
+                    });
+                }
+            
+                e = e ? e : window.event;
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+
+                $(document).bind('mousemove.jquerywindow', function(e) {
+                    resizing(e, $obj);
+                });
+
+                $(document).bind('mouseup.jquerywindow', function(e) {
+                    if (options.type === "iframe") $("#jquery-window-engine-iframe-cover").remove();
+                    if (options.onResizeEnd != null) options.onResizeEnd();
+                    $(document).unbind('mousemove.jquerywindow');
+                    $(document).unbind('mouseup.jquerywindow');
+                });
+
+                if (options.onResizeBegin != null) options.onResizeBegin();
+            }
+            return false
+        });
+        
+        //Attach a click event to the window's minimize button to allow window minimization
+        $windowMinimizeButton.bind('click.jquerywindow', function(e) {
+            var $obj = $(e.target).parent().parent();
+            setFocus($obj);
+            if ($obj.data("state") === "minimized") {
+                $obj.data("state", "normal");
+                $obj.css("height", $obj.data("lastHeight"));
+                $obj.find(".window-content").slideToggle("slow", function(){
+                    $obj.addClass('window-shaddow');
+                });
+            }
+            else if ($obj.data("state") === "normal") {
+                $obj.data("state", "minimized");
+                $obj.removeClass('window-shaddow');
+
+                $obj.find(".window-content").slideToggle("slow", function() { $obj.css("height", 0); });
+            }
+            else {
+                $obj.find(".window-maximizeButton").click();
+            }
+        });
+
+        // quirks mode support. DO NOT use $(window).height()/width() e.g: http://goo.gl/ZaN7Em
+        function getBrowserSize(){
+            var w = 0;var h = 0;
+            //IE
+            if(!window.innerWidth){
+                if(document.documentElement.clientWidth !== 0){
+                    //strict mode
+                    w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
+                } else{
+                    //quirks mode
+                    w = document.body.clientWidth;h = document.body.clientHeight;
+                }
+            } else {
+                //w3c
+                w = window.innerWidth;h = window.innerHeight;
+            }
+            return {width:w,height:h};
+        }
+
+        $windowMaximizeButton.bind('click.jquerywindow', function(e) {
+            var $obj = $(e.target).parent().parent();
+            setFocus($obj);
+            
+            ////for iframe browser compatibility
+            var dw = 3, dh = 2;
+            //if($.browser.msie && $.browser.version < 9.0)dw = dh = 0;
+            if( /msie [1-8]./.test(navigator.userAgent.toLowerCase()) )dw = dh = 0;
+            //////////////////////////////////////////////////////////
+            
+            if ($obj.data("state") === "minimized") {
+                $obj.find(".window-minimizeButton").click();
+            }
+            else if ($obj.data("state") === "normal") {
+                $obj.removeClass('window-shaddow');
+                $obj.animate({
+                    top: "5px",
+                    left: "5px",
+                    width: getBrowserSize().width - 15,
+                    height: getBrowserSize().height - 45
+                }, "slow");
+                if (options.type === "iframe") {
+                    $obj.find("iframe").animate({
+                        top: "5px",
+                        left: "5px",
+                        width: getBrowserSize().width - 15 - dw,
+                        height: getBrowserSize().height - 45 - dh
+                    }, "slow");
+                }
+                $obj.data("state", "maximized")
+            }
+            else if ($obj.data("state") === "maximized") {
+                $obj.animate({
+                    top: $obj.data("lastY"),
+                    left: $obj.data("lastX"),
+                    width: $obj.data("lastWidth"),
+                    height: $obj.data("lastHeight")
+                }, "slow", function(){
+                        $obj.addClass('window-shaddow');
+                });
+                if (options.type === "iframe") {
+                    $obj.find("iframe").animate({
+                        top: $obj.data("lastY"),
+                        left: $obj.data("lastX"),
+                        width: parseInt($obj.data("lastWidth") - dw),
+                        height: parseInt($obj.data("lastHeight") - dh)
+                    }, "slow");
+                }
+                $obj.data("state", "normal")
+            }
+        });
+        
+        //Attach a click event to the popup's close button to allow closing
+        $windowCloseButton.bind('click.jquerywindow', function(e) {
+            var $window = $(e.target).parent().parent();
+            $window.fadeOut(function() {
+                if (!options.closeWithHide){
+                    $window.remove();
+                }
+            });
+            if (options.onWindowClose != null) options.onWindowClose();
+            if(options.modal){
+                $modalBackground.remove();
+            }
+        });
+        
+        //Attach a click event to the popup's background to allow closing
+        $modalBackground.bind('click.jquerywindow', function(e) {
+            $windowCloseButton.click();
+        });
+
+        $windowContent.click(function(e) {
+            setFocus($(e.target).parent());
+        });
+        $windowStatusBar.click(function(e) {
+            setFocus($(e.target).parent());
+        });
+
+        $windowContainer.data("state", "normal");
+        //hide the popup to show it later using a visual effect
+        $windowContainer.css("display", "none");
+
+        $('body').append($windowContainer);
+        if(options.modal){
+            $('body').append($modalBackground);
+        }
+
+        var $window = $windowContainer;
+        if (!options.draggable) $window.children(".window-titleBar").css("cursor", "default");
+        setFocus($window);
+        
+        //move the popup to the initial position
+        move($windowContainer, options.posx, options.posy);
+        //resize the popup to the initial size
+        resize($windowContainer, options.width, options.height);
+        
+        //show the popup using the jquery fadeIn visual effect
+        $window.fadeIn();
+
+        // add shaddow
+        $window.addClass('window-shaddow');
+
+        return $window;
+    }, // end of newWindow
+
+    updateWindowContent: function(id, newContent) {
+        var $content = $("#" + id + " .window-content");
+
+        // Fix iframe refresh/ load faster
+        if ($('iframe',$content).length > 0 &&
+            $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
+            $('iframe:first',$content).attr('src', $(newContent).attr('src'));
+            return;
+        }
+
+    	if (newContent instanceof jQuery) {
+    	    $content.empty().append(newContent);
+        } else {
+            $("#" + id + " .window-content").html(newContent);
+        }
+    },
+
+    updateWindowContentWithAjax: function(id, url, cache) {
+        cache = cache === undefined ? true : false;
+        $.ajax({
+            url: url,
+            cache: cache,
+            dataType: "html",
+            success: function(data) {
+                $("#" + id + " .window-content").html(data);
+            }
+        });
+    },
+
+    moveWindow: function(id, x, y) {
+        var $obj = $("#" + id);
+        x = parseInt(x);
+        y = parseInt(y);
+        $obj.data("lastX", x).data("lastY", y);
+        x = x + "px";
+        y = y + "px";
+        $obj.css("left", x).css("top", y);
+    },
+
+    resizeWindow: function(id, width, height) {
+        var $obj = $("#" + id);
+        //width = parseInt(width);
+        //height = parseInt(height);
+        //$obj.data("lastWidth", width).data("lastHeight", height);
+        //width = width + "px";
+        //height = height + "px";
+        //$obj.css("width", width).css("height", height);
+        resize($obj, width, height);
+    },
+
+    minimizeWindow: function(id) {
+        $("#" + id + " .window-minimizeButton").click();
+    },
+
+    maximizeWindow: function(id) {
+        $("#" + id + " .window-maximizeButton").click();
+    },
+
+    showWindow: function(id) {
+        $("#" + id + " .window-closeButton").fadeIn();
+    },
+
+    hideWindow: function(id) {
+        $("#" + id + " .window-closeButton").fadeOut();
+    },
+
+    closeWindow: function(id) {
+        $("#" + id + " .window-closeButton").click();
+    },
+
+    closeAllWindows: function() {
+        $(".window-container .window-closeButton").click();
+    },
+
+    updateWindowTitle: function(id, newTitle) {
+        $("#" + id + " .window-titleBar-content").text(newTitle);
+    }
+
+});
+
+
+
+}); // End of AMD Module
