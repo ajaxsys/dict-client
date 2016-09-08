@@ -30,7 +30,7 @@ $.dict_extend({
     MOVE_POINT_ID : '__move_to_me__',
     winMode: 'inner', // inner, iframe, popup
     disableNumSelection: true,
-    GOOGLE_API_NEW_MODE : false,
+    GOOGLE_API_NEW_MODE : true,
     CSS_CACHE: {},
     DICT_PLUGINS: {},
 });

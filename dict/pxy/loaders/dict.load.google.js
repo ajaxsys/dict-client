@@ -34,7 +34,12 @@ var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/we
 // &gs_l=partner.12...0.0.1.9218.0.0.0.0.0.0.0.0..0.0.gsnos%2Cn%3D13...0.0jj1..1ac..25.partner..6.0.0.ZDfqFNMyL4M
 // &callback=google.search.Search.apiary1045
 // &nocache=1418887005296
-var GOOGLE_SEARCH_API_NEW = 'https://www.googleapis.com/customsearch/v1element?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&cx=016502465458590467219:emohpvgyzyw&gl=';
+var GOOGLE_SEARCH_API_NEW = 'https://www.googl'
++ 'eapis.com/custom'
++ 'search/v1element?ke'
++ 'y=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&c'
++ 'x=016502465458590467219:emohpvgyzyw&gl=';
+//var GOOGLE_SEARCH_API_NEW = 'https://www.googl'+'eapis.com/custom'+'search/v1?q=google&c'+'x=part'+'ner-pub-1367404477091294%3A9177098028&ke'+'y=AIzaSyDS6ydBSXeqe4EMytQg9'+'8JMJ7CJTyh1dxQ&c2coff=1&client=google-csbe&cr=jp&callback=DICT_jsonp'
 var GOOGLE_SEARCH_API = D.GOOGLE_API_NEW_MODE ? GOOGLE_SEARCH_API_NEW : GOOGLE_SEARCH_API_OLD;
 
 /*
@@ -70,7 +75,7 @@ function getAutoKeyByLang(){
     switch (D.lang) {
         case 'jp' : return ' 意味';
         case 'us' : return ' meaning';
-        case 'cn' : 
+        case 'cn' :
         case 'zh-CN' : return ' 含义';
     }
 }
@@ -114,7 +119,7 @@ function queryGoogle(word, type, opt){
     if (ajax) {
         ajax.abort();
     }
-    
+
     // [1] Check cache
     var cache = D.getCache('GOOGLE_CACHE', [searchKey,type,D.lang].join('&')  );
     if (cache){
@@ -160,7 +165,7 @@ function queryGoogle(word, type, opt){
 
           // add to cache
           D.setCache('GOOGLE_CACHE',data);
-  
+
           console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load success! Call formatter.');
           window.DICT_format(data);
       },
