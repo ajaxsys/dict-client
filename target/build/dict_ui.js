@@ -13856,7 +13856,7 @@ if ($('body').length === 0) {
 console.log(D.LC+=10000, '[dict.ui.start.js] Loading ui resource... from:', static_host());
 
 //loadCSSwithAllFrames(document, window);// TODO support tooltip in iframe 1-1(load css in all frames)
-D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
+D.loadResource($, static_host()+'/target/dict/dict_ui.css', 'css');
 
 
 ///////////////////// private func //////////////////////
@@ -13900,9 +13900,9 @@ function static_host(){
             console.log(D.LC, '[dict.ui.start.js] Use intranet ip:', ip);
             _thisIP = ip;
             // Run a ajax connection test, if NOT work, use dev_ip
-            // host + /dict/dict_ui.css
+            // host + /target/dict/dict_ui.css
             $.ajax({
-                url: 'http:'+ip+'/dict/dict_ui.css',
+                url: 'http:'+ip+'/target/dict/dict_ui.css',
                 type:'HEAD',
                 cache : false,
                 async:false,
@@ -13953,8 +13953,8 @@ if (!D.loaded){
     return;
 }
 
-var PROXY_DEV_URI = '/build/proxy.html##key#?DEV_MODE',
-    PROXY_RLS_URI =  '/dict/proxy.html##key#?',
+var PROXY_DEV_URI = '/target/build/proxy.html##key#?DEV_MODE',
+    PROXY_RLS_URI =  '/target/dict/proxy.html##key#?',
     // DICT_ISFIXED = "position_is_fixed",
     // D.DEV_MODE defined in loader.js
     DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI;
@@ -14004,7 +14004,7 @@ function createOrUpdateInnerWindow(text, $obj) {
         resetPositionWhenOverflow($dict);
         return;
     }
-    
+
     if ($dict.length === 0) {
         $dict = createNewWindow(text);
         // Fixed & Hide this win when first created
@@ -14030,7 +14030,7 @@ function createOrUpdateInnerWindow(text, $obj) {
             resetPositionWhenOverflow($dict);
         });// Show it when window reopen or first search
     }
-    
+
     // Parent window stop scroll while scrolling in iframe
     $dict.mouseenter(function(){
         $(window).disablescroll();
@@ -14345,7 +14345,7 @@ registWebElementToTextEvent(document);
 
 /* TODO support tooltip in iframe 1-2 (load css in all frames)
 function loadCSSwithAllFrames(parentDocument, parentWindow) {
-    D.loadResource($, static_host()+'/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
+    D.loadResource($, static_host()+'/target/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
 
     // Regist iframe the same events.(Not support iframe in iframe)
     var $iframes = $('iframe, frame', parentDocument);
