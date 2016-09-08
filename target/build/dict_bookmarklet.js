@@ -24,7 +24,7 @@ w.__DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        var url = 'http://dict-admin.appspot.com';
+        var url = 'http://ajaxsys.github.io/dict-client/target/';
         alert('Sorry, Not support for your browser. More details, visit: '+url);
         window.open(url);
     }
@@ -41,7 +41,7 @@ void((function(w,d){
     D.PROD_MODE=true;
     if (!D.loaded) {
         var ui=d.createElement('script');
-        ui.setAttribute('src','https://dict-admin.appspot.com/dict/dict_ui.js?_'+new Date().getTime());
+        ui.setAttribute('src','https://ajaxsys.github.io/dict-client/target/dict/dict_ui.js?_'+new Date().getTime());
         ui.setAttribute("type","text/javascript");
         ui.setAttribute("charset","UTF-8");
         setTimeout(function(){

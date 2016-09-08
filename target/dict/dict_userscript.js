@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name       SecondScreen
-// @namespace  https://dict-admin.appspot.com
+// @namespace  https://ajaxsys.github.io/dict-client
 // @version    0.4.4
 // @description  DICT： a second screen for your browser.
 // @match      http://*/*
 // @match      https://*/*
-// @require    https://dict-admin.appspot.com/dict/dict_userscript.js?v=0.4.4
+// @require    https://ajaxsys.github.io/dict-client/target/dict/dict_userscript.js?v=0.4.4
 // @copyright  2014+, fcr403@gmail.com
 // ==/UserScript==
 
@@ -44,7 +44,7 @@ function getBrowserSize(){
         w = 0;
         h = 0;
     }
-    
+
     return {
         'width':w?w:0 ,
         'height':h?h:0
@@ -55,21 +55,21 @@ function isSkipFrame(){
     'use strict';
     try {
         var size = getBrowserSize();
-        
+
         console.log("0----------",window.top, window.location.href, size.width, size.height);
         // Top page, not skip == enable
-        if (window == window.top && window.location.href.indexOf('dict-admin.appspot.com/dict/proxy.html') < 0 ){
+        if (window == window.top && window.location.href.indexOf('ajaxsys.github.io/dict-client/target/dict/proxy.html') < 0 ){
             console.log("1----------Top page",window.top, window.location.href, size.width, size.height);
             return false;
         }
-        
+
         // skip DICT self page == disable
-        if (window.location.href.indexOf('dict-admin.appspot.com/dict/proxy.html') > 0 ){
+        if (window.location.href.indexOf('ajaxsys.github.io/dict-client/target/dict/proxy.html') > 0 ){
             console.log("2----------self page",window.top, window.location.href, size.width, size.height);
             return true;
         }
 
-        
+
         // skip iframe size less than 300 - DICT needs at least a 300*300 area
         if (size.height < 300 && size.width<300) {
             console.log("3----------small than 300*300", window.location, window.top.location);
@@ -79,14 +79,14 @@ function isSkipFrame(){
                 (window.location.host+window.location.port !== window.top.location.host+window.top.location.port)
                 ){
                 console.log("3---------", window.location, window.top.location);
-                return false; 
+                return false;
             }*/
         }
 
     }catch(e){
         console.log("err---------" + e);
         // Error, skip it
-        return true; 
+        return true;
     }
     console.log("4-----------ok show it.");
     // not skip
@@ -130,7 +130,7 @@ w.__DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        var url = 'http://dict-admin.appspot.com';
+        var url = 'http://ajaxsys.github.io/dict-client/target/';
         alert('Sorry, Not support for your browser. More details, visit: '+url);
         window.open(url);
     }
@@ -147,7 +147,7 @@ void((function(w,d){
     D.PROD_MODE=true;
     if (!D.loaded) {
         var ui=d.createElement('script');
-        ui.setAttribute('src','https://dict-admin.appspot.com/dict/dict_ui.js?_'+new Date().getTime());
+        ui.setAttribute('src','https://ajaxsys.github.io/dict-client/target/dict/dict_ui.js?_'+new Date().getTime());
         ui.setAttribute("type","text/javascript");
         ui.setAttribute("charset","UTF-8");
         setTimeout(function(){

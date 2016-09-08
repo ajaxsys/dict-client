@@ -15106,13 +15106,13 @@ $.dict_extend({
 });
 
 var ajax, ajaxDirect,
-    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
+    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://ajaxsys.github.io/dict-client/target/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
     // stringhtml
     //YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=select * from htmlstring where url='#URL#' and xpath='//body'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 
 function queryDict(word, type, url){
     // URL already get from google
-    if (url && !url.startsWith('http://') && !url.startsWith('https://') ){ 
+    if (url && !url.startsWith('http://') && !url.startsWith('https://') ){
         // NOT support: url.startsWith('//')
         
         return;
@@ -15123,7 +15123,7 @@ function queryDict(word, type, url){
     }
 
     // Check cache, YQL use url as the key
-    var cache=D.getCache('YQL_CACHE', url); 
+    var cache=D.getCache('YQL_CACHE', url);
     if (cache) {
         
         // foramt start
@@ -15170,7 +15170,7 @@ function queryDict(word, type, url){
               }
            } catch(e){
               
-              // Show google again while YQL NG in some case, e.g: https://query.yahooapis.com/v1/public/yql?q=use%20%27http://dict-admin.appspot.com/lib/y.xml%27%20as%20html.src;select%20*%20from%20html.src%20where%20url=%27http%3A%2F%2Fejje.weblio.jp%2Fsmall%2Fcontent%2F%25E5%259C%25A8%25E4%25BD%258F%27&format=json&callback=DICT_jsonp&_1406681440403=
+              // Show google again while YQL NG in some case, e.g: https://query.yahooapis.com/v1/public/yql?q=use%20%27http://ajaxsys.github.io/dict-client/target/lib/y.xml%27%20as%20html.src;select%20*%20from%20html.src%20where%20url=%27http%3A%2F%2Fejje.weblio.jp%2Fsmall%2Fcontent%2F%25E5%259C%25A8%25E4%25BD%258F%27&format=json&callback=DICT_jsonp&_1406681440403=
               D.loadQuery(word, 'google');
               // CAN NOT add to cache
               // D.setCache('YQL_CACHE', data);
@@ -15179,10 +15179,10 @@ function queryDict(word, type, url){
 
            // add to cache
            D.setCache('YQL_CACHE', data);
-           
+
            
            window.DICT_format(data);
-  
+
       },
     });
 
@@ -15198,7 +15198,7 @@ function queryByYQL(url, callback) {
   }
 
   // Check cache, YQL use url as the key
-  var cache=D.getCache('YQL_CACHE', url); 
+  var cache=D.getCache('YQL_CACHE', url);
   if (cache) {
       
       callback(cache);
@@ -15206,7 +15206,7 @@ function queryByYQL(url, callback) {
   }
 
   var yql = YQL_URL.replace('#URL#', encodeURIComponent(url));
-  
+
   if (ajaxDirect) {
       ajaxDirect.abort();
   }
@@ -15224,11 +15224,11 @@ function queryByYQL(url, callback) {
 
            // add to cache
            D.setCache('YQL_CACHE', data);
-          
+
            
 
            callback(data);
-  
+
       },
       'beforeSend' : DO_NOTHING,
       'complete': DO_NOTHING,
@@ -15255,7 +15255,7 @@ $.dict_extend({
 
 var ajax,
     XD_URL = "http://dict.hjenglish.com/services/huaci/jp_web_ajax.ashx?type=cj&w=",
-    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://dict-admin.appspot.com/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
+    YQL_URL = "https://query.yahooapis.com/v1/public/yql?q=use 'http://ajaxsys.github.io/dict-client/target/lib/y.xml' as html.src;select * from html.src where url='#URL#'&format=json";
 
 function queryDict(word, type){
 
@@ -15266,7 +15266,7 @@ function queryDict(word, type){
     var url = XD_URL + word;
 
     // Check cache, YQL use url as the key
-    var cache=D.getCache('YQL_CACHE', url); 
+    var cache=D.getCache('YQL_CACHE', url);
     if (cache) {
         
         // foramt start
@@ -15287,7 +15287,7 @@ function queryDict(word, type){
       // Use YQL proxy for https support
       
       url = YQL_URL.replace('#URL#', encodeURIComponent(url));
-    } 
+    }
 
     
     var params = {
@@ -15327,7 +15327,7 @@ function queryDict(word, type){
 
         
         window.DICT_format(data);
-  
+
       },
     });
 

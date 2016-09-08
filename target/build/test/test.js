@@ -7,9 +7,9 @@
 'use strict';
 
 // Develop Version
-loadResourceToGlobalVar('/build/dict_bookmarklet.js','__G_BML__');
+loadResourceToGlobalVar('/target/build/dict_bookmarklet.js','__G_BML__');
 // Product Version
-loadResourceToGlobalVar('/dict/dict_bookmarklet.js','__G_BML_MIN__');
+loadResourceToGlobalVar('/target/dict/dict_bookmarklet.js','__G_BML_MIN__');
 
 function loadResourceToGlobalVar(url,varName){
     $.ajax({
@@ -28,7 +28,7 @@ function loadResourceToGlobalVar(url,varName){
 $(function(){
     'use strict';
     var BML_PREFIX = 'javascript:',
-        PROD_HOST = 'https://dict-admin.appspot.com',
+        PROD_HOST = 'https://ajaxsys.github.io/dict-client',
         DEV_HOST = 'http://localhost:8443';
 
     waitUntil("window.__G_BML__", afterDevelopVersionLoaded);
@@ -43,7 +43,7 @@ $(function(){
         var dev = prod2Dev(prod);
 
         // Refer to min version.
-        $('#bookmarkletRls').attr('href',prod); 
+        $('#bookmarkletRls').attr('href',prod);
         $('#bookmarklet').attr('href',dev);
     }
 
