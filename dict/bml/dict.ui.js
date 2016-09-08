@@ -24,8 +24,8 @@ if (!D.loaded){
     return;
 }
 
-var PROXY_DEV_URI = '/build/proxy.html##key#?DEV_MODE',
-    PROXY_RLS_URI =  '/dict/proxy.html##key#?',
+var PROXY_DEV_URI = '/target/build/proxy.html##key#?DEV_MODE',
+    PROXY_RLS_URI =  '/target/dict/proxy.html##key#?',
     // DICT_ISFIXED = "position_is_fixed",
     // D.DEV_MODE defined in loader.js
     DICT_URL = D.DEV_MODE ? PROXY_DEV_URI : PROXY_RLS_URI;
@@ -75,7 +75,7 @@ function createOrUpdateInnerWindow(text, $obj) {
         resetPositionWhenOverflow($dict);
         return;
     }
-    
+
     if ($dict.length === 0) {
         $dict = createNewWindow(text);
         // Fixed & Hide this win when first created
@@ -101,7 +101,7 @@ function createOrUpdateInnerWindow(text, $obj) {
             resetPositionWhenOverflow($dict);
         });// Show it when window reopen or first search
     }
-    
+
     // Parent window stop scroll while scrolling in iframe
     $dict.mouseenter(function(){
         $(window).disablescroll();

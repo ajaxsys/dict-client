@@ -20,7 +20,7 @@ if ($('body').length === 0) {
 console.log(D.LC+=10000, '[dict.ui.start.js] Loading ui resource... from:', static_host());
 
 //loadCSSwithAllFrames(document, window);// TODO support tooltip in iframe 1-1(load css in all frames)
-D.loadResource($, static_host()+'/dict/dict_ui.css', 'css');
+D.loadResource($, static_host()+'/target/dict/dict_ui.css', 'css');
 
 
 ///////////////////// private func //////////////////////
@@ -64,9 +64,9 @@ function static_host(){
             console.log(D.LC, '[dict.ui.start.js] Use intranet ip:', ip);
             _thisIP = ip;
             // Run a ajax connection test, if NOT work, use dev_ip
-            // host + /dict/dict_ui.css
+            // host + /target/dict/dict_ui.css
             $.ajax({
-                url: 'http:'+ip+'/dict/dict_ui.css',
+                url: 'http:'+ip+'/target/dict/dict_ui.css',
                 type:'HEAD',
                 cache : false,
                 async:false,

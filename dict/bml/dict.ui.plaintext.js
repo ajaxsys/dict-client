@@ -13,7 +13,7 @@ registWebElementToTextEvent(document);
 
 /* TODO support tooltip in iframe 1-2 (load css in all frames)
 function loadCSSwithAllFrames(parentDocument, parentWindow) {
-    D.loadResource($, static_host()+'/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
+    D.loadResource($, static_host()+'/target/dict/dict_ui.css', 'css', null ,parentDocument, parentWindow);
 
     // Regist iframe the same events.(Not support iframe in iframe)
     var $iframes = $('iframe, frame', parentDocument);
