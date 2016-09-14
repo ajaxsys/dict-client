@@ -130,7 +130,7 @@ w.__DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        var url = 'http://ajaxsys.github.io/dict-client/target/';
+        var url = 'https://ajaxsys.github.io/dict-client/';
         alert('Sorry, Not support for your browser. More details, visit: '+url);
         window.open(url);
     }

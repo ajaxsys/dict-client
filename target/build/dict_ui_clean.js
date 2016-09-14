@@ -13596,7 +13596,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
     } else {
         return;
     }
-    
+
     tag.onload = tag.onreadystatechange = function() {
       if ( !done && ( !( readystate = this.readyState )
         || readystate == 'loaded' || readystate == 'complete' ) ) {
@@ -13607,7 +13607,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
         //$( tag ).remove();
       }
     };
-    
+
     window.__DICT__.appendTag(tag);
 }
 
@@ -13648,9 +13648,9 @@ function getHrefWithHost(host, href){
 
 function addHttpProtocal(host){
     if (host.startsWith('//')){
-        host = 'http:' + host;
+        host = D.PROTOCAL + host;
     } else if (!host.startsWith('http')){
-        host = 'http://' + host;
+        host = D.PROTOCAL + '//' + host;
     }
     return host;
 }
@@ -13669,7 +13669,7 @@ function changeToMobileUrl(url, opt){
             } else {
                 url = url.replace(opt.host, opt.mobile_host);
             }
-            
+
             
         }
     }
@@ -13719,26 +13719,26 @@ function getBrowserSize(){
 //
 
 function Stack() {
-	this.__a = [];
+    this.__a = [];
 }
 
 Stack.prototype.push = function(o) {
-	this.__a.push(o);
+    this.__a.push(o);
 }
 
 Stack.prototype.pop = function() {
-	if( this.__a.length > 0 ) {
-		return this.__a.pop();
-	}
-	return null;
+    if( this.__a.length > 0 ) {
+        return this.__a.pop();
+    }
+    return null;
 }
 
 Stack.prototype.size = function() {
-	return this.__a.length;
+    return this.__a.length;
 }
 
 Stack.prototype.toString = function() {
-	return '[' + this.__a.join(',') + ']';
+    return '[' + this.__a.join(',') + ']';
 }
 
 Stack.prototype.get = function(i) {
@@ -13746,41 +13746,41 @@ Stack.prototype.get = function(i) {
         return null;
     }
     return this.__a[i];
-} 
+}
 
 //
 // Queue (FIFO)
 //
 
 function Queue(max) {
-	this.__a = [];
+    this.__a = [];
     this.max_length = max;
 }
 
 Queue.prototype.enqueue = function(o) {
-	this.__a.push(o);
+    this.__a.push(o);
 }
 
 Queue.prototype.dequeue = function() {
-	if( this.__a.length > 0 ) {
-		return this.__a.shift();
-	}
-	return null;
+    if( this.__a.length > 0 ) {
+        return this.__a.shift();
+    }
+    return null;
 }
 
 Queue.prototype.size = function() {
-	return this.__a.length;
+    return this.__a.length;
 }
 
 Queue.prototype.get = function(i) {
-	if( this.__a.length < i ) {
-		return null;
-	}
-	return this.__a[i];
-} 
+    if( this.__a.length < i ) {
+        return null;
+    }
+    return this.__a[i];
+}
 
 Queue.prototype.toString = function() {
-	return '[' + this.__a.join(',') + ']';
+    return '[' + this.__a.join(',') + ']';
 }
 
 
@@ -13826,7 +13826,7 @@ w.__DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        var url = 'http://ajaxsys.github.io/dict-client/target/';
+        var url = 'https://ajaxsys.github.io/dict-client/';
         alert('Sorry, Not support for your browser. More details, visit: '+url);
         window.open(url);
     }
@@ -13902,7 +13902,7 @@ function static_host(){
             // Run a ajax connection test, if NOT work, use dev_ip
             // host + /target/dict/dict_ui.css
             $.ajax({
-                url: 'http:'+ip+'/target/dict/dict_ui.css',
+                url: D.PROTOCAL+ip+'/target/dict/dict_ui.css',
                 type:'HEAD',
                 cache : false,
                 async:false,
