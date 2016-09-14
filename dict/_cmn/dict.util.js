@@ -73,7 +73,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
     } else {
         return;
     }
-    
+
     tag.onload = tag.onreadystatechange = function() {
       if ( !done && ( !( readystate = this.readyState )
         || readystate == 'loaded' || readystate == 'complete' ) ) {
@@ -84,7 +84,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
         //$( tag ).remove();
       }
     };
-    
+
     window.__DICT__.appendTag(tag);
 }
 
@@ -125,9 +125,9 @@ function getHrefWithHost(host, href){
 
 function addHttpProtocal(host){
     if (host.startsWith('//')){
-        host = 'http:' + host;
+        host = D.PROTOCAL + host;
     } else if (!host.startsWith('http')){
-        host = 'http://' + host;
+        host = D.PROTOCAL + '//' + host;
     }
     return host;
 }
@@ -146,7 +146,7 @@ function changeToMobileUrl(url, opt){
             } else {
                 url = url.replace(opt.host, opt.mobile_host);
             }
-            
+
             console.log(D.LC, '[dict.util.js] URL ',oldUrl,' changed to mobile url:', url);
         }
     }
@@ -196,26 +196,26 @@ function getBrowserSize(){
 //
 
 function Stack() {
-	this.__a = [];
+    this.__a = [];
 }
 
 Stack.prototype.push = function(o) {
-	this.__a.push(o);
+    this.__a.push(o);
 }
 
 Stack.prototype.pop = function() {
-	if( this.__a.length > 0 ) {
-		return this.__a.pop();
-	}
-	return null;
+    if( this.__a.length > 0 ) {
+        return this.__a.pop();
+    }
+    return null;
 }
 
 Stack.prototype.size = function() {
-	return this.__a.length;
+    return this.__a.length;
 }
 
 Stack.prototype.toString = function() {
-	return '[' + this.__a.join(',') + ']';
+    return '[' + this.__a.join(',') + ']';
 }
 
 Stack.prototype.get = function(i) {
@@ -223,41 +223,41 @@ Stack.prototype.get = function(i) {
         return null;
     }
     return this.__a[i];
-} 
+}
 
 //
 // Queue (FIFO)
 //
 
 function Queue(max) {
-	this.__a = [];
+    this.__a = [];
     this.max_length = max;
 }
 
 Queue.prototype.enqueue = function(o) {
-	this.__a.push(o);
+    this.__a.push(o);
 }
 
 Queue.prototype.dequeue = function() {
-	if( this.__a.length > 0 ) {
-		return this.__a.shift();
-	}
-	return null;
+    if( this.__a.length > 0 ) {
+        return this.__a.shift();
+    }
+    return null;
 }
 
 Queue.prototype.size = function() {
-	return this.__a.length;
+    return this.__a.length;
 }
 
 Queue.prototype.get = function(i) {
-	if( this.__a.length < i ) {
-		return null;
-	}
-	return this.__a[i];
-} 
+    if( this.__a.length < i ) {
+        return null;
+    }
+    return this.__a[i];
+}
 
 Queue.prototype.toString = function() {
-	return '[' + this.__a.join(',') + ']';
+    return '[' + this.__a.join(',') + ']';
 }
 
 

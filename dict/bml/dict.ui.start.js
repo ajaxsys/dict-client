@@ -66,7 +66,7 @@ function static_host(){
             // Run a ajax connection test, if NOT work, use dev_ip
             // host + /target/dict/dict_ui.css
             $.ajax({
-                url: 'http:'+ip+'/target/dict/dict_ui.css',
+                url: D.PROTOCAL+ip+'/target/dict/dict_ui.css',
                 type:'HEAD',
                 cache : false,
                 async:false,
