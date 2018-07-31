@@ -18,7 +18,7 @@ var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
 var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=';
 
-// ?key=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY
+// ?key=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc
 // &rsz=filtered_cse
 // &num=10
 // &hl=ja
@@ -37,7 +37,7 @@ var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/we
 var GOOGLE_SEARCH_API_NEW = 'https://www.googl'
 + 'eapis.com/custom'
 + 'search/v1element?ke'
-+ 'y=AIzaSyCVAXiUzRYsML1Pv6RwSG1gunmMikTzQqY&c'
++ 'y=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc&c'
 + 'x=016502465458590467219:emohpvgyzyw&gl=';
 //var GOOGLE_SEARCH_API_NEW = 'https://www.googl'+'eapis.com/custom'+'search/v1?q=google&c'+'x=part'+'ner-pub-1367404477091294%3A9177098028&ke'+'y=AIzaSyDS6ydBSXeqe4EMytQg9'+'8JMJ7CJTyh1dxQ&c2coff=1&client=google-csbe&cr=jp&callback=DICT_jsonp'
 var GOOGLE_SEARCH_API = D.GOOGLE_API_NEW_MODE ? GOOGLE_SEARCH_API_NEW : GOOGLE_SEARCH_API_OLD;
