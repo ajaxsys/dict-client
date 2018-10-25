@@ -62,10 +62,10 @@ $(function(){
 
         // Enable by default
         updateDevelopLink(toOneLine(BML_DEV));
-        console.log("Default enable dict on this page in 1.5 seconds.");
+        console.log("Default enable dict on this page in .5 seconds.");
         setTimeout(function(){
             eval(BML_DEV);
-        },1500);
+        },500);
     }
 
     // Wait until condition var `==` true

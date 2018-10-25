@@ -10339,7 +10339,7 @@ return jQuery;
 /*
   * Using Customized jQuery because:
   *   http://stackoverflow.com/questions/25599039/jquery-can-not-be-loaded-in-some-sites
-  * Replace regexp from:
+  * Replace regexp from: 
   *   (for \((.*) in ([^)\n]+) \) \{)
   * to:
   *   \1 if (!\3.hasOwnProperty(\2)) { continue; }
@@ -10945,12 +10945,12 @@ if (typeof JSON !== 'object') {
  * Licensed under Unlicense:
  *
  * This is free and unencumbered software released into the public domain.
- *
+ * 
  * Anyone is free to copy, modify, publish, use, compile, sell, or
  * distribute this software, either in source code form or as a compiled
  * binary, for any purpose, commercial or non-commercial, and by any
  * means.
- *
+ * 
  * In jurisdictions that recognize copyright laws, the author or authors
  * of this software dedicate any and all copyright interest in the
  * software to the public domain. We make this dedication for the benefit
@@ -10958,7 +10958,7 @@ if (typeof JSON !== 'object') {
  * successors. We intend this dedication to be an overt act of
  * relinquishment in perpetuity of all present and future rights to this
  * software under copyright law.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -10966,7 +10966,7 @@ if (typeof JSON !== 'object') {
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
- *
+ * 
  * For more information, please refer to <http://unlicense.org/>
  */
 
@@ -12270,7 +12270,7 @@ jQuery.fn.highlight = function (words, options) {
     'use strict';
     var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false };
     jQuery.extend(settings, options);
-
+    
     if (words.constructor === String) {
         words = [words];
     }
@@ -12288,7 +12288,7 @@ jQuery.fn.highlight = function (words, options) {
         pattern = "\\b" + pattern + "\\b";
     }
     var re = new RegExp(pattern, flag);
-
+    
     return this.each(function () {
         jQuery.highlight(this, re, settings.element, settings.className);
     });
@@ -14325,7 +14325,7 @@ function getOptionFromCookie(){
     var target = $.jStorage.get(COOKIE_NAME) || {};
     var default_opt={'dict':{'dict_type':'auto','dict_lang':'jp'},'ui':{'width':400,'height':300}};
     $.extend(default_opt, target);// Merge target to options
-
+    
     return default_opt;
 }
 
@@ -14333,7 +14333,7 @@ function setOptionToCookie(opt) {
     //$.cookie.json = true;
     //$.cookie(COOKIE_NAME, opt , { expires: 365, path: '/' });
     $.jStorage.set(COOKIE_NAME, opt);
-
+    
 }
 
 
@@ -14345,7 +14345,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
     }
     doc = doc || document;
     win = win || window;
-
+    
     if (rscType=="js") {
         // Create a script element.
         tag = doc.createElement( 'script' );
@@ -14378,7 +14378,7 @@ function loadResource($, rscURL, rscType, callback, doc, win, tag, done, readyst
 
 
 function getParamFromURL(param){
-
+    
     var urlPatern = new RegExp(param + "=([^&?]+)");
     var m = urlPatern.exec(window.location.href);
     return m? m[1] : null;
@@ -14424,7 +14424,7 @@ function addHttpProtocal(host){
 function changeToMobileUrl(url, opt){
     if (opt && opt.host && opt.mobile_host){
         if ( (opt.mobile_host instanceof RegExp && url.match(opt.mobile_host)) || url.contains(opt.mobile_host) ) {
-
+            
             //return url;
         } else {
             var oldUrl = url;
@@ -14435,7 +14435,7 @@ function changeToMobileUrl(url, opt){
                 url = url.replace(opt.host, opt.mobile_host);
             }
 
-
+            
         }
     }
     return url;
@@ -14586,23 +14586,23 @@ function init(){
 }
 
 function doQueryWithHistory(query, type, url){
-    doQuery(query, type, url, 'useHistory');
+    doQuery(query, type, url, 'useHistory');    
 }
 
 function doQuery(query, type, url, isPushToHistory){
     var $searchBox = $('#__search__');
     init();
-
+    
     // Get from caller
     query = query || D.getUrlHashValue() || $searchBox.val();
     if (!query) {
-
+        
         return;
     }
     type = type || D.getSelectedType() || 'auto';
 
     var word = decodeURIComponent(query);
-
+    
 
     if (query && type && isNotKey(word)) {
         if (isPushToHistory){
@@ -14615,13 +14615,13 @@ function doQuery(query, type, url, isPushToHistory){
             // Some site use special api
             return;
         }else if(url){
-
+            
             callFetchURLLoader(word, type, url);
         }else{
             callGoogleLoader(word, type);
         }
     } else {
-
+        
     }
 }
 
@@ -14652,7 +14652,7 @@ function callGoogleLoader(word, type){
     // If auto key exist use Auto Mode with addtion key
     var plugin = D.DICT_PLUGINS[type];
     if (plugin && plugin.autoKey){
-
+        
         type = 'auto';
         D.queryGoogle(word, type, plugin);// Using auto mode plugin
     } else {
@@ -14760,7 +14760,7 @@ function applyPreloadResources(type){
       if ($rsc.length>0){
         $appliedResourceDIV.append($rsc.clone());
       } else {
-
+        
       }
     }
   }
@@ -14772,7 +14772,7 @@ function getPreload(){
     return $preload;
   }
   var ifrm = document.getElementById('preload'),
-      ifrmDoc = (ifrm.contentWindow) ? ifrm.contentWindow :
+      ifrmDoc = (ifrm.contentWindow) ? ifrm.contentWindow : 
                 (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
   var $ifrm = $(ifrmDoc.document);
   if ($ifrm.find('body').html().length > 100) {
@@ -14782,7 +14782,7 @@ function getPreload(){
 }
 
 function completeDefine(){
-
+    
     // wait css init
     allCompleteAction(this.dict.word, this.dict.type)
 }
@@ -14794,7 +14794,7 @@ function allCompleteAction(word, type) {
             $('#__go_top__').focus();
 
         $result.css({opacity:"1.0"});
-        // Keep page
+        // Keep page 
         //$('html,body').animate({scrollTop: $result.offset().top-10},'fast');
         var $mvPoint = $('#' + D.MOVE_POINT_ID), mvPxTop = 0;
 
@@ -14804,11 +14804,11 @@ function allCompleteAction(word, type) {
         $('html,body').animate({scrollTop: mvPxTop},'fast');
 
     },300);
-
+    
 }
 
 function errorDefine(jqXHR, textStatus, errorThrown) {
-
+    
     if (textStatus==='error'){
         $result.empty().append($("#__error_msg__").clone(true).removeClass('hidden'));
     }else{ // As timeout
@@ -14865,7 +14865,7 @@ $.dict_extend({
     'setCache': setCache,
     // Add cache here, Datatype defined in _cmn/dict.util.js
     _cache: {
-        'GAE_CACHE': new D.Queue(10),
+        'GAE_CACHE': new D.Queue(10), 
         'GOOGLE_CACHE': new D.Queue(99),
         'YQL_CACHE': new D.Queue(50),
     }
@@ -14893,10 +14893,10 @@ function setCache(cacheName, json){
       // add to cache
       var cache = D._cache[cacheName]
       if (cache.size() >= cache.max_length){
-
+          
           cache.dequeue();
       }
-
+      
       cache.enqueue(json);
 }
 
@@ -14915,37 +14915,19 @@ var D=$.dict_extend();
 D=$.dict_extend({
     'queryGoogle': queryGoogle,
     'queryGoogleMore': queryGoogleMoreResults,
-    'SEARCH_SIZE' : D.GOOGLE_API_NEW_MODE ? 10 : 8,
-    'MAX_POSITION': D.GOOGLE_API_NEW_MODE ? 20 : 40,
+    'SEARCH_SIZE' : 10,
+    'MAX_POSITION': 20,
 });
 
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
-var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=';
 
-// ?key=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc
-// &rsz=filtered_cse
-// &num=10
-// &hl=ja
-// &prettyPrint=false
-// &source=gcsc
-// &gss=.jp
-// &sig=23952f7483f1bca4119a89c020d13def
-// &cx=016502465458590467219:emohpvgyzyw
-// &q=%E4%BD%A0%E5%A5%BD
-// &sort=
-// &googlehost=www.google.com
-// &oq=%E4%BD%A0%E5%A5%BD
-// &gs_l=partner.12...0.0.1.9218.0.0.0.0.0.0.0.0..0.0.gsnos%2Cn%3D13...0.0jj1..1ac..25.partner..6.0.0.ZDfqFNMyL4M
-// &callback=google.search.Search.apiary1045
-// &nocache=1418887005296
-var GOOGLE_SEARCH_API_NEW = 'https://www.googl'
+// doc:developers.google.com/custom-search/v1/cse/list
+var GSEAPI = 'https://www.googl'
 + 'eapis.com/custom'
-+ 'search/v1element?ke'
++ 'search/v1?ke'
 + 'y=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc&c'
 + 'x=016502465458590467219:emohpvgyzyw&gl=';
-//var GOOGLE_SEARCH_API_NEW = 'https://www.googl'+'eapis.com/custom'+'search/v1?q=google&c'+'x=part'+'ner-pub-1367404477091294%3A9177098028&ke'+'y=AIzaSyDS6ydBSXeqe4EMytQg9'+'8JMJ7CJTyh1dxQ&c2coff=1&client=google-csbe&cr=jp&callback=DICT_jsonp'
-var GOOGLE_SEARCH_API = D.GOOGLE_API_NEW_MODE ? GOOGLE_SEARCH_API_NEW : GOOGLE_SEARCH_API_OLD;
 
 /*
  * Loading more search result
@@ -14955,17 +14937,17 @@ function queryGoogleMoreResults(searchStartPosition){
     var type = 'google';
 
     ajax=$.jsonp({
-        'data': {'q':word,'rsz':D.SEARCH_SIZE,'start':searchStartPosition},
-        'url': GOOGLE_SEARCH_API + D.lang,
+        'data': {'q':word,'count':D.SEARCH_SIZE,'start':searchStartPosition},
+        'url': GSEAPI + D.lang,
         'success': function(r){
-            var json= D.GOOGLE_API_NEW_MODE ? r : r.responseData;
+            var json= r;
             json.isNextMode=true;// google next mode.
             var data = {};
             data.src = json;
             data.word=word;
             data.type=type; // always google
 
-
+            
             window.DICT_format(data);
         },
         'beforeSend': doNothing,
@@ -14990,7 +14972,7 @@ function getAutoKeyByLang(){
  */
 function queryGoogle(word, type, opt){
     // Init
-
+    
     oldword = word;// backup
 
     var newAutoKey = null;
@@ -14999,7 +14981,7 @@ function queryGoogle(word, type, opt){
         switch (type) {
             case 'google_dict':
                 newAutoKey = getAutoKeyByLang();
-
+                
                 break;
         }
         type = 'google'; // Use same formatter as google
@@ -15015,11 +14997,11 @@ function queryGoogle(word, type, opt){
     var searchKey = word;
     if (option.autoKey) {
       searchKey += ' '+ option.autoKey;
-
+      
     }
 
-
-
+    
+    
 
     if (ajax) {
         ajax.abort();
@@ -15028,7 +15010,7 @@ function queryGoogle(word, type, opt){
     // [1] Check cache
     var cache = D.getCache('GOOGLE_CACHE', [searchKey,type,D.lang].join('&')  );
     if (cache){
-
+        
         // foramt start
         window.DICT_format(cache, type);
         D.complete(word, type); // load complte. Can NOT use common complete defined in ajax setup.
@@ -15041,42 +15023,38 @@ function queryGoogle(word, type, opt){
           'word':word,
           'type':type,
       },
-      'data': {'q':searchKey,'rsz':D.SEARCH_SIZE,'start':0},
-      'url': GOOGLE_SEARCH_API + D.lang,
-      'success': function(googleResultJsonArray){
-          if (D.GOOGLE_API_NEW_MODE === false){
-
-            googleResultJsonArray = googleResultJsonArray.responseData; // Adapter
+      'data': {'q':searchKey,'count':D.SEARCH_SIZE,'start':1},
+      'url': GSEAPI + D.lang,
+      'success': function(googleResultJsonObj){
+          if (!googleResultJsonObj || !googleResultJsonObj.items) {
+              // Error
+              
+              this.error();
+              return;
           }
 
-          if (!googleResultJsonArray || !googleResultJsonArray.results){
-            // Error
-
-            this.error();
-            return;
-          }
           // Regist search info.
-          googleResultJsonArray.searchKey = searchKey;
-          googleResultJsonArray.word = word;
+          googleResultJsonObj.searchKey = searchKey;
+          googleResultJsonObj.word = word;
 
           var data = {};
 
           // For cache
           data.key = [searchKey,type,D.lang].join('&');
 
-          data.src = googleResultJsonArray;
+          data.src = googleResultJsonObj;
           data.word = searchKey;
           data.type=type; // "auto/google". Regist type used in format plugin
 
           // add to cache
           D.setCache('GOOGLE_CACHE',data);
 
-
+          
           window.DICT_format(data);
       },
       'complete': function(e,t,x){
           if (D.isSearchRedirect) {
-
+              
               D.isSearchRedirect = false;
           }else{
               this._complete(e,t,x)
@@ -15114,7 +15092,7 @@ function queryDict(word, type, url){
     // URL already get from google
     if (url && !url.startsWith('http://') && !url.startsWith('https://') ){
         // NOT support: url.startsWith('//')
-
+        
         return;
     }
 
@@ -15125,7 +15103,7 @@ function queryDict(word, type, url){
     // Check cache, YQL use url as the key
     var cache=D.getCache('YQL_CACHE', url);
     if (cache) {
-
+        
         // foramt start
         window.DICT_format(cache, type);
         D.complete(word, type);
@@ -15139,7 +15117,7 @@ function queryDict(word, type, url){
     // http://otherhost/dict/t/hello/?callback=DICT_format
     var yql = YQL_URL.replace('#URL#', encodeURIComponent(url));
 
-
+    
     var params = {
       //q: encodeURI('use "http://goo.gl/tUzHPI" as html.src; select * from html.src where  url="')+url+encodeURI('"'),
       //format: 'json',
@@ -15169,7 +15147,7 @@ function queryDict(word, type, url){
                 throw 'YQL return null results';
               }
            } catch(e){
-
+              
               // Show google again while YQL NG in some case, e.g: https://query.yahooapis.com/v1/public/yql?q=use%20%27http://ajaxsys.github.io/dict-client/target/lib/y.xml%27%20as%20html.src;select%20*%20from%20html.src%20where%20url=%27http%3A%2F%2Fejje.weblio.jp%2Fsmall%2Fcontent%2F%25E5%259C%25A8%25E4%25BD%258F%27&format=json&callback=DICT_jsonp&_1406681440403=
               D.loadQuery(word, 'google');
               // CAN NOT add to cache
@@ -15180,7 +15158,7 @@ function queryDict(word, type, url){
            // add to cache
            D.setCache('YQL_CACHE', data);
 
-
+           
            window.DICT_format(data);
 
       },
@@ -15193,14 +15171,14 @@ function queryDict(word, type, url){
 function DO_NOTHING(){}
 function queryByYQL(url, callback) {
   if (typeof callback !== 'function'){
-
+    
     return;
   }
 
   // Check cache, YQL use url as the key
   var cache=D.getCache('YQL_CACHE', url);
   if (cache) {
-
+      
       callback(cache);
       return;
   }
@@ -15217,7 +15195,7 @@ function queryByYQL(url, callback) {
            try {
                data.src = json.query.results.resources.content;
            } catch(e){
-
+               
                return;
            }
            data.key = url; // YQL only need url as the key
@@ -15225,7 +15203,7 @@ function queryByYQL(url, callback) {
            // add to cache
            D.setCache('YQL_CACHE', data);
 
-
+           
 
            callback(data);
 
@@ -15268,7 +15246,7 @@ function queryDict(word, type){
     // Check cache, YQL use url as the key
     var cache=D.getCache('YQL_CACHE', url);
     if (cache) {
-
+        
         // foramt start
         window.DICT_format(cache, type);
         D.complete(word, type);
@@ -15285,11 +15263,11 @@ function queryDict(word, type){
     var isHttps = isHttpsProtocal()
     if (isHttps){
       // Use YQL proxy for https support
-
+      
       url = YQL_URL.replace('#URL#', encodeURIComponent(url));
     }
 
-
+    
     var params = {
     };
 
@@ -15325,7 +15303,7 @@ function queryDict(word, type){
         // add to cache
         D.setCache('YQL_CACHE', data);
 
-
+        
         window.DICT_format(data);
 
       },
@@ -15356,7 +15334,7 @@ D.DICT_PLUGINS = D.DICT_PLUGINS || {};
 // Expect json format of data: {"type":"__", "word","__", "src","__"}
 window.DICT_format = function(data, type){
     type = type || data.type;
-
+    
     var $explain = formatDict(data.src, type);
     if ($explain) {
         var $result = $('#__explain_wrapper_appender__');
@@ -15373,7 +15351,7 @@ function formatDict(src, dict_type){
     // Regist formatter before use
     var formatter = D.DICT_PLUGINS[dict_type];
     if (!formatter) {
-
+        
         return "";
     }
     return formatter.format(src);
@@ -15386,7 +15364,7 @@ function formatDict(src, dict_type){
  * formatter/common.js
  *
  * Common format of a page sources.
- * Called from all formatters.
+ * Called from all formatters. 
  *
  * Diff common vs util
  * util is only called from some formatters, not all.
@@ -15406,7 +15384,7 @@ var D=$.dict_extend({
 // 2.Call customized page callback which pass from params
 // 3.Clean links which match plugin.prefix
 function preformatCommonPage(pluginInfo, src, customizePageFnc) {
-
+    
     var $target = jQueryStripTags(src, pluginInfo.removeTags);
 
     if (typeof customizePageFnc === 'function') {
@@ -15419,7 +15397,7 @@ function preformatCommonPage(pluginInfo, src, customizePageFnc) {
 
     if (pluginInfo.isCleanLinks !== false){
         // Like wiki, with I18 support, host will change when lang change
-
+        
         cleanLinks($target, src, pluginInfo);
     }
 
@@ -15432,7 +15410,7 @@ function isFormaterWorks($result) {
     if ($.trim(  $result.text()   ).length > D.MIN_CHAR_COUNT_PER_PAGE ) {
         return true;
     } else {
-
+        
         return false;
     }
 }
@@ -15452,7 +15430,7 @@ function gressHostIfRegexp(src, opt){
             var host=src.match(hostStrOrRegexp);
             //return host ? host[0] : hostStrOrRegexp;
             if (host){
-
+                
                 return host[0];
             }
         }
@@ -15469,7 +15447,7 @@ function cleanLinks($$, src, pluginInfo) { //
             return;
         }
 
-        // Skip anchor
+        // Skip anchor 
         if (href.startsWith('#')){
             if (href.startsWith('#__')){
                 // Already enhanced
@@ -15487,13 +15465,13 @@ function cleanLinks($$, src, pluginInfo) { //
                     $anchorId.attr('id', '__' + anchorId);
                 }
             }catch(e){}
-
-            return;
+            
+            return; 
         }
 
         // Clean links match prefix
         var newURL = D.getHrefWithHost(host, href);
-
+        
         $(this).attr('href', newURL)
                .attr('o-href', href)
                .attr('target','_blank');
@@ -15542,7 +15520,7 @@ function stripTags(src, removeTags) {
             tags[j].parentNode.removeChild(tags[j]);
         }
     }
-
+    
     return div.innerHTML;
 }
 
@@ -15617,11 +15595,11 @@ function formatGoogle(json) {
 function firstMode(json) {
     searchStartPosition = 0;
 
-
+    
     // If no existed formatter, show google result.
     var $resultDiv=$('<div id="__google_result__" style="margin-left:5px;" >');
 
-    if (!json || !json.results || json.results.length===0){
+    if (!json || !json.items || json.items.length===0){
         return $resultDiv.append('<h4>No search result!</h4>');
     }
 
@@ -15637,7 +15615,7 @@ function firstMode(json) {
 
 function nextMode(json) {
 
-
+    
     // If no existed formatter, show google result.
 
     $('#__google_result__').append(getContent(json));
@@ -15649,14 +15627,14 @@ function nextMode(json) {
 }
 
 function getContent(json){
-    var google_results = json.results,
+    var google_results = json.items,
         word = json.word,
         $resultList = $('<div>'),
         $lnk_ext = $('<a target="_blank" class="external">');
     for (var i in google_results) {
         // 0) plugin detect
         var r = google_results[i],
-            plugin = D.detectExistedPluginByPrefix(r.unescapedUrl),
+            plugin = D.detectExistedPluginByPrefix(r.formattedUrl),
             $lnk;
 
         // NG: ?type=xxx#word  : it will redirect the page to blank
@@ -15675,7 +15653,7 @@ function getContent(json){
             isCacheLnkEnable = false;
             $lnk.attr('href', patchGoogleCacheURL(r.cacheUrl)); // Some site not support YQL, so we load it from google cache
         } else {
-            $lnk.attr('href', r.unescapedUrl);
+            $lnk.attr('href', r.formattedUrl);
         }
 
         if (isCacheLnkEnable){
@@ -15684,13 +15662,13 @@ function getContent(json){
 
         // 2) content text
         var $content = $('<div>');
-        $content.html(r.content.replace(/<script|script>/g,''));
+        $content.html(r.htmlSnippet.replace(/<script|script>/g,''));
 
         // 3) url
-        var url = (r.unescapedUrl.length>40)? (r.unescapedUrl.substring(0,40)+'...')  :  r.unescapedUrl,
+        var url = (r.formattedUrl.length>40)? (r.formattedUrl.substring(0,40)+'...')  :  r.formattedUrl,
             $url = $('<div>').css('color','#006621')
                    .append(    url   )
-                   .append( plugin ?  $lnk_ext.clone().attr('href', r.unescapedUrl).html(' ')  : '' ); // Add External mark
+                   .append( plugin ?  $lnk_ext.clone().attr('href', r.formattedUrl).html(' ')  : '' ); // Add External mark
 
         // Combine all above
         $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );
@@ -15725,19 +15703,19 @@ function patchGoogleCacheURL(cacheUrl){
 }
 
 function registOnceOnScrollBottomForNextPage(){
-
+    
     // Next search index
     searchStartPosition+=D.SEARCH_SIZE;
     if (searchStartPosition>=D.MAX_POSITION){
-
+        
         $('.__toBeReplace__').replaceWith('<hr />');
         return; // Stop Regist! Google seams return only max ~60.
     }
-
+    
 
     // callback func called in dict.proxy.js
     D.triggerOnceOnScrollBottom = function(){
-
+        
         // Use key word in search box
         D.queryGoogleMore(searchStartPosition);
     }
@@ -15763,14 +15741,14 @@ var option = D.DICT_PLUGINS.weblio = {
     'type' : 'weblio',
     'host' : '//ejje.weblio.jp',
     'mobile_host' : '//ejje.weblio.jp/small',
-    'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result
+    'prefix': [/^[htps:]*\/\/ejje\.weblio\.jp\/content\/([^\/]+)/,  /^[htps:]*:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result
     'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
     'inject_resources': ['#weblio_css'], // Defined in preload.html
 };
 
 function formatWeblioForSmartPhoneLayout(src) {
-
+    
 
     // Preformat by common util, then callback the customize function.
     return D.preFormat(option, src, customizePage);
@@ -15818,7 +15796,7 @@ var optionPC = D.DICT_PLUGINS.weblio_pc = {
 };
 
 function formatWeblioForPCLayout(src){
-
+    
     return D.preFormat(optionPC, src, function($target){
         var $cont = $('#cont', $target);
         $('.mainLeftAdWrp', $cont).nextAll().remove();
@@ -15916,7 +15894,7 @@ function formatWikibooks(src){
 // JSON sample
 function formatWiki(src, opt) {
     opt = opt || optionWikipedia;
-
+    
     var $preFormatedTarget = D.preFormat(opt, src, customizePageBef);
 
     // NOTICT: customizeWikiLanguageLink must be after customize links
@@ -15954,14 +15932,14 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
     //    href = 'http:' + href;
     //}
 
-
+    
     //$lang.attr("data-toggle","modal").attr("data-target","#myModal");
     $lang
         .attr("href",href)
         .attr("origin-text", $lang.text())
         .mouseover(function(){
             loadLanguageLinkByAjax($(this), option);
-
+            
         })
         .click(function(){
             var $thisLnk = $(this);
@@ -15969,11 +15947,11 @@ function customizeWikiLanguageLink($target, option){//,#left-navigation
                 D.MODAL_DIALOG.show();
             } else {
                 // First load or next load
-                $thisLnk.text("Loading...");
-
+                $thisLnk.text("Loading..."); 
+                
                 loadLanguageLinkByAjax($thisLnk, option); // Tab device no mouseover.
                 isShowDefault = true;
-            }
+            } 
             return false;
         });
 
@@ -16046,7 +16024,7 @@ var option = D.DICT_PLUGINS.ewords = {
     'type' : 'ewords',
     'host' : '//e-words.jp/w',
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
-    'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'prefix': [/^[htps:]*\/\/e\-words\.jp\/w\/([^\/]+).html$/,  /^[htps:]*\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','nobr'],
     'isCleanLinks': true,
@@ -16054,7 +16032,7 @@ var option = D.DICT_PLUGINS.ewords = {
 
 // JSON sample
 function formatEWords(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
@@ -16108,7 +16086,7 @@ D.DICT_PLUGINS.auto_goo = {
 var option = D.DICT_PLUGINS.goo = {
     'type' : 'goo',
     'host' : 'http://dictionary.goo.ne.jp', // http://dictionary.goo.ne.jp/leaf/...
-    'prefix': [    /^http:\/\/dictionary\.goo\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word.
+    'prefix': [    /^http:\/\/dictionary\.goo\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatGoo,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
@@ -16116,15 +16094,15 @@ var option = D.DICT_PLUGINS.goo = {
 
 // JSON sample
 function formatGoo(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
 
 // Customize for this page
 function customizePage($target){
-    var $tmp = $('.contents-wrap-b' ,$target);
-
+    var $tmp = $('.contents-wrap-b' ,$target); 
+    
     return $tmp;// Keep id = main only. If no return , $target will be content.
 }
 
@@ -16148,7 +16126,7 @@ var D= $.dict_extend();
 var option = D.DICT_PLUGINS.google_cache = {
     'type' : 'google_cache',
     'host' : 'http://www.google.com/search?q=cache', // http://dictionary.goo.ne.jp/leaf/...
-    'prefix': [    /^http:\/\/www\.google\.com\/search\?q=cache.*$/   ] ,  // NOTICE key(group no1) is not always a word.
+    'prefix': [    /^http:\/\/www\.google\.com\/search\?q=cache.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatCommon,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': false,
@@ -16156,29 +16134,29 @@ var option = D.DICT_PLUGINS.google_cache = {
 
 // JSON sample
 function formatCommon(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
 
 // Customize for this page
 function customizePage($target){
-
+    
 
     //Remove text from google;
     //$('base', $target).next().empty().text('Google Cache');
     $('div:first', $target).remove();
     $('a', $target).attr('target', '_blank');
 
-    // common remove
+    // common remove 
     var $headAndFoot = $('#header, #footer, header, footer, .header, .footer', $target);
-
+    
     $headAndFoot.remove();
 
     var searchWord = $('#__search__').val();
 
     $('.highlight', $target).removeClass('highlight');
-
+    
     $target.highlight(searchWord.split(/[ \t　]+/));
 
     // Set move to point
@@ -16217,7 +16195,7 @@ var option = D.DICT_PLUGINS.iciba = {
 };
 
 function formatIciba(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
@@ -16254,7 +16232,7 @@ var option = D.DICT_PLUGINS.kotobank = {
     'type' : 'kotobank',
     'host' : '//kotobank.jp',
     //'mobile_host' : 'http://m.kotobank.jp', // now it use responsive design
-    'prefix': [ /^http(|s):\/\/kotobank\.jp\/word\/([^\/]+)$/   ,  /^\/word\/([^\/]+)$/  ] ,
+    'prefix': [ /^http(|s):\/\/kotobank\.jp\/word\/([^\/]+)$/   ,  /^\/word\/([^\/]+)$/  ] , 
     'format': formatKotobank,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isLoadFromGoogleCache': true, // TODO: (Kotobank changed it's url? so use google cache for first load)
@@ -16267,7 +16245,7 @@ function formatKotobank(src) {
     if (!src.contains(baseProtocal+'kotobank.jp/')){
         baseProtocal = 'http://';
     }
-
+    
     // Notice: customizePage executed before cleanLink
     var $t = D.preFormat(option, src, customizePage);
 
@@ -16278,7 +16256,7 @@ function formatKotobank(src) {
 }
 
 
-// Customize for this page
+// Customize for this page 
 function customizePage($t){
     // $("#footer_link, #get_app, #bookmark, #contents>div:first, .ad_source_c", $t).remove();
     // $("#relatedKeyword",$t).nextAll().remove();
@@ -16337,7 +16315,7 @@ var option = D.DICT_PLUGINS.sophia = {
     'type' : 'sophia',
     'host' : 'sophia-it.com',
     //'mobile_host' : '//m.sophia.jp', // 20141008 now it use responsive design.
-    'prefix': [ /^http:\/\/www\.sophia-it\.com\/content\/([^\/]+)$/   ,  /^\/content\/([^\/]+)$/  ] ,
+    'prefix': [ /^http:\/\/www\.sophia-it\.com\/content\/([^\/]+)$/   ,  /^\/content\/([^\/]+)$/  ] , 
     'format': formatSophia,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     // 'isLoadFromGoogleCache': true,
@@ -16346,7 +16324,7 @@ var option = D.DICT_PLUGINS.sophia = {
 
 // JSON sample
 function formatSophia(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
@@ -16360,7 +16338,7 @@ function customizePage($t){
     $('td:last', $content).remove();
     $('td:last', $content).remove();
     return $content;
-
+    
 }
 
 
@@ -16383,14 +16361,14 @@ var D= $.dict_extend();
 var option = D.DICT_PLUGINS.xiaod = {
     'type' : 'xiaod',
     // 'host' : 'http://dictionary.xiaod.ne.jp', // http://dictionary.xiaod.ne.jp/leaf/...
-    // 'prefix': [    /^http:\/\/dictionary\.xiaod\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word.
+    // 'prefix': [    /^http:\/\/dictionary\.xiaod\.ne\.jp\/leaf\/.*$/  ,  /^\/leaf\/.*$/   ] ,  // NOTICE key(group no1) is not always a word. 
     'format': formatIt,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','style','nobr','img'],
     'isCleanLinks': true,
 };
 
 function formatIt(src) {
-
+    
     return D.preFormat(option, src, customizePage);
 }
 
@@ -16430,10 +16408,10 @@ D.DICT_PLUGINS.auto = option;
 // JSON sample
 // {"results":[{"GsearchResultClass":"GwebSearch","unescapedUrl":"http://www.world.co.jp/","url":"http://www.world.co.jp/","visibleUrl":"www.world.co.jp","cacheUrl":"http://www.google.com/search?q=cache:bSVTDZN7KhoJ:www.world.co.jp","title":"Corp <b>World</b>","titleNoFormatting":"Corp (WORLD)","content":"Hello <b>World</b>"},{},...]}
 function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
-
+    
     var plugin;
     // Use other plugins if matched in google search result
-    plugin = detectExistedPluginByPrefixWithPluginOrder( json.results );// Need unescapedUrl
+    plugin = detectExistedPluginByPrefixWithPluginOrder( json.items );// Need unescapedUrl
 
     if (plugin) {
         var word = json.word,
@@ -16445,7 +16423,7 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
             word = newWord;
         }
 
-
+        
 
         // Recall loader/dict.load.xxx.js
         D.loadQueryDirectly(word, type, url);
@@ -16566,11 +16544,11 @@ var naviQ = new D.Stack(),
 
 function pushNaviCallbackParamters(key){
     if (!key || key === naviQ.get(naviQPointor)) {
-
+        
         return;
     }
 
-
+    
     var i=naviQPointor;
     while (i<naviQ.size()){
         naviQ.pop();
@@ -16586,7 +16564,7 @@ function pushNaviCallbackParamters(key){
 }
 
 function naviQBack(){
-
+    
     naviQPointor--;
     // Check & Skip
     if (naviQPointor<1) {
@@ -16607,7 +16585,7 @@ function naviQBack(){
 }
 
 function naviQForword(){
-
+    
     naviQPointor++;
     // Check & Skip
     if (naviQPointor>naviQ.size()) {
@@ -16722,8 +16700,8 @@ $(function(){
 
     $(window).on('hashchange', function(e){
         var origEvent = e.originalEvent;
-
-
+        
+        
 
         // URL first, do NOT use this when links in iframe is clicked.
         var url = D.getParamFromURL('url');
@@ -16746,7 +16724,7 @@ $(function(){
 
 
 function registClearBtn() {
-
+ 
   var ICON_WIDTH = 38,  //px
       X = '__clearable__',
       X_ON_MOUSE = '__clearable_onX__';
@@ -16845,12 +16823,12 @@ function reloadWhenDictOptionChanged($dropdown){
             // reset menu
             updateOptionMenu(new_opt, $dropdown);
 
-            // Get Cookie Key:
+            // Get Cookie Key: 
             //   __dict_type__ --> dict_type
             //   __dict_lang__ --> dict_lang
-            var name = $dropdown.attr('id').replace(/__/g,'');
+            var name = $dropdown.attr('id').replace(/__/g,''); 
             if (!name){
-
+                
             }else{
                 // Save to cookie
                 saveDictValToCookies(name, new_opt);
@@ -16863,7 +16841,7 @@ function reloadWhenDictOptionChanged($dropdown){
         }
         // Hide menu
         if ($menuBtn.is(':visible'))// [Fix, add check hidden] Bugs that can NOT go back to smartphone menu in FF
-            $menuBtn.click(); // Hide all
+            $menuBtn.click(); // Hide all 
         else
             $dropdown.parent().removeClass('open');
 
@@ -16873,9 +16851,9 @@ function reloadWhenDictOptionChanged($dropdown){
 
 function updateOptionMenu(val, $dropdown) {
 
-
+    
     // default 1st option
-    val = val || $('li:first > a',$dropdown).attr('value');
+    val = val || $('li:first > a',$dropdown).attr('value'); 
 
     $('li',$dropdown).each(function(){
         var $lnk = $('a', this);
@@ -16907,7 +16885,7 @@ function getSelectedType(){
 function getSelectedMenu(key){
     /*var value = D.getParamFromURL(key);
     if (value) {
-
+        
         return value;
     }*/
     return $('#__dict_' + key + '__ li.active>a').attr('value');
