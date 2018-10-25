@@ -15,7 +15,7 @@ var option = D.DICT_PLUGINS.weblio = {
     'type' : 'weblio',
     'host' : '//ejje.weblio.jp',
     'mobile_host' : '//ejje.weblio.jp/small',
-    'prefix': [   /^http:\/\/ejje\.weblio\.jp\/content\/([^\/]+)/ ,  /^http:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result 
+    'prefix': [/^[htps:]*\/\/ejje\.weblio\.jp\/content\/([^\/]+)/,  /^[htps:]*:\/\/ejje\.weblio\.jp\/small\/content\/([^\/]+)/  ], // URL Displayed in google search result
     'format': formatWeblioForSmartPhoneLayout,
     'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
     'inject_resources': ['#weblio_css'], // Defined in preload.html
@@ -63,7 +63,7 @@ function customizePageSmall($target){
 var optionPC = D.DICT_PLUGINS.weblio_pc = {
     'type' : 'weblio_pc',
     'host' : '//www.weblio.jp',
-    'prefix': [   /^http:\/\/www\.weblio\.jp\/content\/([^\/]+)/ , /^http:\/\/www\.weblio\.jp\/.*\/content\/([^\/]+)/ ], 
+    'prefix': [   /^http:\/\/www\.weblio\.jp\/content\/([^\/]+)/ , /^http:\/\/www\.weblio\.jp\/.*\/content\/([^\/]+)/ ],
     'format': formatWeblioForPCLayout,
     'removeTags': ['title','meta','iframe','noscript','script','img', 'link'],
     'inject_resources': ['#weblio_css'], // Defined in preload.html
@@ -75,10 +75,10 @@ function formatWeblioForPCLayout(src){
         var $cont = $('#cont', $target);
         $('.mainLeftAdWrp', $cont).nextAll().remove();
         //$('.pbarT', $cont).prevAll().andSelf().remove();
-        
-        $('a', $cont).filter(function() { 
+
+        $('a', $cont).filter(function() {
             var href = $(this).attr('href');
-            return href && href.indexOf('http://www.weblio.jp/redirect?') === 0; 
+            return href && href.indexOf('http://www.weblio.jp/redirect?') === 0;
         }).remove();
         return $cont;
     });

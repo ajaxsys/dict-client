@@ -26,13 +26,12 @@ asyncTest( "asynchronous test: Test Google API with JSONP.", function() {
   expect( 3 );
 
   $.jsonp({
-      //'url': 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=jp&q=java&rsz=8&start=0&callback=DICT_jsonp&_1401950539468=',
       'url' : 'https://ajax.googleapis.com/ajax/services/search/web',
       'data':{
           'v' : '1.0',
           'gl': 'jp',
           'q' : 'java',
-          'rsz' : 8,
+          'count' : 8,
           'start' : 0,
           'callback': 'DICT_jsonp',
       },

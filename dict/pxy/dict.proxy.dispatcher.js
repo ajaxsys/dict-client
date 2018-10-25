@@ -1,7 +1,7 @@
 /*************************************************
  * dict.formatter.auto.js
  *
- * Formatter of auto mode. 
+ * Formatter of auto mode.
  * First check google, then check if existed plugin on result list.
  * If not exist, show google result.
  **************************************************/
@@ -23,13 +23,13 @@ function formatFirstGoogleThenUseOtherFormatterIfExisted(json) {
     console.log(D.LC, '[dict.formatter.auto.js] Auto Mode start...');
     var plugin;
     // Use other plugins if matched in google search result
-    plugin = detectExistedPluginByPrefixWithPluginOrder( json.results );// Need unescapedUrl
+    plugin = detectExistedPluginByPrefixWithPluginOrder( json.items );// Need unescapedUrl
 
     if (plugin) {
         var word = json.word,
             newWord = plugin.ext.wordFromURL,// Get new word from url. But not all url contains word!! *1
             type = plugin.type,
-            url  =  (plugin.isLoadFromGoogleCache && plugin.ext.cacheUrl) ? plugin.ext.cacheUrl : plugin.ext.unescapedUrl;// used by YQL 
+            url  =  (plugin.isLoadFromGoogleCache && plugin.ext.cacheUrl) ? plugin.ext.cacheUrl : plugin.ext.unescapedUrl;// used by YQL
         // Check if use new word, only new word contains word, then use it. *1
         if (  newWord && newWord.toLowerCase().indexOf(word.toLowerCase())>=0   ){
             word = newWord;
@@ -74,10 +74,10 @@ function detectExistedPluginByPrefixWithPluginOrder(results){
         }
 
     }
-    return null; 
+    return null;
 }
 
-function detectExistedPluginByPrefix(url){ 
+function detectExistedPluginByPrefix(url){
     //var url = aResult.unescapedUrl;                  //  URL outside *2
     if (url) {
         for (var pluginType in D.DICT_PLUGINS) {
@@ -100,7 +100,7 @@ function detectExistedPluginByPrefix(url){
             }
         }
     }
-    return null; 
+    return null;
 }
 
 

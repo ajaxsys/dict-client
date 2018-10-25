@@ -10,37 +10,19 @@ var D=$.dict_extend();
 D=$.dict_extend({
     'queryGoogle': queryGoogle,
     'queryGoogleMore': queryGoogleMoreResults,
-    'SEARCH_SIZE' : D.GOOGLE_API_NEW_MODE ? 10 : 8,
-    'MAX_POSITION': D.GOOGLE_API_NEW_MODE ? 20 : 40,
+    'SEARCH_SIZE' : 10,
+    'MAX_POSITION': 20,
 });
 
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
-var GOOGLE_SEARCH_API_OLD = 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=';
 
-// ?key=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc
-// &rsz=filtered_cse
-// &num=10
-// &hl=ja
-// &prettyPrint=false
-// &source=gcsc
-// &gss=.jp
-// &sig=23952f7483f1bca4119a89c020d13def
-// &cx=016502465458590467219:emohpvgyzyw
-// &q=%E4%BD%A0%E5%A5%BD
-// &sort=
-// &googlehost=www.google.com
-// &oq=%E4%BD%A0%E5%A5%BD
-// &gs_l=partner.12...0.0.1.9218.0.0.0.0.0.0.0.0..0.0.gsnos%2Cn%3D13...0.0jj1..1ac..25.partner..6.0.0.ZDfqFNMyL4M
-// &callback=google.search.Search.apiary1045
-// &nocache=1418887005296
-var GOOGLE_SEARCH_API_NEW = 'https://www.googl'
+// doc:developers.google.com/custom-search/v1/cse/list
+var GSEAPI = 'https://www.googl'
 + 'eapis.com/custom'
-+ 'search/v1element?ke'
++ 'search/v1?ke'
 + 'y=AIzaSyCjBxov5ft0mEXoY019aiudWYImnDwEWQc&c'
 + 'x=016502465458590467219:emohpvgyzyw&gl=';
-//var GOOGLE_SEARCH_API_NEW = 'https://www.googl'+'eapis.com/custom'+'search/v1?q=google&c'+'x=part'+'ner-pub-1367404477091294%3A9177098028&ke'+'y=AIzaSyDS6ydBSXeqe4EMytQg9'+'8JMJ7CJTyh1dxQ&c2coff=1&client=google-csbe&cr=jp&callback=DICT_jsonp'
-var GOOGLE_SEARCH_API = D.GOOGLE_API_NEW_MODE ? GOOGLE_SEARCH_API_NEW : GOOGLE_SEARCH_API_OLD;
 
 /*
  * Loading more search result
@@ -50,10 +32,10 @@ function queryGoogleMoreResults(searchStartPosition){
     var type = 'google';
 
     ajax=$.jsonp({
-        'data': {'q':word,'rsz':D.SEARCH_SIZE,'start':searchStartPosition},
-        'url': GOOGLE_SEARCH_API + D.lang,
+        'data': {'q':word,'count':D.SEARCH_SIZE,'start':searchStartPosition},
+        'url': GSEAPI + D.lang,
         'success': function(r){
-            var json= D.GOOGLE_API_NEW_MODE ? r : r.responseData;
+            var json= r;
             json.isNextMode=true;// google next mode.
             var data = {};
             data.src = json;
@@ -113,7 +95,7 @@ function queryGoogle(word, type, opt){
       console.log(D.LC, '[loaders/dict.load.google.js] Redirect search key : ',word, '--->', searchKey);
     }
 
-    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API + D.lang);
+    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GSEAPI + D.lang);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',0);
 
     if (ajax) {
@@ -136,30 +118,26 @@ function queryGoogle(word, type, opt){
           'word':word,
           'type':type,
       },
-      'data': {'q':searchKey,'rsz':D.SEARCH_SIZE,'start':0},
-      'url': GOOGLE_SEARCH_API + D.lang,
-      'success': function(googleResultJsonArray){
-          if (D.GOOGLE_API_NEW_MODE === false){
-            console.log(D.LC, '[loaders/dict.load.google.js] Use google old api mode.');
-            googleResultJsonArray = googleResultJsonArray.responseData; // Adapter
+      'data': {'q':searchKey,'count':D.SEARCH_SIZE,'start':1},
+      'url': GSEAPI + D.lang,
+      'success': function(googleResultJsonObj){
+          if (!googleResultJsonObj || !googleResultJsonObj.items) {
+              // Error
+              console.log("Google result NG");
+              this.error();
+              return;
           }
 
-          if (!googleResultJsonArray || !googleResultJsonArray.results){
-            // Error
-            console.log("Google result NG");
-            this.error();
-            return;
-          }
           // Regist search info.
-          googleResultJsonArray.searchKey = searchKey;
-          googleResultJsonArray.word = word;
+          googleResultJsonObj.searchKey = searchKey;
+          googleResultJsonObj.word = word;
 
           var data = {};
 
           // For cache
           data.key = [searchKey,type,D.lang].join('&');
 
-          data.src = googleResultJsonArray;
+          data.src = googleResultJsonObj;
           data.word = searchKey;
           data.type=type; // "auto/google". Regist type used in format plugin
 

@@ -13,7 +13,7 @@ var D=$.dict_extend({
 
 var ajax, oldword;
 // contry code: http://en.wikipedia.org/wiki/ISO_3166-1
-var GOOGLE_SEARCH_API = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=";
+var GSEAPI = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&gl=";
 var SEARCH_SIZE = 8;
 
 /*
@@ -24,8 +24,8 @@ function queryGoogleMoreResults(searchStartPosition){
     var type = 'google';
 
     ajax=$.jsonp({
-        'data': {'q':word,'rsz':SEARCH_SIZE,'start':searchStartPosition},
-        'url': GOOGLE_SEARCH_API + D.lang,
+        'data': {'q':word,'count':SEARCH_SIZE,'start':searchStartPosition},
+        'url': GSEAPI + D.lang,
         'success': function(r){
             var json=r.responseData;
             json.isNextMode=true;// google next mode.
@@ -86,13 +86,13 @@ function queryGoogle(word, type, opt){
       console.log(D.LC, '[loaders/dict.load.google.js] Redirect search key : ',word, '--->', searchKey);
     }
 
-    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GOOGLE_SEARCH_API + D.lang);
+    console.log(D.LC, '[loaders/dict.load.google.js] JSONP load: ', GSEAPI + D.lang);
     console.log(D.LC, '[loaders/dict.load.google.js] Search key: ', searchKey, '.searchStartPosition:',0);
 
     if (ajax) {
         ajax.abort();
     }
-    
+
     // [1] Check cache
     var cache = D.getCache('GOOGLE_CACHE', [searchKey,type,D.lang].join('&')  );
     if (cache){
@@ -109,8 +109,8 @@ function queryGoogle(word, type, opt){
           'word':word,
           'type':type,
       },
-      'data': {'q':searchKey,'rsz':SEARCH_SIZE,'start':0},
-      'url': GOOGLE_SEARCH_API + D.lang,
+      'data': {'q':searchKey,'count':SEARCH_SIZE,'start':0},
+      'url': GSEAPI + D.lang,
       'success': function(r){
           var googleResultJsonArray=r.responseData;
           if (!googleResultJsonArray){
@@ -134,7 +134,7 @@ function queryGoogle(word, type, opt){
 
           // add to cache
           D.setCache('GOOGLE_CACHE',data);
-  
+
           console.log(D.LC, '[loaders/dict.load.google.js] Google JSONP load success! Call formatter.');
           window.DICT_format(data);
       },

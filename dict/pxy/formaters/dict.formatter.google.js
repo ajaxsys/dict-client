@@ -1,7 +1,7 @@
 /*************************************************
  * dict.formatter.google.js
  *
- * Google formatter. 
+ * Google formatter.
  **************************************************/
 ;(function($){
 'use strict';
@@ -32,7 +32,7 @@ function firstMode(json) {
     // If no existed formatter, show google result.
     var $resultDiv=$('<div id="__google_result__" style="margin-left:5px;" >');
 
-    if (!json || !json.results || json.results.length===0){
+    if (!json || !json.items || json.items.length===0){
         return $resultDiv.append('<h4>No search result!</h4>');
     }
 
@@ -60,14 +60,14 @@ function nextMode(json) {
 }
 
 function getContent(json){
-    var google_results = json.results,
+    var google_results = json.items,
         word = json.word,
         $resultList = $('<div>'),
         $lnk_ext = $('<a target="_blank" class="external">');
     for (var i in google_results) {
         // 0) plugin detect
         var r = google_results[i],
-            plugin = D.detectExistedPluginByPrefix(r.unescapedUrl),
+            plugin = D.detectExistedPluginByPrefix(r.formattedUrl),
             $lnk;
 
         // NG: ?type=xxx#word  : it will redirect the page to blank
@@ -86,7 +86,7 @@ function getContent(json){
             isCacheLnkEnable = false;
             $lnk.attr('href', patchGoogleCacheURL(r.cacheUrl)); // Some site not support YQL, so we load it from google cache
         } else {
-            $lnk.attr('href', r.unescapedUrl);
+            $lnk.attr('href', r.formattedUrl);
         }
 
         if (isCacheLnkEnable){
@@ -95,13 +95,13 @@ function getContent(json){
 
         // 2) content text
         var $content = $('<div>');
-        $content.html(r.content.replace(/<script|script>/g,''));
+        $content.html(r.htmlSnippet.replace(/<script|script>/g,''));
 
         // 3) url
-        var url = (r.unescapedUrl.length>40)? (r.unescapedUrl.substring(0,40)+'...')  :  r.unescapedUrl,
+        var url = (r.formattedUrl.length>40)? (r.formattedUrl.substring(0,40)+'...')  :  r.formattedUrl,
             $url = $('<div>').css('color','#006621')
                    .append(    url   )
-                   .append( plugin ?  $lnk_ext.clone().attr('href', r.unescapedUrl).html(' ')  : '' ); // Add External mark
+                   .append( plugin ?  $lnk_ext.clone().attr('href', r.formattedUrl).html(' ')  : '' ); // Add External mark
 
         // Combine all above
         $resultList.append(  $('<div>').append($lnk).append(' ').append($cacheLink).append($content).append($url).append('<hr />')  );

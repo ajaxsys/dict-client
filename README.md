@@ -13,12 +13,15 @@ Clone `dict-client` to local
 ###Compile
     cd dict-client
     npm install
+    npm install -g grunt
     grunt
+
+###Watch source change
     grunt watch
 
 ###Run simple http server
     cd tool
     run-server-js
 
-Then you can visit URL:
+Now you can visit URL:
  http://localhost:8443/target/build/test/test.html

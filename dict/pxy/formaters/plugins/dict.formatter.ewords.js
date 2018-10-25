@@ -15,7 +15,7 @@ var option = D.DICT_PLUGINS.ewords = {
     'type' : 'ewords',
     'host' : '//e-words.jp/w',
     //'mobile_host' : '//sp.e-words.jp', // NG cause e-words SP layout not support YQL
-    'prefix': [ /^http:\/\/e\-words\.jp\/w\/([^\/]+).html$/   ,  /^http:\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
+    'prefix': [/^[htps:]*\/\/e\-words\.jp\/w\/([^\/]+).html$/,  /^[htps:]*\/\/sp\.e\-words\.jp\/w\/([^\/]+).html$/  ] ,  // key is not always a word. e.g: E8A898E686B6E5AA92E4BD93.html
     'format': formatEWords,
     'removeTags': ['title','meta','iframe','noscript','script','link','form','nobr'],
     'isCleanLinks': true,
@@ -41,10 +41,10 @@ function customizePage($target){//,#left-navigation
     $('[width]', $content).andSelf().removeAttr('width').css("width","auto");
     $('.adsbygoogle', $content).remove();
     //$('#linkunit>div', $content).nextAll().remove();
-    
+
     // Enable tooltips
     $('a', $content).addClass('dict-css-tooltip');
-    
+
     var $delTheGenDate = $("#hr", $target).nextAll();
     if ( /\/\/[0-9.]+生成/.test( $delTheGenDate.text().replace(/\s|\n/g,'') ) ){
         $delTheGenDate.remove();

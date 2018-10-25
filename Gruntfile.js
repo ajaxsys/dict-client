@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     banner: '/*! DICT, a second screen bookmarklet for your browser.\n' +
             '* v<%= pkg.version %>\n' +
             '* Copyright <%= grunt.template.today("yyyy")%> <%= pkg.author %> \n' +
-            '* <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
+            '* <%= pkg.licenses%>\n' +
             '*/\n',
 
     // Task configuration.
@@ -41,14 +41,14 @@ module.exports = function(grunt) {
     csslint: {
       strict: {
         options: {
-          // a value of 2 will set it to become an error. 
+          // a value of 2 will set it to become an error.
           import: 2
         },
         src: ['dict/_resource/css/*.css']
       },
       lax: {
         options: {
-          // a value of false ignores the rule, 
+          // a value of false ignores the rule,
           // Otherwise all rules are considered warnings.
           import: false
         },
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
         dest: 'target/build/<%= pkg.name %>_bookmarklet.js'
       },
       dict_userscript: {
-        src: ['dict/bml/loader_userscript.js', 
+        src: ['dict/bml/loader_userscript.js',
               "<%= concat.dict_bookmarklet.src %>" ],
         dest: 'target/dict/<%= pkg.name %>_userscript.js'
       },
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
           'dict/pxy/dict.proxy.loader.js',
           'dict/pxy/loaders/common.js',
           'dict/pxy/loaders/common.cache.js',
-          //'dict/pxy/loaders/dict.load.gae.js', // Use yql 
+          //'dict/pxy/loaders/dict.load.gae.js', // Use yql
           //'dict/pxy/loaders/util.gae_lb.js',
           'dict/pxy/loaders/dict.load.google.js',
           'dict/pxy/loaders/dict.load.yql.js',
@@ -143,7 +143,7 @@ module.exports = function(grunt) {
           'dict/pxy/dict.proxy.modal-dialog.js',
 
           // main (MUST defined at last)
-          'dict/pxy/dict.proxy.js', 
+          'dict/pxy/dict.proxy.js',
         ],
         dest: 'target/build/<%= pkg.name %>_proxy.js'
       },
@@ -221,7 +221,7 @@ module.exports = function(grunt) {
           banner: '<%= banner %>',
           sourceMap: getMapPath, // where to output sourcemap
           // If not set, it will be NG: sources="target/dict/dict_proxy.map" in map
-          sourceMappingURL: '<%= pkg.name %>_proxy.map', 
+          sourceMappingURL: '<%= pkg.name %>_proxy.map',
           sourceMapIncludeSources: true, // Not work???
           // 1) + 2) = /build/dict_proxy.map (source path)
           sourceMapPrefix: 2,      // 1) target/dict/dict_proxy.map --> /dict_proxy.map (remove target/dict)
@@ -280,8 +280,8 @@ module.exports = function(grunt) {
 
           // Copy images
           // For test
-          {expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'}, 
-          {expand:true,                          src: ['lib/**'], dest: 'target/'}, 
+          {expand:true, cwd: 'dict/bml/test/'   ,src: ['*'],      dest: 'target/build/test/'},
+          {expand:true,                          src: ['lib/**'], dest: 'target/'},
         ]
       },
       html: {
@@ -342,7 +342,7 @@ module.exports = function(grunt) {
         files: {
           'dict/_resource/css/dict.proxy.css': ['dict/_resource/css/dict.proxy.styl' ],
           'dict/_resource/css/dict.ui.css': ['dict/_resource/css/dict.ui.styl' ],
-          'lib/jwe/jquery.windows-engine.css': ['lib/jwe/jquery.windows-engine.styl'], 
+          'lib/jwe/jquery.windows-engine.css': ['lib/jwe/jquery.windows-engine.styl'],
         }
       }
     },
@@ -403,11 +403,11 @@ module.exports = function(grunt) {
         }
       }
     },
-  
+
 
   }); // End grunt.initConfig
 
-  // A shortcut for copy file to multi dirs at once (google keyword: grunt copy multi dest) : 
+  // A shortcut for copy file to multi dirs at once (google keyword: grunt copy multi dest) :
   // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/dict/default/' },
   // {expand:true, cwd: 'lib/jwe/default/', src: ['*_mid.gif'],     dest: 'target/build/default/'},
   function copyToMulti(p_cwd, p_src, p_dests) {
@@ -461,7 +461,7 @@ module.exports = function(grunt) {
   // HTML build task.
   grunt.registerTask('dist-html', ['htmlbuild']);
 
-  // Sprite 
+  // Sprite
   grunt.registerTask('sprite', ['spritepacker','stylus']);
 
   // Full build task.
